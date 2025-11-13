@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/Usuario.css";
+import "src/styles/Usuario.css";
 import HeaderUsuario from "./HeaderUsuario";
 
 // 🔹 Endpoints

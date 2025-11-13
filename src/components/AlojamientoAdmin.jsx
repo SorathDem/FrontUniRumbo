@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import L from "leaflet";
-import "../styles/DetalleAlojamiento.css"; // puedes usar el mismo CSS del detalle
+import "src/styles/DetalleAlojamiento.css"; // puedes usar el mismo CSS del detalle
 import HeaderAdmin from "./HeaderAdmin";
 
 const API_URL = "https://localhost:7086/api/Alojamiento";

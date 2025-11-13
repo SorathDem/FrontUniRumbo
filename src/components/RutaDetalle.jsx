@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet"
 import L from "leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
-import "../styles/RutaDetalle.css";
+import "src/styles/RutaDetalle.css";
 
 const API_URL = "https://localhost:7086/api/Rutas";
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import "../styles/Solicitudes.css";
+import "src/styles/Solicitudes.css";
 import HeaderArrendatario from "./HeaderArrendatario";
 
 export default function SolicitudesAlojamiento() {

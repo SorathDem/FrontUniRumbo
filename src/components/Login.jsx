@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
-import "../styles/auth.css";
+import "src/styles/auth.css";
 
 function Login() {
   const [form, setForm] = useState({ Correo: "", Contrasena: "" });
