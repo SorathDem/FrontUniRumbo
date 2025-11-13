@@ -1,0 +1,120 @@
+/* ======= ESTILO GENERAL ADMIN ======= */
+.page-admin {
+  font-family: "Poppins", sans-serif;
+  background: #FFFFFF; /* degradado verde */
+  min-height: 100vh;
+  color: #FFFFFF; /* texto principal blanco */
+  margin: 0;
+  padding: 2rem 1.5rem;
+}
+
+/* ======= ENCABEZADO ======= */
+header#app-header {
+  width: 100%;
+  height: 70px;
+  background: #00482B; /* verde oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+}
+
+/* ======= GRID DE TARJETAS ======= */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ======= TARJETAS ======= */
+.admin-card {
+  background: #FFFFFF; /* fondo blanco */
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: #00482B; /* texto verde oscuro */
+}
+
+.admin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ======= TÍTULOS Y TEXTOS ======= */
+.admin-card h2 {
+  font-size: 1.3rem;
+  color: #007B3E; /* verde intermedio */
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.admin-info p {
+  margin-bottom: 0.5rem;
+  color: #00482B; /* verde oscuro */
+  font-size: 0.95rem;
+}
+
+/* ======= MAPAS MINI ======= */
+.mapa-mini {
+  background: #79C000; /* verde claro */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.8rem;
+  margin-top: 1rem;
+  height: 250px;
+  overflow: hidden;
+}
+
+/* ======= BOTONES ======= */
+.btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+/* Botón verde claro */
+.btn--dark {
+  background: #79C000;
+  color: #FFFFFF;
+  border: none;
+}
+
+.btn--dark:hover {
+  background: #007B3E; /* verde intermedio al pasar el mouse */
+}
+
+/* Botón claro */
+.btn--light {
+  background: #FFFFFF;
+  color: #00482B; /* verde oscuro */
+  border: 2px solid #00482B;
+}
+
+.btn--light:hover {
+  background: #00482B; /* verde oscuro */
+  color: #FFFFFF;
+}
+
+/* ======= RESPONSIVE ======= */
+@media (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-card h2 {
+    font-size: 1.1rem;
+  }
+}

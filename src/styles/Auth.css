@@ -1,0 +1,243 @@
+/* Fondo igual al login */
+.register-background {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../img/unirumbo.jpg") no-repeat center center/cover;
+  backdrop-filter: brightness(0.95);
+  box-sizing: border-box;
+  padding: 0; /* Aseguramos que no haya padding */
+  margin: 0;  /* Eliminamos margen */
+}
+
+/* Contenedor general del formulario */
+.auth-form {
+  background: rgba(255, 255, 255, 0.95); /* Fondo casi blanco */
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  width: 100%;
+  max-width: 600px; /* Máximo ancho */
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeIn 0.6s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* Animación suave al cargar */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título */
+.auth-title {
+  text-align: center;
+  font-size: 1.6rem;
+  color: #00482B; /* Verde oscuro */
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* Rejilla de los campos */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Campos de texto */
+.auth-form input,
+.auth-form select {
+  padding: 0.75rem;
+  border: 1.5px solid #007B3E; /* Verde intermedio */
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #FFFFFF; /* Blanco */
+  color: #00482B; /* Verde oscuro */
+  transition: all 0.25s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  outline: none;
+  border-color: #79C000; /* Verde claro al enfocar */
+  box-shadow: 0 0 0 3px rgba(121, 192, 0, 0.2); /* Verde claro con transparencia */
+}
+
+/* Botones */
+.auth-button {
+  background-color: #79C000; /* Verde claro */
+  color: #FFFFFF; /* Texto blanco */
+  border: none;
+  padding: 0.85rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.auth-button:hover {
+  background-color: #007B3E; /* Verde intermedio al pasar el mouse */
+}
+
+/* Botón secundario */
+.auth-button.secondary {
+  background-color: #00482B; /* Verde oscuro */
+  color: #FFFFFF;
+}
+
+.auth-button.secondary:hover {
+  background-color: #007B3E; /* Verde intermedio al pasar el mouse */
+}
+
+/* Placeholder */
+.auth-form input::placeholder,
+.auth-form select {
+  color: #007B3E; /* Verde intermedio */
+}
+
+/* Aseguramos que body y html ocupen toda la pantalla */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f3;
+}
+
+/* Contenedor principal del login */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../img/unirumbo.jpg") no-repeat center center/cover;
+  position: relative;
+}
+
+
+
+/* Filtro para oscurecer ligeramente el fondo */
+.auth-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0,0,0,0.25);
+}
+
+/* Formulario de login */
+.auth-form {
+  position: relative; /* Para estar encima del filtro */
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  z-index: 1;
+  animation: fadeIn 0.6s ease-in-out;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Animación suave al cargar */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título */
+.auth-title {
+  font-size: 2rem;
+  color: #00482B; /* Verde oscuro */
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+/* Labels */
+.auth-form label {
+  text-align: left;
+  font-weight: 600;
+  color: #00482B;
+}
+
+/* Inputs y selects */
+.auth-form input {
+  padding: 0.75rem;
+  border: 1.5px solid #007B3E; /* Verde intermedio */
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #FFFFFF;
+  color: #00482B;
+  transition: all 0.25s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #79C000; /* Verde claro al enfocar */
+  box-shadow: 0 0 0 3px rgba(121, 192, 0, 0.2); /* Verde claro con transparencia */
+}
+
+/* Botones */
+.auth-button {
+  background-color: #79C000; /* Verde claro */
+  color: #FFFFFF; /* Texto blanco */
+  border: none;
+  padding: 0.85rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.auth-button:hover {
+  background-color: #007B3E; /* Verde intermedio al pasar el mouse */
+}
+
+/* Botón secundario */
+.auth-button.secondary {
+  background-color: #00482B; /* Verde oscuro */
+  color: #FFFFFF;
+  margin-top: 0.5rem;
+}
+
+.auth-button.secondary:hover {
+  background-color: #007B3E;
+}
+
+/* Placeholder */
+.auth-form input::placeholder {
+  color: #007B3E; /* Verde intermedio */
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-form {
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-title {
+    font-size: 1.5rem;
+  }
+}

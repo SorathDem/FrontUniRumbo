@@ -1,0 +1,176 @@
+/* ======= ESTILO GENERAL ======= */
+.page-home {
+  font-family: "Poppins", sans-serif;
+  background: #FFFFFF; /* degradado verde */
+  min-height: 100vh;
+  color: #FFFFFF; /* texto blanco */
+  margin: 0;
+  padding: 0;
+}
+
+/* ======= ENCABEZADO ======= */
+header#app-header {
+  width: 100%;
+  height: 70px;
+  background: #00482B; /* verde oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ======= CONTENIDO PRINCIPAL ======= */
+.home-wrap {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ======= MENSAJE DE BIENVENIDA ======= */
+.welcome {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #FFFFFF; /* blanco */
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+/* ======= BOTONES SEGMENTADOS ======= */
+.segmented {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(0, 72, 43, 0.2); /* verde oscuro transparente */
+  padding: 8px;
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
+  width: fit-content;
+  margin: 0 auto 2rem;
+}
+
+.seg-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  background: transparent;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.seg-btn.active,
+.seg-btn:hover {
+  background: #79C000; /* verde claro */
+  color: #FFFFFF;
+}
+
+/* ======= TARJETAS DE SERVICIO ======= */
+.cards-2col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: #FFFFFF; /* fondo blanco */
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.service-card .head {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #00482B; /* verde oscuro */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.service-card .meta {
+  color: #007B3E; /* verde intermedio */
+  margin-top: 4px;
+  font-size: 0.95rem;
+}
+
+.service-card .list {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  color: #00482B; /* verde oscuro */
+  font-size: 0.95rem;
+}
+
+.service-card .list li {
+  margin-bottom: 0.5rem;
+}
+
+/* ======= BOTONES ======= */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Botón verde */
+.btn--dark {
+  background: #79C000; /* verde claro */
+  color: #FFFFFF;
+  border: none;
+}
+
+.btn--dark:hover {
+  background: #007B3E; /* verde intermedio */
+}
+
+/* Botón claro */
+.btn--light {
+  background: #FFFFFF; /* blanco */
+  color: #00482B; /* verde oscuro */
+  border: 2px solid #00482B;
+}
+
+.btn--light:hover {
+  background: #00482B; /* verde oscuro */
+  color: #FFFFFF;
+}
+
+/* ======= RESPONSIVO ======= */
+@media (max-width: 600px) {
+  .welcome {
+    font-size: 1.4rem;
+  }
+
+  .segmented {
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
