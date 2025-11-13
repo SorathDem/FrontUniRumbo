@@ -1,0 +1,130 @@
+/* ======= ESTILO GENERAL ======= */
+.page-home {
+  font-family: "Poppins", sans-serif;
+  background: #fff; /* degradado verde */
+  min-height: 100vh;
+  color: #FFFFFF; /* texto blanco */
+  margin: 0;
+  padding: 0;
+}
+
+/* ======= BIENVENIDA ======= */
+.usuario-bienvenida {
+  color: #00482B; /* verde oscuro */
+  font-weight: 600;
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* ======= TARJETA DE USUARIO ======= */
+.usuario-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 900px;
+  margin: auto;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.usuario-card h3 {
+  margin-bottom: 20px;
+  color: #007B3E; /* verde intermedio */
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ======= FORMULARIO ======= */
+.usuario-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+input,
+select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1.5px solid #007B3E; /* verde intermedio */
+  width: 100%;
+  font-size: 1rem;
+  color: #00482B;
+  background-color: #fff;
+  transition: all 0.25s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #79C000; /* verde claro */
+  box-shadow: 0 0 0 3px rgba(121, 192, 0, 0.2);
+  background-color: #fefefc;
+}
+
+input:disabled,
+select:disabled {
+  background-color: #f4f4f4;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* ======= BOTONES ======= */
+.usuario-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-editar,
+.btn-guardar,
+.btn-cancelar {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
+.btn-editar {
+  background: #007B3E;
+}
+
+.btn-editar:hover {
+  background: #79C000;
+}
+
+.btn-guardar {
+  background: #79C000;
+}
+
+.btn-guardar:hover {
+  background: #007B3E;
+}
+
+.btn-cancelar {
+  background: #00482B;
+}
+
+.btn-cancelar:hover {
+  background: #007B3E;
+}
+
+/* ======= RESPONSIVO ======= */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

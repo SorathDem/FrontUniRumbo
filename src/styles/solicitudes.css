@@ -1,0 +1,129 @@
+/* ====== FONDO Y ESTILO GENERAL ====== */
+.page-solicitudes{
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  background: #fff; /* Verde claro degradado */
+  margin: 0;
+  padding-bottom: 2rem;
+  color: #00482B;
+}
+
+/* ====== WRAPPER ====== */
+.solicitudes-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* ====== TITULO ====== */
+.title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00482B; /* Verde oscuro */
+  margin-bottom: 2rem;
+}
+
+/* ====== MENSAJES ====== */
+.loading,
+.empty {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #00482B;
+}
+
+/* ====== GRID CARDS ====== */
+.cards-2col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ====== CARD SOLICITUD ====== */
+.solicitud-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.solicitud-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* ====== HEADER CARD ====== */
+.solicitud-card .head {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: #007B3E; /* Verde intermedio */
+}
+
+/* ====== LISTA DETALLES ====== */
+.solicitud-card .list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+
+.solicitud-card .list li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: #00482B;
+}
+
+.solicitud-card .list li strong {
+  color: #00482B;
+}
+
+/* ====== ESTADOS ====== */
+.estado {
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.estado.aceptada {
+  background-color: #79C000; /* Verde claro */
+}
+
+.estado.rechazada {
+  background-color: #B00020; /* Rojo oscuro para rechazadas */
+}
+
+.estado.pendiente {
+  background-color: #007B3E; /* Verde intermedio */
+}
+
+/* ====== BOTÓN CANCELAR ====== */
+.btn-cancelar {
+  display: inline-block;
+  background-color: #00482B; /* Verde oscuro */
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #007B3E; /* Verde intermedio */
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 640px) {
+  .solicitudes-wrap {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}

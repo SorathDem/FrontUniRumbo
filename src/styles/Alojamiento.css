@@ -1,0 +1,8 @@
+.alojamiento-container{
+  font-family: "Poppins", sans-serif;
+  background: #fff; /* degradado verde */
+  min-height: 100vh;
+  color: #FFFFFF; /* texto blanco */
+  margin: 0;
+  padding: 0;
+}

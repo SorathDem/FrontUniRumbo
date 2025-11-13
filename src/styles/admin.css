@@ -1,0 +1,115 @@
+/* Asegurar que body y html ocupen toda la pantalla */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fondo del login */
+.register-background {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../img/unirumbo.jpg") no-repeat center center/cover;
+  backdrop-filter: brightness(0.95);
+}
+
+/* Contenedor general del formulario */
+.auth-form {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeIn 0.6s ease-in-out;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título */
+.auth-title {
+  font-size: 1.6rem;
+  color: #00482B;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* Inputs y selects */
+.auth-form input,
+.auth-form select {
+  padding: 0.75rem;
+  border: 1.5px solid #007B3E;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #FFFFFF;
+  color: #00482B;
+  transition: all 0.25s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  outline: none;
+  border-color: #79C000;
+  box-shadow: 0 0 0 3px rgba(121, 192, 0, 0.2);
+}
+
+/* Botones */
+.auth-button {
+  background-color: #007B3E;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.auth-button:hover {
+  background-color: #007B3E;
+}
+
+.auth-button.secondary {
+  background-color: #00482B;
+  color: #FFFFFF;
+}
+
+.auth-button.secondary:hover {
+  background-color: #007B3E;
+}
+
+/* Placeholder */
+.auth-form input::placeholder,
+.auth-form select {
+  color: #007B3E;
+}
+
+/* Grid de inputs */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
