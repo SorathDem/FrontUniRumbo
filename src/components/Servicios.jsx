@@ -21,8 +21,8 @@ export default function Servicios() {
     const cargarServicios = async () => {
       setLoading(true);
       try {
-        const urlAloj = `https://localhost:7086/api/Solicitudes/alojamientos/usuario/${idUsuario}`;
-        const urlRuta = `https://localhost:7086/api/Solicitudes/rutas/usuario/${idUsuario}`;
+        const urlAloj = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamientos/usuario/${idUsuario}`;
+        const urlRuta = `https://unirumbobakend.onrender.com/api/Solicitudes/rutas/usuario/${idUsuario}`;
 
         console.log("🧩 Cargando servicios (aceptados) del usuario:", idUsuario);
 

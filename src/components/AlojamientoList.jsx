@@ -36,7 +36,7 @@ const AlojamientoList = () => {
   // 🔹 Cargar alojamientos
   const obtenerAlojamientos = async () => {
     try {
-      const response = await fetch("https://localhost:7086/api/Alojamiento");
+      const response = await fetch("https://unirumbobakend.onrender.com/api/Alojamiento");
       const data = await response.json();
       setAlojamientos(data);
     } catch (error) {
@@ -81,7 +81,7 @@ const AlojamientoList = () => {
 
     try {
       const response = await fetch(
-        "https://localhost:7086/api/Alojamiento/con-imagenes",
+        "https://unirumbobakend.onrender.com/api/Alojamiento/con-imagenes",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -108,7 +108,7 @@ const handleEliminar = async (id) => {
     if (!window.confirm("¿Deseas eliminar este alojamiento?")) return;
 
     try {
-      const res = await fetch(`https://localhost:7086/api/Alojamiento/${id}`, {
+      const res = await fetch(`https://unirumbobakend.onrender.com/api/Alojamiento/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Error al eliminar alojamiento");
@@ -142,7 +142,7 @@ const handleEliminar = async (id) => {
     };
 
     const res = await fetch(
-      `https://localhost:7086/api/Alojamiento/${alojamiento.idAlojamiento}`,
+      `https://unirumbobakend.onrender.com/api/Alojamiento/${alojamiento.idAlojamiento}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

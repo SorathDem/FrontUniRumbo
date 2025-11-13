@@ -7,7 +7,7 @@ const UsuariosPage = () => {
   const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
-    fetch("https://localhost:7086/api/Usuarios")
+    fetch("https://unirumbobakend.onrender.com/api/Usuarios")
       .then((res) => res.json())
       .then((data) => setUsuarios(data))
       .catch((err) => console.error("Error al obtener usuarios:", err));

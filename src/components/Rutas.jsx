@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import HeaderConductor from "./HeaderConductor";
 import "../styles/Rutas.css";
 
-const API_URL = "https://localhost:7086/api/Rutas";
+const API_URL = "https://unirumbobakend.onrender.com/api/Rutas";
 
 // Iconos personalizados
 const iconOrigen = new L.Icon({

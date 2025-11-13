@@ -1,5 +1,5 @@
 // rutasApi.js
-const API_URL = "https://localhost:7086/api/Rutas";
+const API_URL = "https://unirumbobakend.onrender.com/api/Rutas";
 
 // Obtener todas las rutas
 export async function getAllRutas() {

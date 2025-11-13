@@ -6,7 +6,7 @@ import axios from "axios";
 import L from "leaflet";
 import "../styles/RutaDetalle.css"; // puedes reutilizar estos estilos o ajustarlos
 
-const API_URL = "https://localhost:7086/api/Alojamiento";
+const API_URL = "https://unirumbobakend.onrender.com/api/Alojamiento";
 
 const iconUbicacion = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",

@@ -21,7 +21,7 @@ export default function SolicitudesRuta() {
     const cargarSolicitudes = async () => {
       setLoading(true);
       try {
-        const url = `https://localhost:7086/api/Solicitudes/rutas/${idUsuario}`;
+        const url = `https://unirumbobakend.onrender.com/api/Solicitudes/rutas/${idUsuario}`;
         console.log("🧩 Cargando solicitudes de ruta para usuario:", idUsuario);
 
         const { data } = await axios.get(url);
@@ -56,7 +56,7 @@ export default function SolicitudesRuta() {
   const cambiarEstado = async (idSolicitud, nuevoEstado) => {
     if (!idSolicitud) return;
     try {
-      const url = `https://localhost:7086/api/Solicitudes/ruta/${idSolicitud}/estado/${nuevoEstado}`;
+      const url = `https://unirumbobakend.onrender.com/api/Solicitudes/ruta/${idSolicitud}/estado/${nuevoEstado}`;
       console.log("🧩 Cambiando estado:", { idSolicitud, nuevoEstado });
       const response = await axios.put(url);
       console.log("📤 Respuesta backend:", response.data);

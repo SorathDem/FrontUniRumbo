@@ -17,8 +17,8 @@ const cargarSolicitudes = async () => {
   setLoading(true);
   try {
     // 🧭 Endpoints correctos para solicitudes HECHAS por el usuario
-    const urlAloj = `https://localhost:7086/api/Solicitudes/alojamientos/usuario/${idUsuario}`;
-    const urlRuta = `https://localhost:7086/api/Solicitudes/rutas/usuario/${idUsuario}`;
+    const urlAloj = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamientos/usuario/${idUsuario}`;
+    const urlRuta = `https://unirumbobakend.onrender.com/api/Solicitudes/rutas/usuario/${idUsuario}`;
 
     console.log("🧩 Cargando solicitudes hechas por el usuario:", idUsuario);
 
@@ -93,9 +93,9 @@ const cargarSolicitudes = async () => {
       let url = "";
 
       if (tipo === "Alojamiento") {
-        url = `https://localhost:7086/api/Solicitudes/alojamiento/${idSolicitud}`;
+        url = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamiento/${idSolicitud}`;
       } else if (tipo === "Ruta") {
-        url = `https://localhost:7086/api/Solicitudes/ruta/${idSolicitud}`;
+        url = `https://unirumbobakend.onrender.com/api/Solicitudes/ruta/${idSolicitud}`;
       }
       console.log("🧨 Eliminando solicitud:", { tipo, idSolicitud, url });
 

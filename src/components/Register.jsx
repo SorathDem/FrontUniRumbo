@@ -23,8 +23,8 @@ function Register() {
     const fetchData = async () => {
       try {
         const [rolesRes, sedesRes] = await Promise.all([
-          axios.get("https://localhost:7086/api/Rol"),
-          axios.get("https://localhost:7086/api/Sede"),
+          axios.get("https://unirumbobakend.onrender.com/api/Rol"),
+          axios.get("https://unirumbobakend.onrender.com/api/Sede"),
         ]);
         setRoles(rolesRes.data);
         setSedes(sedesRes.data);
