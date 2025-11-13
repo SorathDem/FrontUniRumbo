@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/Header.css";
+import "src/styles/Header.css";
 
 const HeaderConductor = () => {
   // Obtenemos los datos del usuario logueado

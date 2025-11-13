@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HeaderConductor from "./HeaderConductor";
-import "../styles/Solicitudes.css";
+import "src/styles/Solicitudes.css";
 
 export default function ServiciosConductor() {
   const [servicios, setServicios] = useState([]);
