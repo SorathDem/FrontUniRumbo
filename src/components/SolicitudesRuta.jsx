@@ -1,7 +1,7 @@
 // src/components/SolicitudesRuta.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/Solicitudes.css";
+import "../styles/solicitudes.css";
 import HeaderConductor from "./HeaderConductor";
 
 export default function SolicitudesRuta() {
