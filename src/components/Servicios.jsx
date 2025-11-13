@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HeaderArrendatario from "./HeaderArrendatario";
-import "../styles/solicitudes.css";
+import "../styles/Solicitudes.css";
 
 export default function Servicios() {
   const [servicios, setServicios] = useState([]);

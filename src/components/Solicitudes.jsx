@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import HeaderUsuario from "./HeaderUsuario";
-import "../styles/solicitudes.css";
+import "../styles/Solicitudes.css";
 
 export default function Solicitudes() {
   const { idUsuario } = useParams();
