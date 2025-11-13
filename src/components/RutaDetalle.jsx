@@ -6,7 +6,7 @@ import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import "../styles/RutaDetalle.css";
 
-const API_URL = "https://localhost:7086/api/Rutas";
+const API_URL = "https://unirumbobakend.onrender.com/api/Rutas";
 
 const iconOrigen = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",

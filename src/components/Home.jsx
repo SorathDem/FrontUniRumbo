@@ -7,8 +7,8 @@ import "../styles/Home.css";
 import { crearSolicitudRuta, crearSolicitudAlojamiento } from "../api/solicitudesService";
 import HeaderUsuario from "./HeaderUsuario";
 
-const API_RUTAS = "https://localhost:7086/api/Rutas";
-const API_ALOJAMIENTOS = "https://localhost:7086/api/Alojamiento";
+const API_RUTAS = "https://unirumbobakend.onrender.com/api/Rutas";
+const API_ALOJAMIENTOS = "https://unirumbobakend.onrender.com/api/Alojamiento";
 
 export default function Home() {
   const [rutas, setRutas] = useState([]);

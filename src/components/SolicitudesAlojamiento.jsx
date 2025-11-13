@@ -16,7 +16,7 @@ export default function SolicitudesAlojamiento() {
   const cargar = async () => {
     setLoading(true);
     try {
-      const url = `https://localhost:7086/api/Solicitudes/alojamientos/${idUsuario}`;
+      const url = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamientos/${idUsuario}`;
       console.log("🧩 Cargando solicitudes de alojamiento para:", idUsuario);
 
       const { data } = await axios.get(url);
@@ -57,7 +57,7 @@ export default function SolicitudesAlojamiento() {
         return;
       }
 
-      const url = `https://localhost:7086/api/Solicitudes/alojamiento/${idSolicitudAlojamiento}/estado/${nuevoEstado}`;
+      const url = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamiento/${idSolicitudAlojamiento}/estado/${nuevoEstado}`;
       console.log("🧩 Cambiando estado:", { idSolicitudAlojamiento, nuevoEstado });
 
       const response = await axios.put(url);

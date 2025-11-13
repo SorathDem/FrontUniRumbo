@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_SOLICITUDES = "https://localhost:7086/api/Solicitudes";
+const API_SOLICITUDES = "https://unirumbobakend.onrender.com/api/Solicitudes";
 
 export const crearSolicitudRuta = async (idRuta) => {
   const usuario = JSON.parse(localStorage.getItem("usuario"));

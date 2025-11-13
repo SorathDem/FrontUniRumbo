@@ -1,4 +1,4 @@
-const API_URL = "https://localhost:7086/api/Alojamiento";
+const API_URL = "https://unirumbobakend.onrender.com/api/Alojamiento";
 
 // Obtener todos los alojamientos
 export async function getAllAlojamientos() {

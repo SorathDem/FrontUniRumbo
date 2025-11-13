@@ -4,9 +4,9 @@ import "../styles/Usuario.css";
 import HeaderUsuario from "./HeaderUsuario";
 
 // 🔹 Endpoints
-const API_USUARIOS = "https://localhost:7086/api/Usuarios";
-const API_ROLES = "https://localhost:7086/api/Rol";
-const API_SEDES = "https://localhost:7086/api/Sede";
+const API_USUARIOS = "https://unirumbobakend.onrender.com/api/Usuarios";
+const API_ROLES = "https://unirumbobakend.onrender.com/api/Rol";
+const API_SEDES = "https://unirumbobakend.onrender.com/api/Sede";
 
 export default function Usuario() {
   const [usuario, setUsuario] = useState({
