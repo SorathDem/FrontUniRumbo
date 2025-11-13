@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/authService";
 import axios from "axios";
-import "src/styles/auth.css"; // 👈 Reutiliza los mismos estilos
+import "../styles/Auth.css"; // 👈 Reutiliza los mismos estilos
 
 function Register() {
   const [form, setForm] = useState({

@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import L from "leaflet";
-import "src/styles/Home.css";
+import "../styles/Home.css";
 import { crearSolicitudRuta, crearSolicitudAlojamiento } from "../api/solicitudesService";
 import HeaderUsuario from "./HeaderUsuario";
 

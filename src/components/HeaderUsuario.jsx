@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "src/styles/Header.css";
+import "../styles/Header.css";
 
 const HeaderUsuario = () => {
   const user = JSON.parse(localStorage.getItem("usuario"));
