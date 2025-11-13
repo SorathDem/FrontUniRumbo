@@ -4,7 +4,7 @@ import L from "leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import HeaderConductor from "./HeaderConductor";
-import "src/styles/Rutas.css";
+import "../styles/Rutas.css";
 
 const API_URL = "https://localhost:7086/api/Rutas";
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import { MapContainer, TileLayer, Marker, Polyline, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "src/styles/Admin.css";
+import "../styles/admin.css";
 import HeaderAdmin from "./HeaderAdmin";
 
 const API_URL = "https://localhost:7086/api/Rutas";

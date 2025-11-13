@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import HeaderArrendatario from "./HeaderArrendatario";
-import "src/styles/Alojamiento.css"
+import "../styles/Alojamiento.css"
 
 // 🔹 Icono personalizado
 const markerIcon = new L.Icon({
