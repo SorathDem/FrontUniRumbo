@@ -14,8 +14,9 @@ export default function Home() {
   const [rutas, setRutas] = useState([]);
   const [alojamientos, setAlojamientos] = useState([]);
   const [tab, setTab] = useState("ruta");
+  const [busqueda, setBusqueda] = useState(""); // 🔍 Buscador
 
-  // 🔹 Obtener usuario logueado desde localStorage
+  // 🔹 Obtener usuario logueado
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const idUsuario = usuario?.idUsuario;
 
@@ -42,15 +43,33 @@ export default function Home() {
     obtenerAlojamientos();
   }, []);
 
+  // 🔎 FILTROS EN TIEMPO REAL
+  const rutasFiltradas = rutas.filter((ruta) => {
+    const text = busqueda.toLowerCase();
+    return (
+      ruta.puntoOrigen.toLowerCase().includes(text) ||
+      ruta.puntoDestino.toLowerCase().includes(text) ||
+      ruta.diasRuta?.toLowerCase().includes(text)
+    );
+  });
+
+  const alojamientosFiltrados = alojamientos.filter((a) => {
+    const text = busqueda.toLowerCase();
+    return (
+      a.titulo?.toLowerCase().includes(text) ||
+      a.direccion?.toLowerCase().includes(text) ||
+      a.descripcion?.toLowerCase().includes(text) ||
+      a.nombreUsuario?.toLowerCase().includes(text)
+    );
+  });
+
   return (
     <div className="page-home">
       <HeaderUsuario />
       <main className="home-wrap">
         <h2 className="welcome">
           Bienvenido,{" "}
-          <span id="welcomeName">
-            {usuario?.nombre || "Usuario"}
-          </span>
+          <span id="welcomeName">{usuario?.nombre || "Usuario"}</span>
         </h2>
 
         {/* Botones de pestañas */}
@@ -69,11 +88,22 @@ export default function Home() {
           </button>
         </div>
 
+        {/* 🔍 BUSCADOR */}
+        <div className="search-box">
+          <input
+            type="text"
+            className="input-search"
+            placeholder="Buscar..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+        </div>
+
         {/* Sección de Rutas */}
         {tab === "ruta" && (
           <section id="route" className="tab-pane active">
             <div className="cards-2col">
-              {rutas.map((ruta) => (
+              {rutasFiltradas.map((ruta) => (
                 <article key={ruta.idRuta} className="service-card">
                   <div className="head">
                     🚗 <span className="title">Ruta - {ruta.puntoDestino}</span>
@@ -85,14 +115,21 @@ export default function Home() {
                     <li>👥 <strong>Cupos vuelta:</strong> {ruta.cuposVuelta}</li>
                     <li>
                       🕒 <strong>Salida:</strong>{" "}
-                      {new Date(ruta.horaSalida).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}{" "}
+                      {new Date(ruta.horaSalida).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                      })}{" "}
                       <strong>- Regreso:</strong>{" "}
                       {ruta.horaRegreso
-                        ? new Date(ruta.horaRegreso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                        ? new Date(ruta.horaRegreso).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          })
                         : "N/A"}
                     </li>
                     <li>📅 <strong>Días:</strong> {ruta.diasRuta || "No especificado"}</li>
                   </ul>
+
                   <div className="actions">
                     <Link to={`/rutas/${ruta.idRuta}`} className="btn btn--dark">
                       Ver detalles
@@ -102,7 +139,7 @@ export default function Home() {
                       Contactar
                     </Link>
 
-                    <button 
+                    <button
                       className="btn btn--light"
                       onClick={async () => {
                         try {
@@ -127,11 +164,11 @@ export default function Home() {
         {tab === "alojamiento" && (
           <section id="alojamientos" className="tab-pane active">
             <div className="cards-2col">
-              {alojamientos.length === 0 ? (
+              {alojamientosFiltrados.length === 0 ? (
                 <p>No hay alojamientos registrados.</p>
               ) : (
-                alojamientos.map((a) => {
-                  // Obtener coordenadas si existen
+                alojamientosFiltrados.map((a) => {
+                  // Extraer coordenadas
                   let lat = null;
                   let lon = null;
                   if (a.ubicacion && a.ubicacion.includes("lat:") && a.ubicacion.includes("lon:")) {
@@ -150,17 +187,20 @@ export default function Home() {
                   return (
                     <article key={a.idAlojamiento} className="service-card">
                       <div className="head">
-                        🏡 <span className="title">{a.titulo || "Alojamiento sin título"}</span>
+                        🏡 <span className="title">
+                          {a.titulo || "Alojamiento sin título"}
+                        </span>
                       </div>
+
                       <ul className="list">
                         <li>📍 <strong>Dirección:</strong> {a.direccion || "No registrada"}</li>
                         <li>📝 <strong>Descripción:</strong> {a.descripcion || "Sin descripción"}</li>
                         <li>👤 <strong>Publicado por:</strong> {a.nombreUsuario || "Desconocido"}</li>
                       </ul>
 
-                      {/* Mapa del alojamiento */}
+                      {/* MAPA */}
                       {lat && lon ? (
-                        <div style={{ height: "250px", width: "100%", borderRadius: "10px", marginTop: "10px", overflow: "hidden" }}>
+                        <div style={{ height: "250px", width: "100%", borderRadius: "10px", marginTop: "10px" }}>
                           <MapContainer
                             center={[lat, lon]}
                             zoom={15}
@@ -170,17 +210,14 @@ export default function Home() {
                             doubleClickZoom={false}
                             zoomControl={false}
                           >
-                            <TileLayer
-                              attribution="&copy; OpenStreetMap"
-                              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
+                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                             <Marker
                               position={[lat, lon]}
                               icon={
                                 new L.Icon({
                                   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
                                   iconSize: [32, 32],
-                                  iconAnchor: [16, 32],
+                                  iconAnchor: [16, 32]
                                 })
                               }
                             />
@@ -191,9 +228,13 @@ export default function Home() {
                       )}
 
                       <div className="actions" style={{ marginTop: "12px" }}>
-                        <Link to={`/alojamientos/${a.idAlojamiento}`} className="btn btn--dark">
+                        <Link
+                          to={`/alojamientos/${a.idAlojamiento}`}
+                          className="btn btn--dark"
+                        >
                           Ver detalles
                         </Link>
+
                         <button
                           className="btn btn--light"
                           onClick={async () => {
