@@ -1,115 +1,160 @@
-/* Asegurar que body y html ocupen toda la pantalla */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
+/* ============= PÁGINA GENERAL ============= */
 
-/* Fondo del login */
-.register-background {
+.page-admin {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: url("../img/unirumbo.jpg") no-repeat center center/cover;
-  backdrop-filter: brightness(0.95);
+  padding: 1.5rem 2.5rem 2.5rem;
+  background-image: url("../assets/forma.png");
+  background-color: #f3f4f6;
+  background-image: url("../assets/pattern-unirumbo.png");
+  background-repeat: repeat;
+  background-size: 260px 260px;
+  background-attachment: fixed;
 }
 
-/* Contenedor general del formulario */
-.auth-form {
-  background: rgba(255, 255, 255, 0.95);
+/* Poppins para todo lo que esté dentro de la página admin */
+.page-admin,
+.page-admin * {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Título principal */
+.admin-title {
+  margin-top: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ============= GRID DE TARJETAS ============= */
+
+.cards-2col {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.8rem;
+}
+
+/* Tarjeta con gradiente UniRumbo */
+.service-card {
+  position: relative;
+  padding: 1.25rem 1.25rem 1.5rem;
   border-radius: 18px;
-  padding: 2.5rem 3rem;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  color: #f9fafb;
+  overflow: hidden;
+}
+
+/* Efecto “glass” suave encima del gradiente */
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.03)
+  );
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+/* Todo el contenido debe ir por encima del ::before */
+.service-card .head,
+.service-card .list,
+.service-card .mapa-mini {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============= CONTENIDO DE LA TARJETA ============= */
+
+.service-card .head {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Si usas un span para el ícono principal de la cabecera */
+.service-card .head-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.08);
+  font-size: 1.1rem;
+}
+
+/* Lista de datos de la ruta */
+.service-card .list {
+  list-style: none;
+  margin: 0 0 1rem 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  animation: fadeIn 0.6s ease-in-out;
-  box-sizing: border-box;
-  text-align: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
 }
 
-/* Animación */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.service-card .list li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
-/* Título */
-.auth-title {
-  font-size: 1.6rem;
-  color: #00482B;
-  font-weight: 800;
-  margin-bottom: 1rem;
+/* Ícono de cada línea (si los envuelves en un span) */
+.service-card .list-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.06);
+  font-size: 0.9rem;
 }
 
-/* Inputs y selects */
-.auth-form input,
-.auth-form select {
-  padding: 0.75rem;
-  border: 1.5px solid #007B3E;
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: #FFFFFF;
-  color: #00482B;
-  transition: all 0.25s ease;
-  width: 100%;
-  box-sizing: border-box;
+.service-card .list strong {
+  font-weight: 600;
 }
 
-.auth-form input:focus,
-.auth-form select:focus {
-  outline: none;
-  border-color: #79C000;
-  box-shadow: 0 0 0 3px rgba(121, 192, 0, 0.2);
+/* Contenedor del mapa */
+.mapa-mini {
+  margin-top: 0.6rem;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
-/* Botones */
-.auth-button {
-  background-color: #007B3E;
-  color: #FFFFFF;
-  border: none;
-  padding: 0.85rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  width: 100%;
-}
+/* ============= RESPONSIVE ============= */
 
-.auth-button:hover {
-  background-color: #007B3E;
-}
+@media (max-width: 768px) {
+  .page-admin {
+    padding: 1rem 1rem 2rem;
+  }
 
-.auth-button.secondary {
-  background-color: #00482B;
-  color: #FFFFFF;
-}
-
-.auth-button.secondary:hover {
-  background-color: #007B3E;
-}
-
-/* Placeholder */
-.auth-form input::placeholder,
-.auth-form select {
-  color: #007B3E;
-}
-
-/* Grid de inputs */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-@media (max-width: 640px) {
-  .form-grid {
+  .cards-2col {
     grid-template-columns: 1fr;
   }
 }
 
+.page-admin {
+  min-height: 100vh;
+  padding: 1.5rem 2.5rem 2.5rem;
+  background-color: #f3f4f6;
 
+  /* Fondo con la imagen que se repite */
+  background-image: url("../assets/forma.png");
+  background-repeat: repeat;
+  background-size: 260px 260px;
+  background-attachment: fixed;
+}
