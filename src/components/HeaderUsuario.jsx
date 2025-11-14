@@ -1,6 +1,10 @@
+
+// src/components/HeaderUsuario.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaUserCircle, FaHome, FaClipboardList, FaSignOutAlt } from "react-icons/fa";
 import "../styles/Header.css";
+import logoUdec from "../img/logo.jpg"; // 👉 ajusta la ruta a tu logo
 
 const HeaderUsuario = () => {
   const user = JSON.parse(localStorage.getItem("usuario"));
@@ -13,27 +17,46 @@ const HeaderUsuario = () => {
 
   return (
     <header className="main-header">
+      {/* IZQUIERDA: logo + título */}
       <div className="header-left">
+        <img
+          src={logoUdec}
+          alt="Logo UniRumbo"
+          className="header-logo"
+        />
         <h1 className="header-title">UniRumbo</h1>
       </div>
 
+      {/* CENTRO: navegación con íconos */}
       <nav className="header-center">
-        <Link to="/usuario" className="nav-item">Usuario</Link>
-        <Link to="/Home" className="nav-item">Inicio</Link>
+        <Link to="/usuario" className="nav-item">
+          <FaUserCircle className="nav-icon" />
+          <span>Usuario</span>
+        </Link>
 
-        {/* ✅ Usa la ID aquí */}
+        <Link to="/Home" className="nav-item">
+          <FaHome className="nav-icon" />
+          <span>Inicio</span>
+        </Link>
+
         {idUsuario ? (
           <Link to={`/solicitudes/${idUsuario}`} className="nav-item">
-            Mis Solicitudes
+            <FaClipboardList className="nav-icon" />
+            <span>Mis Solicitudes</span>
           </Link>
         ) : (
-          <span className="nav-item disabled">Mis Solicitudes</span>
+          <span className="nav-item disabled">
+            <FaClipboardList className="nav-icon" />
+            <span>Mis Solicitudes</span>
+          </span>
         )}
       </nav>
 
+      {/* DERECHA: botón cerrar sesión con gradiente */}
       <div className="header-right">
         <button className="logout-button" onClick={handleLogout}>
-          Cerrar Sesión
+          <FaSignOutAlt className="logout-icon" />
+          <span>Cerrar Sesión</span>
         </button>
       </div>
     </header>

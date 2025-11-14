@@ -24,7 +24,7 @@ import RutaAdmin from "./components/RutaAdmin";
 import AlojamientoAdmin from "./components/AlojamientoAdmin";
 import Servicios from "./components/Servicios";
 import ServiciosRuta from "./components/ServiciosRuta";
-import Chat from "./components/Chat";
+import Chat from "./components/chat";
 
 function App() {
   return (
