@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaUserCircle, FaHome, FaClipboardList, FaSignOutAlt } from "react-icons/fa";
 import "../styles/Header.css";
 import logoUdec from "../img/logo.jpg"; // 👉 ajusta la ruta a tu logo
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
 
 const HeaderUsuario = () => {
   const user = JSON.parse(localStorage.getItem("usuario"));
