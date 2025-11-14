@@ -24,7 +24,7 @@ import RutaAdmin from "./components/RutaAdmin";
 import AlojamientoAdmin from "./components/AlojamientoAdmin";
 import Servicios from "./components/Servicios";
 import ServiciosRuta from "./components/ServiciosRuta";
-import Chat from "./components/chat";
+
 
 function App() {
   return (
@@ -41,7 +41,6 @@ function App() {
           <Route path="/usuarioConductor" element={<UsuarioConductor />} />
           <Route path="/usuarioArrendatario" element={<UsuarioArredatario />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/chat" element={<Chat />} />
           <Route path="/rutas" element={<Rutas />} />
           <Route path="/rutas/:idRuta" element={<RutaDetalle />} />
           <Route path="/servicios/:idUsuario" element={<Servicios />} />
