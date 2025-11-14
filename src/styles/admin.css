@@ -3,7 +3,7 @@
 .page-admin {
   min-height: 100vh;
   padding: 1.5rem 2.5rem 2.5rem;
-  background-image: url("../assets/forma.png");
+  background-image: url("../img/forma.jpg");
   background-color: #f3f4f6;
   background-image: url("../assets/pattern-unirumbo.png");
   background-repeat: repeat;
@@ -133,6 +133,32 @@
   overflow: hidden;
   position: relative;
   z-index: 1;
+}
+/* Contenedor del gradiente */
+.mapa-gradiente {
+  padding: 6px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Caja del mapa */
+.mapa-mini,
+.detalle-mapa-box {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.mapa-inner {
+  height: 300px;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 /* ============= RESPONSIVE ============= */
