@@ -1,10 +1,14 @@
+// src/components/AlojamientoAdmin.jsx
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import L from "leaflet";
-import "../styles/DetalleAlojamiento.css"; // puedes usar el mismo CSS del detalle
+import "../styles/DetalleAlojamiento.css";
 import HeaderAdmin from "./HeaderAdmin";
+
+// Íconos estilo header
+import { FaMapMarkedAlt, FaUserCircle, FaMapPin, FaRegCompass } from "react-icons/fa";
 
 const API_URL = "https://unirumbobakend.onrender.com/api/Alojamiento";
 
@@ -23,11 +27,11 @@ export default function AlojamientoAdmin() {
         const res = await axios.get(API_URL);
         const data = res.data;
 
-        // Procesar coordenadas (parsear lat/lon si vienen dentro de "ubicacion")
         const alojamientosConCoords = data.map((a) => {
           let lat = null;
           let lon = null;
 
+          // Coordenadas en texto tipo "lat:4.123 lon:-74.123"
           if (a.ubicacion?.includes("lat:") && a.ubicacion?.includes("lon:")) {
             const latMatch = a.ubicacion.match(/lat:([0-9,\.\-]+)/i);
             const lonMatch = a.ubicacion.match(/lon:([0-9,\.\-]+)/i);
@@ -36,6 +40,7 @@ export default function AlojamientoAdmin() {
               lon = parseFloat(lonMatch[1].replace(",", "."));
             }
           } else if (a.latitud && a.longitud) {
+            // O campos latitud / longitud separados
             lat = parseFloat(a.latitud);
             lon = parseFloat(a.longitud);
           }
@@ -53,53 +58,87 @@ export default function AlojamientoAdmin() {
   }, []);
 
   return (
-    <div className="page-detalle">
+    <>
+      {/* Fuente Poppins */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+
+      <div className="page-detalle">
         <HeaderAdmin />
-      <header id="app-header">Administrar Alojamientos</header>
 
-      <div className="detalle-wrap" style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-        {alojamientos.length === 0 ? (
-          <p style={{ textAlign: "center" }}>No hay alojamientos disponibles</p>
-        ) : (
-          alojamientos.map((a) => (
-            <div key={a.idAlojamiento} className="detalle-card">
-              <h2 className="detalle-title">{a.descripcion}</h2>
+        <h2 className="detalle-main-title">
+          <FaMapMarkedAlt className="detalle-main-icon" />
+          Administrar Alojamientos
+        </h2>
 
-              <div className="detalle-info">
-                <p><strong>Publicado por:</strong> {a.nombreUsuario}</p>
-                {a.lat && a.lon ? (
+        <div className="detalle-wrap">
+          {alojamientos.length === 0 ? (
+            <p className="detalle-empty">No hay alojamientos disponibles</p>
+          ) : (
+            alojamientos.map((a) => (
+              <article key={a.idAlojamiento} className="detalle-card">
+                {/* Cabecera tarjeta */}
+                <div className="detalle-header">
+                  <span className="detalle-header-icon">
+                    <FaMapPin />
+                  </span>
+                  <h3 className="detalle-title">{a.descripcion}</h3>
+                </div>
+
+                {/* Info principal */}
+                <div className="detalle-info">
                   <p>
-                    🧭 <strong>Latitud:</strong> {a.lat.toFixed(6)} |{" "}
-                    <strong>Longitud:</strong> {a.lon.toFixed(6)}
+                    <span className="detalle-icon">
+                      <FaUserCircle />
+                    </span>
+                    <strong>Publicado por:</strong>&nbsp;{a.nombreUsuario}
                   </p>
-                ) : (
-                  <p>📍 <strong>Ubicación:</strong> No disponible</p>
-                )}
-              </div>
 
-              <div className="mapa-box">
-                {a.lat && a.lon ? (
-                  <MapContainer
-                    center={[a.lat, a.lon]}
-                    zoom={14}
-                    style={{ height: "400px", width: "100%", borderRadius: "12px" }}
-                  >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution="&copy; OpenStreetMap contributors"
-                    />
-                    <Marker position={[a.lat, a.lon]} icon={iconUbicacion}>
-                      <Popup>{a.descripcion}</Popup>
-                    </Marker>
-                  </MapContainer>
-                ) : (
-                  <p style={{ textAlign: "center", color: "#777" }}>Mapa no disponible</p>
-                )}
-              </div>
-            </div>
-          ))
-        )}
+                  {a.lat && a.lon ? (
+                    <p>
+                      <span className="detalle-icon">
+                        <FaRegCompass />
+                      </span>
+                      <strong>Latitud:</strong>&nbsp;{a.lat.toFixed(6)}&nbsp;|&nbsp;
+                      <strong>Longitud:</strong>&nbsp;{a.lon.toFixed(6)}
+                    </p>
+                  ) : (
+                    <p>
+                      <span className="detalle-icon">
+                        <FaMapPin />
+                      </span>
+                      <strong>Ubicación:</strong>&nbsp;No disponible
+                    </p>
+                  )}
+                </div>
+
+                {/* Mapa */}
+                <div className="detalle-mapa-box">
+                  {a.lat && a.lon ? (
+                    <MapContainer
+                      center={[a.lat, a.lon]}
+                      zoom={14}
+                      className="detalle-mapa"
+                    >
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution="&copy; OpenStreetMap contributors"
+                      />
+                      <Marker position={[a.lat, a.lon]} icon={iconUbicacion}>
+                        <Popup>{a.descripcion}</Popup>
+                      </Marker>
+                    </MapContainer>
+                  ) : (
+                    <p className="detalle-mapa-empty">Mapa no disponible</p>
+                  )}
+                </div>
+              </article>
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
