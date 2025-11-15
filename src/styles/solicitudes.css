@@ -2,10 +2,10 @@
 .page-solicitudes{
   font-family: "Poppins", sans-serif;
   min-height: 100vh;
-  background: #fff; /* Verde claro degradado */
+  background: #d30808; /* Verde claro degradado */
   margin: 0;
   padding-bottom: 2rem;
-  color: #021e8e;
+  color: #00482B;
 }
 
 /* ====== WRAPPER ====== */
