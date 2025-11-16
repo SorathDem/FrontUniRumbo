@@ -9,3 +9,31 @@
 .leaflet-control {
   z-index: 1 !important;
 }
+
+/* Espaciado entre nombre y botón */
+.user-name {
+  margin-right: 10px;   /* separa el texto del botón */
+  font-weight: 500;
+}
+
+/* Botón tamaño óptimo */
+.logout-button {
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  color: white;
+  border: none;
+  padding: 8px 18px; /* reduce el ancho pero mantiene estilo */
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s ease-in-out;
+}
+
+/* Hover */
+.logout-button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
