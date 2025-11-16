@@ -37,3 +37,161 @@
   filter: brightness(1.1);
   transform: translateY(-1px);
 }
+
+
+/* HEADER GENERAL PARA TODOS LOS ROLES */
+
+.main-header {
+  position: sticky;         /* o fixed si lo quieres siempre visible */
+  top: 0;
+  left: 0;
+  right: 0;
+
+  /* Truco para que el header sea full-bleed (izq → der) aunque el contenedor tenga padding */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  padding: 0.75rem 2.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+/* Fuente global en el header */
+.main-header,
+.main-header * {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+}
+
+/* Bloque izquierdo: logo + texto */
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.logo-udec {
+  height: 30px;
+  width: auto;
+}
+
+.header-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+}
+
+/* Navegación central */
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #111827;
+  text-decoration: none;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.nav-item:hover {
+  background-color: rgba(0, 169, 157, 0.08);
+  color: #00a99d;
+  transform: translateY(-1px);
+}
+
+.nav-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.nav-icon {
+  font-size: 0.9rem;
+}
+
+/* Lado derecho: nombre + botón */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Espacio entre nombre y botón */
+.user-name {
+  margin-right: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* Botón Cerrar sesión estilo UniRumbo */
+.logout-button {
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.logout-button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.32);
+}
+
+.logout-icon {
+  font-size: 0.95rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .main-header {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+
+  .header-center {
+    order: 3;
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+  }
+
+  .header-right {
+    order: 2;
+  }
+
+  .header-title {
+    font-size: 1rem;
+  }
+}
