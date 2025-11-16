@@ -1,6 +1,9 @@
-.main-header{
-    background-color:#007B3E ;
+/* Opcional, por si el body tenía margen por defecto */
+body {
+  margin: 0;
 }
+
+/* Evitar que Leaflet se superponga al header */
 .leaflet-container {
   z-index: 1 !important;
 }
@@ -10,47 +13,15 @@
   z-index: 1 !important;
 }
 
-/* Espaciado entre nombre y botón */
-.user-name {
-  margin-right: 10px;   /* separa el texto del botón */
-  font-weight: 500;
-}
-
-/* Botón tamaño óptimo */
-.logout-button {
-  background: linear-gradient(135deg, #00a99d, #79c000);
-  color: white;
-  border: none;
-  padding: 8px 18px; /* reduce el ancho pero mantiene estilo */
-  border-radius: 30px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: 0.2s ease-in-out;
-}
-
-/* Hover */
-.logout-button:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-}
-
-
-/* HEADER GENERAL PARA TODOS LOS ROLES */
+/* ===================== HEADER GENERAL ===================== */
 
 .main-header {
-  position: sticky;         /* o fixed si lo quieres siempre visible */
+  position: sticky;        /* visible al hacer scroll */
   top: 0;
   left: 0;
   right: 0;
 
-  /* Truco para que el header sea full-bleed (izq → der) aunque el contenedor tenga padding */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-
+  width: 100%;            /* ocupa el ancho del viewport sin desbordarse */
   z-index: 9999;
 
   display: flex;
@@ -139,7 +110,7 @@
   gap: 0.5rem;
 }
 
-/* Espacio entre nombre y botón */
+/* Nombre del usuario */
 .user-name {
   margin-right: 8px;
   font-size: 0.95rem;
@@ -174,7 +145,8 @@
   font-size: 0.95rem;
 }
 
-/* RESPONSIVE */
+/* ===================== RESPONSIVE ===================== */
+
 @media (max-width: 900px) {
   .main-header {
     padding: 0.75rem 1rem;
