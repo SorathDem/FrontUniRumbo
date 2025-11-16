@@ -178,17 +178,6 @@ export default function UsuarioArrendatario() {
           <div className="usuario-card">
             <div className="usuario-card-header">
               <h3>Información Personal</h3>
-
-              {!editando && (
-                <button
-                  type="button"
-                  className="btn-gradient"
-                  onClick={() => setEditando(true)}
-                >
-                  <FaEdit />
-                  Editar usuario
-                </button>
-              )}
             </div>
 
             <form className="usuario-form" onSubmit={guardarCambios}>
@@ -276,7 +265,7 @@ export default function UsuarioArrendatario() {
                 </div>
               </div>
 
-              {/* Rol y sede (rol puede ser solo informativo si quieres) */}
+              {/* Sede */}
               <div className="form-row">
                 <div className="form-group">
                   <label>
