@@ -10,8 +10,8 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 
-// 🔹 Ajusta la ruta a tu logo real
-import logoUdec from "../img/logo.jpg";
+// Ajusta la ruta a tu logo real
+import logoUdec from "../assets/logo-udec.png";
 
 const HeaderArrendatario = () => {
   const user = JSON.parse(localStorage.getItem("usuario"));
@@ -32,6 +32,7 @@ const HeaderArrendatario = () => {
       />
 
       <header className="main-header">
+        {/* IZQUIERDA: logo + título */}
         <div className="header-left">
           <div className="logo-block">
             <img src={logoUdec} alt="Logo UDec" className="logo-udec" />
@@ -39,6 +40,7 @@ const HeaderArrendatario = () => {
           </div>
         </div>
 
+        {/* CENTRO: navegación */}
         <nav className="header-center">
           <Link to="/usuarioArrendatario" className="nav-item">
             <FaUser className="nav-icon" />
@@ -68,6 +70,7 @@ const HeaderArrendatario = () => {
           )}
         </nav>
 
+        {/* DERECHA: nombre + botón */}
         <div className="header-right">
           <span className="user-name">{nombre}</span>
           <button className="logout-button" onClick={handleLogout}>
