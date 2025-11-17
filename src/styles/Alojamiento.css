@@ -1,8 +1,196 @@
-.alojamiento-container{
+/* ----- Fuente global ----- */
+* {
   font-family: "Poppins", sans-serif;
-  background: #fff; /* degradado verde */
+}
+
+/* ----- Página ----- */
+.aloj-list-page {
+  background-color: #f3f4f6;
   min-height: 100vh;
-  color: #FFFFFF; /* texto blanco */
-  margin: 0;
-  padding: 0;
+  padding: 2rem 2.5rem;
+}
+
+.aloj-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #064e3b;
+  margin-bottom: 1rem;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.4rem;
+}
+
+/* ----- Botones ----- */
+.btn-gradient {
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+/* Guardar */
+.save-btn {
+  width: 100%;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+/* ----- Formulario ----- */
+.aloj-form-card {
+  background: white;
+  padding: 1.3rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15);
+}
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  margin-bottom: 0.7rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #00a99d;
+  box-shadow: 0 0 0 2px rgba(0, 169, 157, 0.25);
+}
+
+.input-file {
+  margin-bottom: 1rem;
+}
+
+/* ----- Mapa ----- */
+.map-card {
+  margin-top: 0.8rem;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 3px solid transparent;
+
+  /* borde degradado */
+  background-image: linear-gradient(#fff, #fff),
+    linear-gradient(135deg, #00a99d, #79c000);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.map {
+  height: 320px;
+  width: 100%;
+}
+
+.small-map {
+  height: 250px;
+}
+
+/* ----- Cards ----- */
+.aloj-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.aloj-card {
+  background: white;
+  padding: 1.3rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15);
+  border-left: 5px solid #00a99d;
+}
+
+.dir {
+  font-weight: 600;
+  color: #047857;
+}
+
+.desc {
+  color: #444;
+  margin-bottom: 0.6rem;
+}
+
+.owner {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+
+.no-map {
+  color: #999;
+}
+
+/* ----- Galería (arreglado) ----- */
+.galeria {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.8rem;
+}
+
+.aloj-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #f4f4f4;
+}
+
+/* ----- Acciones ----- */
+.card-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-edit {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-delete {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-edit:hover {
+  filter: brightness(1.1);
+}
+
+.btn-delete:hover {
+  filter: brightness(1.1);
 }
