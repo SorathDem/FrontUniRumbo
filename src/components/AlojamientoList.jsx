@@ -3,20 +3,28 @@ import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+
 import HeaderArrendatario from "./HeaderArrendatario";
 import "../styles/Alojamiento.css";
 
-// Íconos
-import { FaHome, FaEdit, FaTrashAlt, FaPlusCircle } from "react-icons/fa";
+// Íconos bonitos
+import {
+  FaMapMarkerAlt,
+  FaPlusCircle,
+  FaTrashAlt,
+  FaEdit,
+  FaHome,
+  FaUserCircle,
+} from "react-icons/fa";
 
-// 🔹 Icono personalizado
+// 🔹 Icono personalizado del mapa
 const markerIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
 });
 
-// 🔹 Selección de ubicación en el mapa
+// 🔹 Componente para seleccionar ubicación en el mapa
 const LocationPicker = ({ setNuevaUbicacion }) => {
   useMapEvents({
     click(e) {
@@ -35,10 +43,12 @@ const AlojamientoList = () => {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [imagenes, setImagenes] = useState([]);
 
-  // 🔹 Cargar alojamientos desde API
+  // 🔹 Cargar alojamientos desde la API
   const obtenerAlojamientos = async () => {
     try {
-      const response = await fetch("https://unirumbobakend.onrender.com/api/Alojamiento");
+      const response = await fetch(
+        "https://unirumbobakend.onrender.com/api/Alojamiento"
+      );
       const data = await response.json();
       setAlojamientos(data);
     } catch (error) {
@@ -50,252 +60,352 @@ const AlojamientoList = () => {
     obtenerAlojamientos();
   }, []);
 
-  // 🔹 Guardar un nuevo alojamiento
+  // 🔹 Guardar alojamiento con imágenes
   const handleGuardar = async () => {
     if (!nuevaUbicacion) {
-      alert("Selecciona un punto en el mapa.");
+      alert("Selecciona un punto en el mapa primero.");
       return;
     }
 
-    const user = JSON.parse(localStorage.getItem("usuario"));
-    const idUsuario = user?.idUsuario || localStorage.getItem("idUsuario");
+    let idUsuario = null;
+    try {
+      const user = JSON.parse(localStorage.getItem("usuario"));
+      idUsuario = user?.idUsuario || localStorage.getItem("idUsuario");
+    } catch (e) {
+      console.warn("⚠️ Error al leer usuario del localStorage:", e);
+      idUsuario = localStorage.getItem("idUsuario");
+    }
 
-    const body = {
-      titulo,
-      direccion,
+    if (!idUsuario) {
+      alert("❌ No se encontró el ID del usuario. Inicia sesión nuevamente.");
+      return;
+    }
+
+    const alojamiento = {
       descripcion,
+      direccion,
+      titulo,
       latitud: nuevaUbicacion.lat,
       longitud: nuevaUbicacion.lng,
-      id_Usuario: parseInt(idUsuario),
+      id_Usuario: parseInt(idUsuario, 10),
       imagenesBase64: imagenes,
     };
 
     try {
-      const res = await fetch(
+      const response = await fetch(
         "https://unirumbobakend.onrender.com/api/Alojamiento/con-imagenes",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
+          body: JSON.stringify(alojamiento),
         }
       );
 
-      if (!res.ok) throw new Error("Error creando alojamiento");
-      alert("Alojamiento creado con éxito");
+      if (!response.ok) throw new Error("Error al guardar alojamiento");
 
-      setTitulo("");
-      setDireccion("");
+      alert("✅ Alojamiento guardado correctamente");
       setDescripcion("");
+      setDireccion("");
+      setTitulo("");
       setNuevaUbicacion(null);
-      setImagenes([]);
       setMostrarFormulario(false);
+      setImagenes([]);
       obtenerAlojamientos();
     } catch (error) {
-      console.error(error);
-      alert("Error al guardar alojamiento");
+      console.error("Error al guardar alojamiento:", error);
     }
   };
 
-  // 🔹 Eliminar
+  // 🔹 Eliminar alojamiento
   const handleEliminar = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este alojamiento?")) return;
+    if (!window.confirm("¿Deseas eliminar este alojamiento?")) return;
 
     try {
       const res = await fetch(
         `https://unirumbobakend.onrender.com/api/Alojamiento/${id}`,
-        { method: "DELETE" }
+        {
+          method: "DELETE",
+        }
       );
-      if (!res.ok) throw new Error("Error al eliminar");
+      if (!res.ok) throw new Error("Error al eliminar alojamiento");
 
-      alert("Alojamiento eliminado");
-      setAlojamientos(alojamientos.filter((a) => a.idAlojamiento !== id));
+      alert("Alojamiento eliminado correctamente");
+      setAlojamientos((prev) => prev.filter((a) => a.idAlojamiento !== id));
     } catch (error) {
+      console.error(error);
       alert("Error al eliminar alojamiento");
     }
   };
 
-  // 🔹 Editar (simple, usando prompt)
-  const handleEditar = async (a) => {
-    const nuevoTitulo = prompt("Nuevo título:", a.titulo);
+  // 🔹 Editar alojamiento (simple con prompt)
+  const handleEditar = async (alojamiento) => {
+    const nuevoTitulo = prompt(
+      "Ingrese el nuevo título:",
+      alojamiento.titulo || ""
+    );
     if (nuevoTitulo === null) return;
 
-    const nuevaDireccion = prompt("Nueva dirección:", a.direccion);
+    const nuevaDireccion = prompt(
+      "Ingrese la nueva dirección:",
+      alojamiento.direccion || ""
+    );
     if (nuevaDireccion === null) return;
 
-    const nuevaDescripcion = prompt("Nueva descripción:", a.descripcion);
+    const nuevaDescripcion = prompt(
+      "Ingrese la nueva descripción:",
+      alojamiento.descripcion || ""
+    );
     if (nuevaDescripcion === null) return;
 
-    const body = {
-      titulo: nuevoTitulo,
-      direccion: nuevaDireccion,
-      descripcion: nuevaDescripcion,
-    };
-
     try {
+      const payload = {
+        titulo: nuevoTitulo,
+        direccion: nuevaDireccion,
+        descripcion: nuevaDescripcion,
+      };
+
       const res = await fetch(
-        `https://unirumbobakend.onrender.com/api/Alojamiento/${a.idAlojamiento}`,
+        `https://unirumbobakend.onrender.com/api/Alojamiento/${alojamiento.idAlojamiento}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
+          body: JSON.stringify(payload),
         }
       );
 
-      if (!res.ok) throw new Error("Error al editar");
-      alert("Alojamiento actualizado");
+      if (!res.ok) throw new Error("Error al actualizar alojamiento");
 
+      alert("Alojamiento actualizado correctamente");
       obtenerAlojamientos();
     } catch (error) {
-      alert("Error actualizando");
+      console.error(error);
+      alert("Error al actualizar alojamiento");
     }
   };
 
   return (
-    <div className="aloj-list-page">
+    <>
+      {/* Fuente Poppins para toda la vista */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+
       <HeaderArrendatario />
 
-      <h2 className="aloj-title">
-        <FaHome /> Lista de Alojamientos
-      </h2>
+      <main className="aloj-page">
+        {/* Encabezado de la sección */}
+        <section className="aloj-header-section">
+          <h2 className="aloj-title">
+            <FaHome className="aloj-title-icon" />
+            Lista de Alojamientos
+          </h2>
 
-      {/* Botón agregar */}
-      <button
-        className="btn-gradient add-btn"
-        onClick={() => setMostrarFormulario(!mostrarFormulario)}
-      >
-        <FaPlusCircle />
-        {mostrarFormulario ? "Cancelar" : "Agregar Alojamiento"}
-      </button>
-
-      {/* Formulario */}
-      {mostrarFormulario && (
-        <div className="aloj-form-card">
-          <input
-            type="text"
-            placeholder="Municipio o barrio"
-            className="input"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Dirección"
-            className="input"
-            value={direccion}
-            onChange={(e) => setDireccion(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Descripción"
-            className="input"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-          />
-
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            className="input-file"
-            onChange={(e) => {
-              const files = Array.from(e.target.files);
-              Promise.all(
-                files.map(
-                  (file) =>
-                    new Promise((resolve) => {
-                      const reader = new FileReader();
-                      reader.onload = () =>
-                        resolve(reader.result.split(",")[1]);
-                      reader.readAsDataURL(file);
-                    })
-                )
-              ).then((Imgs) => setImagenes(Imgs));
-            }}
-          />
-
-          <div className="map-card">
-            <MapContainer center={[4.65, -74.1]} zoom={13} className="map">
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              <LocationPicker setNuevaUbicacion={setNuevaUbicacion} />
-              {nuevaUbicacion && <Marker position={nuevaUbicacion} icon={markerIcon} />}
-            </MapContainer>
-          </div>
-
-          <button className="btn-gradient save-btn" onClick={handleGuardar}>
-            Guardar Alojamiento
+          <button
+            className="btn-gradient"
+            onClick={() => setMostrarFormulario(!mostrarFormulario)}
+          >
+            <FaPlusCircle />
+            {mostrarFormulario ? "Cancelar" : "Agregar Alojamiento"}
           </button>
-        </div>
-      )}
+        </section>
 
-      {/* Lista */}
-      <div className="aloj-cards">
-        {alojamientos.map((a) => {
-          // extraer lat/lon
-          let lat = null,
-            lon = null;
-          if (a.ubicacion) {
-            try {
-              const latMatch = a.ubicacion.match(/lat:([-0-9.]+)/);
-              const lonMatch = a.ubicacion.match(/lon:([-0-9.]+)/);
-              lat = parseFloat(latMatch?.[1]);
-              lon = parseFloat(lonMatch?.[1]);
-            } catch {}
-          }
+        {/* Formulario para crear alojamiento */}
+        {mostrarFormulario && (
+          <section className="aloj-form-card">
+            <h3 className="aloj-form-title">
+              <FaMapMarkerAlt className="aloj-form-icon" />
+              Nuevo alojamiento
+            </h3>
 
-          return (
-            <div key={a.idAlojamiento} className="aloj-card">
-              <h3>{a.titulo}</h3>
-              <p className="dir">{a.direccion}</p>
-              <p className="desc">{a.descripcion}</p>
-              <p className="owner">👤 {a.nombreUsuario}</p>
+            <div className="aloj-form-grid">
+              <input
+                type="text"
+                placeholder="Municipio o barrio del alojamiento"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                className="input-descripcion"
+              />
+              <input
+                type="text"
+                placeholder="Dirección del alojamiento"
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+                className="input-descripcion"
+              />
+              <input
+                type="text"
+                placeholder="Descripción del alojamiento"
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                className="input-descripcion"
+              />
 
-              {/* Mapa */}
-              {lat && lon ? (
-                <MapContainer
-                  center={[lat, lon]}
-                  zoom={15}
-                  className="map small-map"
-                  scrollWheelZoom={false}
-                  dragging={false}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[lat, lon]} icon={markerIcon} />
-                </MapContainer>
-              ) : (
-                <p className="no-map">Mapa no disponible</p>
-              )}
-
-              {/* Galería */}
-              {a.imagenes && a.imagenes.length > 0 && (
-                <div className="galeria">
-                  {a.imagenes.map((img, i) => (
-                    <img
-                      key={i}
-                      src={`data:image/jpeg;base64,${img}`}
-                      alt="img"
-                      className="aloj-img"
-                    />
-                  ))}
-                </div>
-              )}
-
-              <div className="card-actions">
-                <button className="btn-edit" onClick={() => handleEditar(a)}>
-                  <FaEdit /> Editar
-                </button>
-
-                <button
-                  className="btn-delete"
-                  onClick={() => handleEliminar(a.idAlojamiento)}
-                >
-                  <FaTrashAlt /> Eliminar
-                </button>
+              <div className="aloj-input-file">
+                <label className="aloj-input-file-label">
+                  📷 Imágenes del alojamiento
+                </label>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files);
+                    Promise.all(
+                      files.map(
+                        (file) =>
+                          new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                              const base64 = reader.result.split(",")[1];
+                              resolve(base64);
+                            };
+                            reader.onerror = (error) => reject(error);
+                            reader.readAsDataURL(file);
+                          })
+                      )
+                    ).then((results) => setImagenes(results));
+                  }}
+                />
               </div>
             </div>
-          );
-        })}
-      </div>
-    </div>
+
+            <div className="mapa-container">
+              <MapContainer
+                center={[4.65, -74.1]}
+                zoom={13}
+                className="aloj-map-form"
+              >
+                <TileLayer
+                  attribution="&copy; OpenStreetMap"
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <LocationPicker setNuevaUbicacion={setNuevaUbicacion} />
+                {nuevaUbicacion && (
+                  <Marker position={nuevaUbicacion} icon={markerIcon} />
+                )}
+              </MapContainer>
+              <p className="aloj-map-help">
+                Haz clic en el mapa para marcar la ubicación del alojamiento.
+              </p>
+            </div>
+
+            <button onClick={handleGuardar} className="btn-gradient full">
+              Guardar alojamiento
+            </button>
+          </section>
+        )}
+
+        {/* Lista de alojamientos existentes */}
+        <section className="lista-alojamientos">
+          {alojamientos.length === 0 ? (
+            <p className="aloj-empty">No hay alojamientos registrados.</p>
+          ) : (
+            alojamientos.map((a) => {
+              let lat = null;
+              let lon = null;
+
+              if (
+                a.ubicacion &&
+                a.ubicacion.includes("lat:") &&
+                a.ubicacion.includes("lon:")
+              ) {
+                try {
+                  const latMatch = a.ubicacion.match(/lat:([0-9,\.\-]+)/i);
+                  const lonMatch = a.ubicacion.match(/lon:([0-9,\.\-]+)/i);
+
+                  if (latMatch && lonMatch) {
+                    const latStr = latMatch[1]
+                      .replace(",", ".")
+                      .replace(",,", ",");
+                    const lonStr = lonMatch[1]
+                      .replace(",", ".")
+                      .replace(",,", ",");
+
+                    lat = parseFloat(latStr);
+                    lon = parseFloat(lonStr);
+                  }
+                } catch (err) {
+                  console.error("Error procesando coordenadas:", err);
+                }
+              }
+
+              return (
+                <article key={a.idAlojamiento} className="aloj-card">
+                  <header className="aloj-card-header">
+                    <div>
+                      <h3 className="aloj-card-title">
+                        {a.titulo || "Alojamiento sin título"}
+                      </h3>
+                      <p className="aloj-card-subtitle">{a.descripcion}</p>
+                      <p className="aloj-card-address">
+                        <FaMapMarkerAlt className="aloj-card-address-icon" />
+                        {a.direccion}
+                      </p>
+                      <p className="aloj-card-user">
+                        <FaUserCircle className="aloj-card-user-icon" />
+                        Publicado por: <strong>{a.nombreUsuario}</strong>
+                      </p>
+                    </div>
+                  </header>
+
+                  {lat && lon ? (
+                    <div className="aloj-card-map-wrapper">
+                      <MapContainer
+                        center={[lat, lon]}
+                        zoom={15}
+                        scrollWheelZoom={false}
+                        dragging={false}
+                        doubleClickZoom={false}
+                        zoomControl={false}
+                        className="aloj-map-card"
+                      >
+                        <TileLayer
+                          attribution="&copy; OpenStreetMap"
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker position={[lat, lon]} icon={markerIcon} />
+                      </MapContainer>
+                    </div>
+                  ) : (
+                    <p className="aloj-map-unavailable">Mapa no disponible</p>
+                  )}
+
+                  {a.imagenes && a.imagenes.length > 0 && (
+                    <div className="imagenes-alojamiento">
+                      {a.imagenes.map((base64, index) => (
+                        <img
+                          key={index}
+                          src={`data:image/jpeg;base64,${base64}`}
+                          alt={`Alojamiento ${a.idAlojamiento} - ${index}`}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  <footer className="aloj-card-actions">
+                    <button
+                      onClick={() => handleEditar(a)}
+                      className="btn-outline"
+                    >
+                      <FaEdit />
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleEliminar(a.idAlojamiento)}
+                      className="btn-danger"
+                    >
+                      <FaTrashAlt />
+                      Eliminar
+                    </button>
+                  </footer>
+                </article>
+              );
+            })
+          )}
+        </section>
+      </main>
+    </>
   );
 };
 
