@@ -1,196 +1,329 @@
-/* ----- Fuente global ----- */
-* {
-  font-family: "Poppins", sans-serif;
+/* Fuente general para esta vista */
+.aloj-page,
+.aloj-page * {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
 }
 
-/* ----- Página ----- */
-.aloj-list-page {
-  background-color: #f3f4f6;
-  min-height: 100vh;
-  padding: 2rem 2.5rem;
+/* Fondo suave y centrado */
+.aloj-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+/* ---------- ENCABEZADO SECCIÓN ---------- */
+
+.aloj-header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .aloj-title {
-  font-size: 1.7rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: #064e3b;
-  margin-bottom: 1rem;
-}
-
-.add-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1.4rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1f2937;
 }
 
-/* ----- Botones ----- */
+.aloj-title-icon {
+  font-size: 1.6rem;
+  color: #00a99d;
+}
+
+/* Botón gradiente reutilizable */
 .btn-gradient {
   background: linear-gradient(135deg, #00a99d, #79c000);
-  color: white;
+  color: #ffffff;
   border: none;
-  padding: 10px 18px;
+  padding: 0.7rem 1.4rem;
   border-radius: 999px;
-  cursor: pointer;
+  font-size: 0.95rem;
   font-weight: 600;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.15s ease;
+  gap: 0.45rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .btn-gradient:hover {
-  transform: translateY(-2px);
   filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.23);
 }
 
-/* Guardar */
-.save-btn {
+.btn-gradient.full {
   width: 100%;
-  margin-top: 1rem;
   justify-content: center;
+  margin-top: 1rem;
 }
 
-/* ----- Formulario ----- */
+/* ---------- FORMULARIO NUEVO ALOJAMIENTO ---------- */
+
 .aloj-form-card {
-  background: white;
-  padding: 1.3rem;
-  border-radius: 16px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.5rem 1.5rem 1.75rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
   margin-bottom: 2rem;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15);
 }
 
-.input {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  margin-bottom: 0.7rem;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #00a99d;
-  box-shadow: 0 0 0 2px rgba(0, 169, 157, 0.25);
-}
-
-.input-file {
+.aloj-form-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #111827;
   margin-bottom: 1rem;
 }
 
-/* ----- Mapa ----- */
-.map-card {
-  margin-top: 0.8rem;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 3px solid transparent;
-
-  /* borde degradado */
-  background-image: linear-gradient(#fff, #fff),
-    linear-gradient(135deg, #00a99d, #79c000);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+.aloj-form-icon {
+  color: #00a99d;
 }
 
-.map {
-  height: 320px;
-  width: 100%;
-}
-
-.small-map {
-  height: 250px;
-}
-
-/* ----- Cards ----- */
-.aloj-cards {
+/* Campos del formulario */
+.aloj-form-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-.aloj-card {
-  background: white;
-  padding: 1.3rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15);
-  border-left: 5px solid #00a99d;
+.input-descripcion {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.dir {
-  font-weight: 600;
-  color: #047857;
+.input-descripcion:focus {
+  border-color: #00a99d;
+  box-shadow: 0 0 0 3px rgba(0, 169, 157, 0.2);
 }
 
-.desc {
-  color: #444;
-  margin-bottom: 0.6rem;
+.aloj-input-file {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.owner {
-  color: #6b7280;
+.aloj-input-file-label {
   font-size: 0.9rem;
-  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: #4b5563;
 }
 
-.no-map {
-  color: #999;
+.aloj-input-file input[type="file"] {
+  font-size: 0.85rem;
 }
 
-/* ----- Galería (arreglado) ----- */
-.galeria {
+/* Mapa en formulario */
+.mapa-container {
+  margin-top: 1rem;
+}
+
+.aloj-map-form {
+  height: 320px;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 4px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #00a99d, #79c000) border-box;
+}
+
+.aloj-map-help {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* ---------- LISTA DE ALOJAMIENTOS ---------- */
+
+.lista-alojamientos {
+  margin-top: 0.5rem;
+}
+
+/* Mensaje vacío */
+.aloj-empty {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-top: 1rem;
+}
+
+/* Tarjeta de alojamiento */
+.aloj-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.4rem 1.4rem 1.1rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+  margin-bottom: 1.5rem;
+}
+
+/* Header tarjeta */
+.aloj-card-header {
+  margin-bottom: 0.9rem;
+}
+
+.aloj-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.aloj-card-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin-bottom: 0.35rem;
+}
+
+.aloj-card-address {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #111827;
+  margin-bottom: 0.2rem;
+}
+
+.aloj-card-address-icon {
+  color: #00a99d;
+}
+
+.aloj-card-user {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.86rem;
+  color: #6b7280;
+}
+
+.aloj-card-user-icon {
+  color: #4b5563;
+}
+
+/* Mapa dentro de la tarjeta */
+.aloj-card-map-wrapper {
+  margin-top: 0.7rem;
+}
+
+.aloj-map-card {
+  height: 260px;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+
+  border: 4px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #00a99d, #79c000) border-box;
+}
+
+/* Texto cuando no hay mapa */
+.aloj-map-unavailable {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* ---------- GALERÍA DE IMÁGENES ---------- */
+
+.imagenes-alojamiento {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 0.8rem;
 }
 
-.aloj-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 10px;
+.imagenes-alojamiento img {
+  width: 110px;
+  height: 110px;
   object-fit: cover;
-  background: #f4f4f4;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
 }
 
-/* ----- Acciones ----- */
-.card-actions {
-  margin-top: 1rem;
+/* ---------- BOTONES DE ACCIÓN TARJETA ---------- */
+
+.aloj-card-actions {
+  margin-top: 0.85rem;
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
+  justify-content: flex-end;
 }
 
-.btn-edit {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  display: flex;
+/* Botón outline (editar) */
+.btn-outline {
+  border-radius: 999px;
+  border: 1px solid #00a99d;
+  background: #f9fafb;
+  color: #047a72;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.btn-delete {
+.btn-outline:hover {
+  background: #e0fbf8;
+  border-color: #00a99d;
+}
+
+/* Botón eliminar */
+.btn-danger {
+  border-radius: 999px;
+  border: none;
+  background: #ef4444;
+  color: #ffffff;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: background 0.15s ease, filter 0.15s ease;
+}
+
+.btn-danger:hover {
   background: #dc2626;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  filter: brightness(1.05);
 }
 
-.btn-edit:hover {
-  filter: brightness(1.1);
-}
+/* ---------- RESPONSIVE ---------- */
 
-.btn-delete:hover {
-  filter: brightness(1.1);
+@media (max-width: 768px) {
+  .aloj-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .aloj-title {
+    font-size: 1.5rem;
+  }
+
+  .btn-gradient {
+    align-self: stretch;
+    justify-content: center;
+  }
 }
