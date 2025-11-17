@@ -3,21 +3,21 @@
 .page-admin {
   min-height: 100vh;
   padding: 1.5rem 2.5rem 2.5rem;
-  background-image: url("../img/forma.jpg");
   background-color: #f3f4f6;
-  background-image: url("../assets/pattern-unirumbo.png");
+  background-image: url("../assets/forma.png"); /* ajusta ruta si es necesario */
   background-repeat: repeat;
   background-size: 260px 260px;
   background-attachment: fixed;
 }
 
-/* Poppins para todo lo que esté dentro de la página admin */
+/* Fuente Poppins en todo el módulo */
 .page-admin,
 .page-admin * {
   font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Título principal */
+/* ============= TÍTULO ============= */
+
 .admin-title {
   margin-top: 1.5rem;
   font-size: 1.6rem;
@@ -28,114 +28,96 @@
   gap: 0.5rem;
 }
 
+.admin-title-icon {
+  font-size: 1.4rem;
+}
+
 /* ============= GRID DE TARJETAS ============= */
 
 .cards-2col {
-  margin-top: 1.5rem;
+  margin-top: 1.8rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 1.8rem;
 }
 
-/* Tarjeta con gradiente UniRumbo */
+/* ============= TARJETAS (BLANCAS) ============= */
+
 .service-card {
   position: relative;
   padding: 1.25rem 1.25rem 1.5rem;
   border-radius: 18px;
-  background: linear-gradient(135deg, #00a99d, #79c000);
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
-  color: #f9fafb;
   overflow: hidden;
 }
 
-/* Efecto “glass” suave encima del gradiente */
-.service-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0.03)
-  );
-  opacity: 0.95;
-  pointer-events: none;
+.service-card--blanca {
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
 }
 
-/* Todo el contenido debe ir por encima del ::before */
-.service-card .head,
-.service-card .list,
-.service-card .mapa-mini {
-  position: relative;
-  z-index: 1;
-}
+/* Cabecera de la tarjeta */
 
-/* ============= CONTENIDO DE LA TARJETA ============= */
-
-.service-card .head {
+.head {
   font-weight: 600;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
-/* Si usas un span para el ícono principal de la cabecera */
-.service-card .head-icon {
+.head-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 999px;
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: rgba(0, 169, 157, 0.12);
+  color: #00a99d;
   font-size: 1.1rem;
 }
 
-/* Lista de datos de la ruta */
-.service-card .list {
+/* Lista de datos */
+
+.list {
   list-style: none;
   margin: 0 0 1rem 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.9rem;
+  gap: 0.35rem;
+  font-size: 0.95rem;
 }
 
-.service-card .list li {
+.list li {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
+  color: #111827;
 }
 
-/* Ícono de cada línea (si los envuelves en un span) */
-.service-card .list-icon {
+.list-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 22px;
   height: 22px;
   border-radius: 999px;
-  background-color: rgba(0, 0, 0, 0.06);
+  background-color: rgba(0, 169, 157, 0.12);
+  color: #00a99d;
   font-size: 0.9rem;
 }
 
-.service-card .list strong {
+.list strong {
   font-weight: 600;
+  color: #0f172a;
 }
 
-/* Contenedor del mapa */
-.mapa-mini {
-  margin-top: 0.6rem;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
-/* Contenedor del gradiente */
+/* ============= MAPA CON BORDE DE GRADIENTE ============= */
+
 .mapa-gradiente {
+  margin-top: 0.4rem;
   padding: 6px;
   border-radius: 14px;
   background: linear-gradient(135deg, #00a99d, #79c000);
@@ -144,21 +126,22 @@
   justify-content: center;
 }
 
-/* Caja del mapa */
-.mapa-mini,
-.detalle-mapa-box {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 12px;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
 .mapa-inner {
-  height: 300px;
   width: 100%;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+}
+
+.mapa-leaflet {
+  height: 300px;
+  width: 100%;
+}
+
+/* Asegurarnos que Leaflet no se monte sobre el header */
+.leaflet-container {
+  z-index: 1 !important;
 }
 
 /* ============= RESPONSIVE ============= */
@@ -171,16 +154,8 @@
   .cards-2col {
     grid-template-columns: 1fr;
   }
-}
 
-.page-admin {
-  min-height: 100vh;
-  padding: 1.5rem 2.5rem 2.5rem;
-  background-color: #f3f4f6;
-
-  /* Fondo con la imagen que se repite */
-  background-image: url("../assets/forma.png");
-  background-repeat: repeat;
-  background-size: 260px 260px;
-  background-attachment: fixed;
+  .mapa-leaflet {
+    height: 260px;
+  }
 }

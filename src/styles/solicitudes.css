@@ -1,129 +1,158 @@
-/* ====== FONDO Y ESTILO GENERAL ====== */
-.page-solicitudes{
-  font-family: "Poppins", sans-serif;
+/* Página Servicios / Solicitudes aceptadas */
+
+.page-solicitudes {
   min-height: 100vh;
-  background: #fff; /* Verde claro degradado */
-  margin: 0;
-  padding-bottom: 2rem;
-  color: #00482B;
+  padding: 1.5rem 2.5rem 2.5rem;
+  background-color: #f3f4f6; /* fondo claro, no rojo */
 }
 
-/* ====== WRAPPER ====== */
+/* Fuente global para esta vista */
+.page-solicitudes,
+.page-solicitudes * {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+}
+
+/* Contenedor principal */
 .solicitudes-wrap {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 1rem;
-  box-sizing: border-box;
 }
 
-/* ====== TITULO ====== */
-.title {
-  text-align: center;
-  font-size: 2rem;
+/* Título principal */
+.solicitudes-title {
+  margin-top: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  color: #00482B; /* Verde oscuro */
-  margin-bottom: 2rem;
-}
-
-/* ====== MENSAJES ====== */
-.loading,
-.empty {
+  color: #064e3b;
   text-align: center;
-  font-size: 1.2rem;
-  color: #00482B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
 }
 
-/* ====== GRID CARDS ====== */
+.solicitudes-title-icon {
+  font-size: 1.6rem;
+  color: #00a99d;
+}
+
+/* Estados: loading / vacío */
+.solicitudes-loading,
+.solicitudes-empty {
+  margin-top: 2rem;
+  text-align: center;
+  color: #4b5563;
+}
+
+/* Grid de tarjetas */
 .cards-2col {
+  margin-top: 1.6rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.4rem;
 }
 
-/* ====== CARD SOLICITUD ====== */
-.solicitud-card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 15px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Tarjeta base */
+.solicitud-card.servicio-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 1.3rem 1.5rem 1.4rem;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.18);
+  border-left: 6px solid #00a99d;
 }
 
-.solicitud-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-}
-
-/* ====== HEADER CARD ====== */
-.solicitud-card .head {
-  font-weight: 600;
-  font-size: 1.1rem;
+/* Cabecera de la tarjeta */
+.servicio-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   margin-bottom: 0.8rem;
-  color: #007B3E; /* Verde intermedio */
 }
 
-/* ====== LISTA DETALLES ====== */
-.solicitud-card .list {
+.servicio-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  color: #ffffff;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.servicio-head-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.servicio-tipo {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #047857;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.servicio-descripcion {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 2px;
+}
+
+/* Lista de datos */
+.servicio-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 1rem 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: #374151;
+  font-size: 0.93rem;
 }
 
-.solicitud-card .list li {
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  color: #00482B;
+.servicio-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
 }
 
-.solicitud-card .list li strong {
-  color: #00482B;
+.servicio-list-icon {
+  margin-top: 2px;
+  color: #00a99d;
 }
 
-/* ====== ESTADOS ====== */
-.estado {
+/* Estado pill */
+.estado-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.22rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 0.85rem;
 }
 
-.estado.aceptada {
-  background-color: #79C000; /* Verde claro */
+.estado-aceptada {
+  background-color: #79c000;
+  color: #ffffff;
 }
 
-.estado.rechazada {
-  background-color: #B00020; /* Rojo oscuro para rechazadas */
-}
-
-.estado.pendiente {
-  background-color: #007B3E; /* Verde intermedio */
-}
-
-/* ====== BOTÓN CANCELAR ====== */
-.btn-cancelar {
-  display: inline-block;
-  background-color: #00482B; /* Verde oscuro */
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-cancelar:hover {
-  background-color: #007B3E; /* Verde intermedio */
-}
-
-/* ====== RESPONSIVE ====== */
-@media (max-width: 640px) {
-  .solicitudes-wrap {
-    padding: 1rem;
+/* Responsive */
+@media (max-width: 768px) {
+  .page-solicitudes {
+    padding: 1rem 1rem 2rem;
   }
 
-  .title {
-    font-size: 1.5rem;
+  .solicitudes-title {
+    font-size: 1.4rem;
+  }
+
+  .solicitud-card.servicio-card {
+    padding: 1.1rem 1.2rem 1.3rem;
   }
 }

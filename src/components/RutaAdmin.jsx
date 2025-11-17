@@ -6,7 +6,7 @@ import {
   TileLayer,
   Marker,
   Polyline,
-  Popup
+  Popup,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -18,12 +18,12 @@ import {
   FaRoute,
   FaClock,
   FaUsers,
-  FaCalendarAlt
+  FaCalendarAlt,
+  FaCarSide,
 } from "react-icons/fa";
 
 const API_URL = "https://unirumbobakend.onrender.com/api/Rutas";
 
-// Íconos Leaflet para mapa (puedes cambiarlos luego si quieres)
 const iconOrigen = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
   iconSize: [25, 25],
@@ -41,17 +41,28 @@ export default function RutasAdmin() {
   const [coordenadas, setCoordenadas] = useState({});
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     const obtenerRutas = async () => {
       try {
-        const res = await axios.get(API_URL);
-        setRutas(res.data);
-        res.data.forEach((ruta) => trazarRuta(ruta));
+        const res = await axios.get(API_URL, {
+          cancelToken: source.token,
+        });
+        const data = Array.isArray(res.data) ? res.data : [];
+        setRutas(data);
+        data.forEach((ruta) => trazarRuta(ruta));
       } catch (error) {
-        console.error("Error al obtener rutas:", error);
+        if (!axios.isCancel(error)) {
+          console.error("Error al obtener rutas:", error);
+        }
       }
     };
 
     obtenerRutas();
+
+    return () => {
+      source.cancel("Componente RutasAdmin desmontado, petición cancelada.");
+    };
   }, []);
 
   const geocodificar = async (direccion) => {
@@ -98,7 +109,7 @@ export default function RutasAdmin() {
 
   return (
     <>
-      {/* 👉 Fuente Poppins */}
+      {/* Fuente Poppins */}
       <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet"
@@ -108,28 +119,33 @@ export default function RutasAdmin() {
         <HeaderAdmin />
 
         <h2 className="admin-title">
-          <FaRoute style={{ marginRight: "0.4rem" }} />
+          <FaRoute className="admin-title-icon" />
           Listado de Rutas
         </h2>
 
         <div className="cards-2col">
           {rutas.map((r) => (
-            <article key={r.idRuta} className="service-card">
-              {/* CABECERA TARJETA */}
+            <article
+              key={r.idRuta}
+              className="service-card service-card--blanca"
+            >
+              {/* Cabecera de la tarjeta */}
               <div className="head">
                 <span className="head-icon">
-                  <FaRoute />
+                  <FaCarSide />
                 </span>
-                <span>{r.puntoOrigen} → {r.puntoDestino}</span>
+                <span>
+                  {r.puntoOrigen} → {r.puntoDestino}
+                </span>
               </div>
 
-              {/* LISTA DE DATOS */}
+              {/* Lista de datos */}
               <ul className="list">
                 <li>
                   <span className="list-icon">
                     <FaClock />
                   </span>
-                  <strong>Salida:</strong>{" "}
+                  <strong>Salida:</strong>&nbsp;
                   {new Date(r.horaSalida).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -140,7 +156,7 @@ export default function RutasAdmin() {
                   <span className="list-icon">
                     <FaClock />
                   </span>
-                  <strong>Regreso:</strong>{" "}
+                  <strong>Regreso:</strong>&nbsp;
                   {r.horaRegreso
                     ? new Date(r.horaRegreso).toLocaleTimeString([], {
                         hour: "2-digit",
@@ -153,63 +169,60 @@ export default function RutasAdmin() {
                   <span className="list-icon">
                     <FaUsers />
                   </span>
-                  <strong>Cupos ida:</strong> {r.cuposIda}
+                  <strong>Cupos ida:</strong>&nbsp;{r.cuposIda}
                 </li>
 
                 <li>
                   <span className="list-icon">
                     <FaUsers />
                   </span>
-                  <strong>Cupos vuelta:</strong> {r.cuposVuelta}
+                  <strong>Cupos vuelta:</strong>&nbsp;{r.cuposVuelta}
                 </li>
 
                 <li>
                   <span className="list-icon">
                     <FaCalendarAlt />
                   </span>
-                  <strong>Días:</strong> {r.diasRuta || "No especificado"}
+                  <strong>Días:</strong>&nbsp;{r.diasRuta || "No especificado"}
                 </li>
               </ul>
 
-              {/* MAPA */}
-              <div className="mapa-mini">
-                <MapContainer
-                  center={coordenadas[r.idRuta]?.origen || [4.60971, -74.08175]}
-                  zoom={6}
-                  style={{
-                    height: "300px",
-                    width: "100%",
-                    borderRadius: "12px",
-                  }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-                  {coordenadas[r.idRuta]?.camino && (
-                    <Polyline
-                      positions={coordenadas[r.idRuta].camino}
-                      color="#3f2b96"
-                      weight={4}
-                    />
-                  )}
-
-                  {coordenadas[r.idRuta]?.origen && (
-                    <Marker
-                      position={coordenadas[r.idRuta].origen}
-                      icon={iconOrigen}
-                    >
-                      <Popup>Origen</Popup>
-                    </Marker>
-                  )}
-
-                  {coordenadas[r.idRuta]?.destino && (
-                    <Marker
-                      position={coordenadas[r.idRuta].destino}
-                      icon={iconDestino}
-                    >
-                      <Popup>Destino</Popup>
-                    </Marker>
-                  )}
-                </MapContainer>
+              {/* Mapa con borde de gradiente */}
+              <div className="mapa-gradiente">
+                <div className="mapa-inner">
+                  <MapContainer
+                    center={
+                      coordenadas[r.idRuta]?.origen || [4.60971, -74.08175]
+                    }
+                    zoom={6}
+                    className="mapa-leaflet"
+                  >
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    {coordenadas[r.idRuta]?.camino && (
+                      <Polyline
+                        positions={coordenadas[r.idRuta].camino}
+                        color="#3f2b96"
+                        weight={4}
+                      />
+                    )}
+                    {coordenadas[r.idRuta]?.origen && (
+                      <Marker
+                        position={coordenadas[r.idRuta].origen}
+                        icon={iconOrigen}
+                      >
+                        <Popup>Origen</Popup>
+                      </Marker>
+                    )}
+                    {coordenadas[r.idRuta]?.destino && (
+                      <Marker
+                        position={coordenadas[r.idRuta].destino}
+                        icon={iconDestino}
+                      >
+                        <Popup>Destino</Popup>
+                      </Marker>
+                    )}
+                  </MapContainer>
+                </div>
               </div>
             </article>
           ))}
