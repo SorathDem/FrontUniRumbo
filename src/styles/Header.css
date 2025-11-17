@@ -1,9 +1,4 @@
-/* Opcional, por si el body tenía margen por defecto */
-body {
-  margin: 0;
-}
-
-/* Evitar que Leaflet se superponga al header */
+/* ========= FIX para Leaflet superpuesto ========= */
 .leaflet-container {
   z-index: 1 !important;
 }
@@ -13,44 +8,51 @@ body {
   z-index: 1 !important;
 }
 
-/* ===================== HEADER GENERAL ===================== */
+/* ========= RESET BÁSICO ========= */
+body {
+  margin: 0;
+}
+
+/* ========= HEADER GENERAL ========= */
 
 .main-header {
-  position: sticky;        /* visible al hacer scroll */
+  position: sticky;     /* se queda pegado arriba al hacer scroll */
   top: 0;
   left: 0;
   right: 0;
+  z-index: 999;
 
-  width: 100%;            /* ocupa el ancho del viewport sin desbordarse */
-  z-index: 9999;
+  width: 100%;
+  box-sizing: border-box;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
 
-  padding: 0.75rem 2.5rem;
+  padding: 0.9rem 2.5rem;
   background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
 }
 
-/* Fuente global en el header */
+/* Fuente global del header */
 .main-header,
 .main-header * {
   font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
     sans-serif;
 }
 
-/* Bloque izquierdo: logo + texto */
+/* IZQUIERDA: logo + título */
 .header-left {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .logo-block {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.6rem;
 }
 
 .logo-udec {
@@ -59,19 +61,19 @@ body {
 }
 
 .header-title {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
   color: #111827;
   white-space: nowrap;
 }
 
-/* Navegación central */
+/* CENTRO: navegación */
 .header-center {
   display: flex;
   align-items: center;
-  gap: 1.8rem;
-  flex: 1;
   justify-content: center;
+  gap: 1.8rem;
+  flex: 1;               /* ocupa el espacio central */
 }
 
 .nav-item {
@@ -82,7 +84,7 @@ body {
   font-weight: 500;
   color: #111827;
   text-decoration: none;
-  padding: 0.25rem 0.55rem;
+  padding: 0.25rem 0.65rem;
   border-radius: 999px;
   transition: background-color 0.15s ease, color 0.15s ease,
     transform 0.15s ease;
@@ -94,69 +96,79 @@ body {
   transform: translateY(-1px);
 }
 
-.nav-item.disabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
 .nav-icon {
   font-size: 0.9rem;
 }
 
-/* Lado derecho: nombre + botón */
+/* DERECHA: nombre + botón */
 .header-right {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
-/* Nombre del usuario */
 .user-name {
-  margin-right: 8px;
   font-size: 0.95rem;
   font-weight: 500;
   color: #111827;
 }
 
-/* Botón Cerrar sesión estilo UniRumbo */
+/* Botón Cerrar Sesión estilo UniRumbo */
 .logout-button {
   background: linear-gradient(135deg, #00a99d, #79c000);
   color: white;
   border: none;
   padding: 8px 18px;
-  border-radius: 30px;
+  border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.22);
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .logout-button:hover {
   filter: brightness(1.05);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.32);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.3);
 }
 
 .logout-icon {
   font-size: 0.95rem;
 }
 
-/* ===================== RESPONSIVE ===================== */
+/* ========= RESPONSIVE ========= */
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .main-header {
-    padding: 0.75rem 1rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .header-center {
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-header {
     flex-wrap: wrap;
+    row-gap: 0.4rem;
+    justify-content: center;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: center;
   }
 
   .header-center {
     order: 3;
     flex-wrap: wrap;
-    row-gap: 0.4rem;
+    justify-content: center;
   }
 
   .header-right {
