@@ -1,0 +1,268 @@
+/* ================= PÁGINA GENERAL ================= */
+
+.page-detalle {
+  min-height: 100vh;
+  padding: 1.5rem 2.5rem 2.5rem;
+  background-color: #f3f4f6;
+
+  /* Fondo con la imagen repetida */
+  background-image: url("../assets/forma.png");
+  background-repeat: repeat;
+  background-size: 260px 260px;
+  background-attachment: fixed;
+}
+
+/* Fuente Poppins para todo el módulo */
+.page-detalle,
+.page-detalle * {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ================= TÍTULO PRINCIPAL ================= */
+
+.detalle-main-title {
+  margin-top: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detalle-main-icon {
+  font-size: 1.4rem;
+}
+
+/* ================= TOGGLE TIPO SERVICIO ================= */
+
+.service-toggle {
+  margin-top: 1rem;
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 4px;
+  background-color: #dbe2e8;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+}
+
+.service-toggle-btn {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 1.8rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ffffff;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  min-width: 170px;       /* mismo tamaño para ambos */
+  text-align: center;
+}
+
+.service-toggle-btn.active {
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  box-shadow: 0 4px 8px rgba(15, 23, 42, 0.25);
+  opacity: 1;
+}
+
+/* ================= GRID TARJETAS ================= */
+
+.detalle-wrap {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 1.8rem;
+}
+
+.detalle-empty {
+  margin-top: 2rem;
+  text-align: center;
+  color: #4b5563;
+  font-size: 1rem;
+}
+
+/* ================= TARJETAS ================= */
+
+/* Versión blanca con sombra suave */
+.detalle-card {
+  position: relative;
+  padding: 1.25rem 1.25rem 1.5rem;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.detalle-card--blanca {
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+}
+
+/* Cabecera tarjeta */
+.detalle-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.detalle-header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background-color: rgba(0, 169, 157, 0.12);
+  color: #00a99d;
+  font-size: 1.1rem;
+}
+
+.detalle-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Info de texto */
+.detalle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.95rem;
+}
+
+.detalle-info p {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: #111827;
+}
+
+.detalle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background-color: rgba(0, 169, 157, 0.12);
+  color: #00a99d;
+  font-size: 0.9rem;
+}
+
+.detalle-info strong {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* ================= MAPA ================= */
+
+/* Marco con gradiente */
+.mapa-gradiente {
+  margin-top: 0.4rem;
+  padding: 6px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00a99d, #79c000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenedor interior blanco del mapa */
+.detalle-mapa-inner {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+}
+
+.detalle-mapa {
+  height: 350px;
+  width: 100%;
+}
+
+.detalle-mapa-empty {
+  text-align: center;
+  padding: 1.2rem 0.8rem;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+/* ================= BOTONES DE ACCIÓN ================= */
+
+.detalle-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #00a99d, #79c000); /* igual que Cerrar Sesión */
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-accion:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.3);
+}
+
+.btn-accion:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.3);
+}
+
+.btn-accion-icon {
+  font-size: 0.9rem;
+}
+
+/* Variante secundaria (tipo "Ver detalles") */
+.btn-accion-secundario {
+  background: #ffffff;
+  color: #00a99d;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.2);
+  border: 1px solid rgba(0, 169, 157, 0.4);
+}
+
+.btn-accion-secundario:hover {
+  filter: none;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.28);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .page-detalle {
+    padding: 1rem 1rem 2rem;
+  }
+
+  .detalle-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-mapa {
+    height: 300px;
+  }
+
+  .service-toggle-btn {
+    min-width: 140px;
+    padding-inline: 1.2rem;
+  }
+}
