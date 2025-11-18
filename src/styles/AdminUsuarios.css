@@ -38,6 +38,13 @@
   color: #111827;
 }
 
+/* 🔹 Contenedor de botones del header (reporte + crear) */
+.admin-usuarios-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 /* Botones base */
 .btn-gradient {
   background: linear-gradient(135deg, #00a99d, #79c000);
@@ -56,6 +63,32 @@
   filter: brightness(1.05);
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(15, 23, 42, 0.3);
+}
+
+/* 🔹 Botón Generar Reporte */
+.btn-report {
+  background: #ffffff;
+  color: #b91c1c;
+  border-radius: 999px;
+  border: 1px solid #fecaca;
+  padding: 0.52rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 3px 8px rgba(248, 113, 113, 0.3);
+  transition: 0.15s ease;
+}
+
+.btn-report svg {
+  font-size: 0.95rem;
+}
+
+.btn-report:hover {
+  background-color: #fee2e2;
+  border-color: #f97373;
 }
 
 .btn-secondary {
@@ -226,6 +259,12 @@
   .admin-usuarios-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .admin-usuarios-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .form-row {

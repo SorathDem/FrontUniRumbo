@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 import HeaderAdmin from "./HeaderAdmin";
 import "../styles/AdminUsuarios.css";
+import { FaFilePdf } from "react-icons/fa";
 
 const API_URL = "https://unirumbobakend.onrender.com/api/Usuarios";
 const API_ROLES = "https://unirumbobakend.onrender.com/api/Rol";
 const API_SEDES = "https://unirumbobakend.onrender.com/api/Sede";
+const API_REPORTE_USUARIOS =
+  "https://unirumbobakend.onrender.com/api/Reportes/usuarios-pdf";
 
 const Adm = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -133,6 +136,11 @@ const Adm = () => {
     }
   };
 
+  // 🔹 Generar reporte PDF (abre el PDF en una nueva pestaña)
+  const generarReporteUsuarios = () => {
+    window.open(API_REPORTE_USUARIOS, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <>
       {/* Fuente Poppins */}
@@ -148,15 +156,28 @@ const Adm = () => {
           <div className="admin-usuarios-header">
             <h2 className="admin-usuarios-title">Administración de Usuarios</h2>
 
-            <button
-              className="btn-gradient"
-              onClick={() => {
-                setMostrarFormulario(!mostrarFormulario);
-                setUsuarioEditando(null);
-              }}
-            >
-              {mostrarFormulario ? "Cancelar" : "Crear Nuevo Usuario"}
-            </button>
+            {/* 🔹 Botones de acciones (crear y reporte) */}
+            <div className="admin-usuarios-actions">
+              <button
+                className="btn-report"
+                type="button"
+                onClick={generarReporteUsuarios}
+              >
+                <FaFilePdf />
+                Generar Reporte
+              </button>
+
+              <button
+                className="btn-gradient"
+                type="button"
+                onClick={() => {
+                  setMostrarFormulario(!mostrarFormulario);
+                  setUsuarioEditando(null);
+                }}
+              >
+                {mostrarFormulario ? "Cancelar" : "Crear Nuevo Usuario"}
+              </button>
+            </div>
           </div>
 
           {/* Formulario crear usuario */}
