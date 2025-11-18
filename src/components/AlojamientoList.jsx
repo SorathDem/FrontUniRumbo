@@ -193,218 +193,223 @@ const AlojamientoList = () => {
 
       <HeaderArrendatario />
 
-      <main className="aloj-page">
-        {/* Encabezado de la sección */}
-        <section className="aloj-header-section">
-          <h2 className="aloj-title">
-            <FaHome className="aloj-title-icon" />
-            Lista de Alojamientos
-          </h2>
+      {/* 🔹 Caja principal grande que define el ancho visual de la página */}
+      <div className="aloj-shell">
+        <main className="aloj-page">
+          {/* Encabezado de la sección */}
+          <section className="aloj-header-section">
+            <h2 className="aloj-title">
+              <FaHome className="aloj-title-icon" />
+              Lista de Alojamientos
+            </h2>
 
-          <button
-            className="btn-gradient"
-            onClick={() => setMostrarFormulario(!mostrarFormulario)}
-          >
-            <FaPlusCircle />
-            {mostrarFormulario ? "Cancelar" : "Agregar Alojamiento"}
-          </button>
-        </section>
-
-        {/* Formulario para crear alojamiento */}
-        {mostrarFormulario && (
-          <section className="aloj-form-card">
-            <h3 className="aloj-form-title">
-              <FaMapMarkerAlt className="aloj-form-icon" />
-              Nuevo alojamiento
-            </h3>
-
-            <div className="aloj-form-grid">
-              <input
-                type="text"
-                placeholder="Municipio o barrio del alojamiento"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                className="input-descripcion"
-              />
-              <input
-                type="text"
-                placeholder="Dirección del alojamiento"
-                value={direccion}
-                onChange={(e) => setDireccion(e.target.value)}
-                className="input-descripcion"
-              />
-              <input
-                type="text"
-                placeholder="Descripción del alojamiento"
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
-                className="input-descripcion"
-              />
-
-              <div className="aloj-input-file">
-                <label className="aloj-input-file-label">
-                  📷 Imágenes del alojamiento
-                </label>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files);
-                    Promise.all(
-                      files.map(
-                        (file) =>
-                          new Promise((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.onload = () => {
-                              const base64 = reader.result.split(",")[1];
-                              resolve(base64);
-                            };
-                            reader.onerror = (error) => reject(error);
-                            reader.readAsDataURL(file);
-                          })
-                      )
-                    ).then((results) => setImagenes(results));
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="mapa-container">
-              <MapContainer
-                center={[4.65, -74.1]}
-                zoom={13}
-                className="aloj-map-form"
-              >
-                <TileLayer
-                  attribution="&copy; OpenStreetMap"
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <LocationPicker setNuevaUbicacion={setNuevaUbicacion} />
-                {nuevaUbicacion && (
-                  <Marker position={nuevaUbicacion} icon={markerIcon} />
-                )}
-              </MapContainer>
-              <p className="aloj-map-help">
-                Haz clic en el mapa para marcar la ubicación del alojamiento.
-              </p>
-            </div>
-
-            <button onClick={handleGuardar} className="btn-gradient full">
-              Guardar alojamiento
+            <button
+              className="btn-gradient"
+              onClick={() => setMostrarFormulario(!mostrarFormulario)}
+            >
+              <FaPlusCircle />
+              {mostrarFormulario ? "Cancelar" : "Agregar Alojamiento"}
             </button>
           </section>
-        )}
 
-        {/* Lista de alojamientos existentes */}
-        <section className="lista-alojamientos">
-          {alojamientos.length === 0 ? (
-            <p className="aloj-empty">No hay alojamientos registrados.</p>
-          ) : (
-            alojamientos.map((a) => {
-              let lat = null;
-              let lon = null;
+          {/* Formulario para crear alojamiento */}
+          {mostrarFormulario && (
+            <section className="aloj-form-card">
+              <h3 className="aloj-form-title">
+                <FaMapMarkerAlt className="aloj-form-icon" />
+                Nuevo alojamiento
+              </h3>
 
-              if (
-                a.ubicacion &&
-                a.ubicacion.includes("lat:") &&
-                a.ubicacion.includes("lon:")
-              ) {
-                try {
-                  const latMatch = a.ubicacion.match(/lat:([0-9,\.\-]+)/i);
-                  const lonMatch = a.ubicacion.match(/lon:([0-9,\.\-]+)/i);
+              <div className="aloj-form-grid">
+                <input
+                  type="text"
+                  placeholder="Municipio o barrio del alojamiento"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  className="input-descripcion"
+                />
+                <input
+                  type="text"
+                  placeholder="Dirección del alojamiento"
+                  value={direccion}
+                  onChange={(e) => setDireccion(e.target.value)}
+                  className="input-descripcion"
+                />
+                <input
+                  type="text"
+                  placeholder="Descripción del alojamiento"
+                  value={descripcion}
+                  onChange={(e) => setDescripcion(e.target.value)}
+                  className="input-descripcion"
+                />
 
-                  if (latMatch && lonMatch) {
-                    const latStr = latMatch[1]
-                      .replace(",", ".")
-                      .replace(",,", ",");
-                    const lonStr = lonMatch[1]
-                      .replace(",", ".")
-                      .replace(",,", ",");
+                <div className="aloj-input-file">
+                  <label className="aloj-input-file-label">
+                    📷 Imágenes del alojamiento
+                  </label>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files);
+                      Promise.all(
+                        files.map(
+                          (file) =>
+                            new Promise((resolve, reject) => {
+                              const reader = new FileReader();
+                              reader.onload = () => {
+                                const base64 = reader.result.split(",")[1];
+                                resolve(base64);
+                              };
+                              reader.onerror = (error) => reject(error);
+                              reader.readAsDataURL(file);
+                            })
+                        )
+                      ).then((results) => setImagenes(results));
+                    }}
+                  />
+                </div>
+              </div>
 
-                    lat = parseFloat(latStr);
-                    lon = parseFloat(lonStr);
-                  }
-                } catch (err) {
-                  console.error("Error procesando coordenadas:", err);
-                }
-              }
-
-              return (
-                <article key={a.idAlojamiento} className="aloj-card">
-                  <header className="aloj-card-header">
-                    <div>
-                      <h3 className="aloj-card-title">
-                        {a.titulo || "Alojamiento sin título"}
-                      </h3>
-                      <p className="aloj-card-subtitle">{a.descripcion}</p>
-                      <p className="aloj-card-address">
-                        <FaMapMarkerAlt className="aloj-card-address-icon" />
-                        {a.direccion}
-                      </p>
-                      <p className="aloj-card-user">
-                        <FaUserCircle className="aloj-card-user-icon" />
-                        Publicado por: <strong>{a.nombreUsuario}</strong>
-                      </p>
-                    </div>
-                  </header>
-
-                  {lat && lon ? (
-                    <div className="aloj-card-map-wrapper">
-                      <MapContainer
-                        center={[lat, lon]}
-                        zoom={15}
-                        scrollWheelZoom={false}
-                        dragging={false}
-                        doubleClickZoom={false}
-                        zoomControl={false}
-                        className="aloj-map-card"
-                      >
-                        <TileLayer
-                          attribution="&copy; OpenStreetMap"
-                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={[lat, lon]} icon={markerIcon} />
-                      </MapContainer>
-                    </div>
-                  ) : (
-                    <p className="aloj-map-unavailable">Mapa no disponible</p>
+              <div className="mapa-container">
+                <MapContainer
+                  center={[4.65, -74.1]}
+                  zoom={13}
+                  className="aloj-map-form"
+                >
+                  <TileLayer
+                    attribution="&copy; OpenStreetMap"
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <LocationPicker setNuevaUbicacion={setNuevaUbicacion} />
+                  {nuevaUbicacion && (
+                    <Marker position={nuevaUbicacion} icon={markerIcon} />
                   )}
+                </MapContainer>
+                <p className="aloj-map-help">
+                  Haz clic en el mapa para marcar la ubicación del alojamiento.
+                </p>
+              </div>
 
-                  {a.imagenes && a.imagenes.length > 0 && (
-                    <div className="imagenes-alojamiento">
-                      {a.imagenes.map((base64, index) => (
-                        <img
-                          key={index}
-                          src={`data:image/jpeg;base64,${base64}`}
-                          alt={`Alojamiento ${a.idAlojamiento} - ${index}`}
-                        />
-                      ))}
-                    </div>
-                  )}
-
-                  <footer className="aloj-card-actions">
-                    <button
-                      onClick={() => handleEditar(a)}
-                      className="btn-outline"
-                    >
-                      <FaEdit />
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleEliminar(a.idAlojamiento)}
-                      className="btn-danger"
-                    >
-                      <FaTrashAlt />
-                      Eliminar
-                    </button>
-                  </footer>
-                </article>
-              );
-            })
+              <button onClick={handleGuardar} className="btn-gradient full">
+                Guardar alojamiento
+              </button>
+            </section>
           )}
-        </section>
-      </main>
+
+          {/* Lista de alojamientos existentes */}
+          <section className="lista-alojamientos">
+            {alojamientos.length === 0 ? (
+              <p className="aloj-empty">No hay alojamientos registrados.</p>
+            ) : (
+              alojamientos.map((a) => {
+                let lat = null;
+                let lon = null;
+
+                if (
+                  a.ubicacion &&
+                  a.ubicacion.includes("lat:") &&
+                  a.ubicacion.includes("lon:")
+                ) {
+                  try {
+                    const latMatch = a.ubicacion.match(/lat:([0-9,\.\-]+)/i);
+                    const lonMatch = a.ubicacion.match(/lon:([0-9,\.\-]+)/i);
+
+                    if (latMatch && lonMatch) {
+                      const latStr = latMatch[1]
+                        .replace(",", ".")
+                        .replace(",,", ",");
+                      const lonStr = lonMatch[1]
+                        .replace(",", ".")
+                        .replace(",,", ",");
+
+                      lat = parseFloat(latStr);
+                      lon = parseFloat(lonStr);
+                    }
+                  } catch (err) {
+                    console.error("Error procesando coordenadas:", err);
+                  }
+                }
+
+                return (
+                  <article key={a.idAlojamiento} className="aloj-card">
+                    <header className="aloj-card-header">
+                      <div>
+                        <h3 className="aloj-card-title">
+                          {a.titulo || "Alojamiento sin título"}
+                        </h3>
+                        <p className="aloj-card-subtitle">{a.descripcion}</p>
+                        <p className="aloj-card-address">
+                          <FaMapMarkerAlt className="aloj-card-address-icon" />
+                          {a.direccion}
+                        </p>
+                        <p className="aloj-card-user">
+                          <FaUserCircle className="aloj-card-user-icon" />
+                          Publicado por: <strong>{a.nombreUsuario}</strong>
+                        </p>
+                      </div>
+                    </header>
+
+                    {lat && lon ? (
+                      <div className="aloj-card-map-wrapper">
+                        <MapContainer
+                          center={[lat, lon]}
+                          zoom={15}
+                          scrollWheelZoom={false}
+                          dragging={false}
+                          doubleClickZoom={false}
+                          zoomControl={false}
+                          className="aloj-map-card"
+                        >
+                          <TileLayer
+                            attribution="&copy; OpenStreetMap"
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                          />
+                          <Marker position={[lat, lon]} icon={markerIcon} />
+                        </MapContainer>
+                      </div>
+                    ) : (
+                      <p className="aloj-map-unavailable">
+                        Mapa no disponible
+                      </p>
+                    )}
+
+                    {a.imagenes && a.imagenes.length > 0 && (
+                      <div className="imagenes-alojamiento">
+                        {a.imagenes.map((base64, index) => (
+                          <img
+                            key={index}
+                            src={`data:image/jpeg;base64,${base64}`}
+                            alt={`Alojamiento ${a.idAlojamiento} - ${index}`}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    <footer className="aloj-card-actions">
+                      <button
+                        onClick={() => handleEditar(a)}
+                        className="btn-outline"
+                      >
+                        <FaEdit />
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleEliminar(a.idAlojamiento)}
+                        className="btn-danger"
+                      >
+                        <FaTrashAlt />
+                        Eliminar
+                      </button>
+                    </footer>
+                  </article>
+                );
+              })
+            )}
+          </section>
+        </main>
+      </div>
     </>
   );
 };
