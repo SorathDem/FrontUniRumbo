@@ -3,6 +3,17 @@ import axios from "axios";
 import "../styles/Usuario.css";
 import HeaderUsuario from "./HeaderUsuario";
 
+import {
+  FaUserCircle,
+  FaEnvelope,
+  FaPhoneAlt,
+  FaLock,
+  FaMapMarkerAlt,
+  FaEdit,
+  FaSave,
+  FaTimes,
+} from "react-icons/fa";
+
 // 🔹 Endpoints
 const API_USUARIOS = "https://unirumbobakend.onrender.com/api/Usuarios";
 const API_ROLES = "https://unirumbobakend.onrender.com/api/Rol";
@@ -20,7 +31,7 @@ export default function Usuario() {
     idSede: "",
   });
 
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState([]); // por si luego vuelves a mostrar rol
   const [sedes, setSedes] = useState([]);
   const [editando, setEditando] = useState(false);
   const [cargando, setCargando] = useState(true);
@@ -48,10 +59,10 @@ export default function Usuario() {
         nombre: data.nombre || "",
         apellido: data.apellido || "",
         correo: data.correo || "",
-        numero: data.numero || "",               // 🔹 precargado
-        contrasena: "",                           // 🔹 no mostrar contraseña
-        idRol: data.id_rol?.toString() || "",    // 🔹 precargado
-        idSede: data.idSede?.toString() || "",   // 🔹 precargado
+        numero: data.numero || "",
+        contrasena: "",
+        idRol: data.id_rol?.toString() || "",
+        idSede: data.idSede?.toString() || "",
       });
     } catch (error) {
       console.error("❌ Error al obtener usuario:", error);
@@ -67,8 +78,8 @@ export default function Usuario() {
         axios.get(API_ROLES),
         axios.get(API_SEDES),
       ]);
-      setRoles(rolesRes.data);
-      setSedes(sedesRes.data);
+      setRoles(Array.isArray(rolesRes.data) ? rolesRes.data : []);
+      setSedes(Array.isArray(sedesRes.data) ? sedesRes.data : []);
     } catch (error) {
       console.error("❌ Error al cargar roles o sedes:", error);
     }
@@ -83,13 +94,11 @@ export default function Usuario() {
   const guardarCambios = async (e) => {
     e.preventDefault();
 
-    // Validar campos obligatorios
     if (
       !usuario.nombre ||
       !usuario.apellido ||
       !usuario.correo ||
       !usuario.numero ||
-      !usuario.idRol ||
       !usuario.idSede
     ) {
       alert("Debes completar todos los campos obligatorios");
@@ -104,7 +113,7 @@ export default function Usuario() {
         numero: usuario.numero || "",
         correo: usuario.correo,
         contrasena: usuario.contrasena ? usuario.contrasena : null,
-        idRol: parseInt(usuario.idRol, 10),
+        idRol: usuario.idRol ? parseInt(usuario.idRol, 10) : null,
         idSede: parseInt(usuario.idSede, 10),
       };
 
@@ -117,8 +126,6 @@ export default function Usuario() {
 
       alert(response.data.mensaje || "✅ Datos actualizados correctamente");
       setEditando(false);
-
-      // Limpiar contraseña para que no se muestre más
       setUsuario((prev) => ({ ...prev, contrasena: "" }));
     } catch (error) {
       console.error(
@@ -129,130 +136,194 @@ export default function Usuario() {
     }
   };
 
-  // 🔹 Mostrar loading
+  // 🔹 Loading
   if (cargando) {
     return (
       <div className="usuario-page">
         <HeaderUsuario />
-        <h2>Cargando información del usuario...</h2>
+        <div className="usuario-content">
+          <p className="usuario-loading">Cargando información del usuario...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="usuario-page">
-      <HeaderUsuario />
-      <h2 className="usuario-bienvenida">
-        Bienvenido, {usuario.nombre || "Usuario"}
-      </h2>
+    <>
+      {/* Fuente Poppins (por si acaso) */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
 
-      <div className="usuario-card">
-        <h3>Información Personal</h3>
+      <div className="usuario-page">
+        <HeaderUsuario />
 
-        <form className="usuario-form" onSubmit={guardarCambios}>
-          {/* Datos personales */}
-          <div className="form-row">
-            <label>Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              value={usuario.nombre || ""}
-              onChange={handleChange}   
-              disabled={!editando}
-              required
-            />
+        <div className="usuario-content">
+          {/* Título de bienvenida */}
+          <h2 className="usuario-bienvenida">
+            <FaUserCircle className="usuario-bienvenida-icon" />
+            Bienvenido, {usuario.nombre || "Usuario"}
+          </h2>
 
-            <label>Apellido</label>
-            <input
-              type="text"
-              name="apellido"
-              value={usuario.apellido || ""}
-              onChange={handleChange}
-              disabled={!editando}
-              required
-            />
-          </div>
+          {/* Tarjeta principal */}
+          <div className="usuario-card">
+            <div className="usuario-card-header">
+              <h3>
+                <FaUserCircle className="usuario-bienvenida-icon" />
+                Información personal
+              </h3>
 
-          <div className="form-row">
-            <label>Correo</label>
-            <input
-              type="email"
-              name="correo"
-              value={usuario.correo || ""}
-              onChange={handleChange}
-              disabled={!editando}
-              required
-            />
-
-            <label>Número</label>
-            <input
-              type="text"
-              name="numero"
-              value={usuario.numero || ""}
-              onChange={handleChange}
-              disabled={!editando}
-              required
-            />
-          </div>
-
-          <div className="form-row">
-            <label>Contraseña</label>
-            <input
-              type="password"
-              name="contrasena"
-              value={usuario.contrasena || ""}
-              onChange={handleChange}
-              disabled={!editando}
-            />
-          </div>
-
-          {/* Rol y sede */}
-          <div className="form-row">
-
-            <label>Sede</label>
-            <select
-              name="idSede"
-              value={usuario.idSede || ""}
-              onChange={handleChange}
-              disabled={!editando}
-              required
-            >
-              <option value="">Seleccione una sede</option>
-              {sedes.map((s) => (
-                <option key={s.idSede} value={s.idSede.toString()}>
-                  {s.nombreSede || s.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Botones */}
-          <div className="usuario-actions">
-            {editando ? (
-              <>
-                <button className="btn-guardar" type="submit">
-                  💾 Guardar
-                </button>
+              {!editando && (
                 <button
                   type="button"
-                  className="btn-cancelar"
-                  onClick={() => setEditando(false)}
+                  className="btn-gradient btn-editar"
+                  onClick={() => setEditando(true)}
                 >
-                  ❌ Cancelar
+                  <FaEdit />
+                  Editar usuario
                 </button>
-              </>
-            ) : (
-              <button
-                type="button"
-                className="btn-editar"
-                onClick={() => setEditando(true)}
-              >
-                ✏️ Editar Usuario
-              </button>
-            )}
+              )}
+            </div>
+
+            <form className="usuario-form" onSubmit={guardarCambios}>
+              {/* Datos personales */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    <FaUserCircle className="label-icon" />
+                    Nombre
+                  </label>
+                  <input
+                    type="text"
+                    name="nombre"
+                    value={usuario.nombre || ""}
+                    onChange={handleChange}
+                    disabled={!editando}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <FaUserCircle className="label-icon" />
+                    Apellido
+                  </label>
+                  <input
+                    type="text"
+                    name="apellido"
+                    value={usuario.apellido || ""}
+                    onChange={handleChange}
+                    disabled={!editando}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    <FaEnvelope className="label-icon" />
+                    Correo
+                  </label>
+                  <input
+                    type="email"
+                    name="correo"
+                    value={usuario.correo || ""}
+                    onChange={handleChange}
+                    disabled={!editando}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <FaPhoneAlt className="label-icon" />
+                    Número
+                  </label>
+                  <input
+                    type="text"
+                    name="numero"
+                    value={usuario.numero || ""}
+                    onChange={handleChange}
+                    disabled={!editando}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    <FaLock className="label-icon" />
+                    Contraseña
+                  </label>
+                  <input
+                    type="password"
+                    name="contrasena"
+                    value={usuario.contrasena || ""}
+                    onChange={handleChange}
+                    disabled={!editando}
+                  />
+                  <span className="field-helper">
+                    Déjala vacía si no deseas cambiarla.
+                  </span>
+                </div>
+              </div>
+
+              {/* Sede */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    <FaMapMarkerAlt className="label-icon" />
+                    Sede
+                  </label>
+                  <select
+                    name="idSede"
+                    value={usuario.idSede || ""}
+                    onChange={handleChange}
+                    disabled={!editando}
+                    required
+                  >
+                    <option value="">Seleccione una sede</option>
+                    {sedes.map((s) => (
+                      <option key={s.idSede} value={s.idSede.toString()}>
+                        {s.nombreSede || s.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Acciones */}
+              <div className="usuario-actions">
+                {editando ? (
+                  <>
+                    <button
+                      className="btn-gradient btn-guardar"
+                      type="submit"
+                    >
+                      <FaSave />
+                      Guardar
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-secondary-danger btn-cancelar"
+                      onClick={() => {
+                        setEditando(false);
+                        setUsuario((prev) => ({ ...prev, contrasena: "" }));
+                      }}
+                    >
+                      <FaTimes />
+                      Cancelar
+                    </button>
+                  </>
+                ) : null}
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
