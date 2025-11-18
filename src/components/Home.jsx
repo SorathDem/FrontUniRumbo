@@ -4,27 +4,50 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import L from "leaflet";
 import "../styles/Home.css";
-import { crearSolicitudRuta, crearSolicitudAlojamiento } from "../api/solicitudesService";
+import {
+  crearSolicitudRuta,
+  crearSolicitudAlojamiento,
+} from "../api/solicitudesService";
 import HeaderUsuario from "./HeaderUsuario";
+
+import {
+  FaSearch,
+  FaRoute,
+  FaHome as FaHomeIcon,
+  FaMapMarkerAlt,
+  FaUsers,
+  FaClock,
+  FaCalendarAlt,
+  FaBed,
+  FaUserCircle,
+} from "react-icons/fa";
 
 const API_RUTAS = "https://unirumbobakend.onrender.com/api/Rutas";
 const API_ALOJAMIENTOS = "https://unirumbobakend.onrender.com/api/Alojamiento";
+
+// Ícono del mapa
+const markerIcon = new L.Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+});
 
 export default function Home() {
   const [rutas, setRutas] = useState([]);
   const [alojamientos, setAlojamientos] = useState([]);
   const [tab, setTab] = useState("ruta");
-  const [busqueda, setBusqueda] = useState(""); // 🔍 Buscador
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // 🔹 Obtener usuario logueado
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const usuario =
+    JSON.parse(localStorage.getItem("usuario")) ||
+    JSON.parse(localStorage.getItem("user"));
   const idUsuario = usuario?.idUsuario;
 
   useEffect(() => {
     const obtenerRutas = async () => {
       try {
         const res = await axios.get(API_RUTAS);
-        setRutas(res.data);
+        setRutas(Array.isArray(res.data) ? res.data : []);
       } catch (error) {
         console.error("Error al obtener rutas:", error);
       }
@@ -33,7 +56,7 @@ export default function Home() {
     const obtenerAlojamientos = async () => {
       try {
         const res = await axios.get(API_ALOJAMIENTOS);
-        setAlojamientos(res.data);
+        setAlojamientos(Array.isArray(res.data) ? res.data : []);
       } catch (error) {
         console.error("Error al obtener alojamientos:", error);
       }
@@ -43,204 +66,181 @@ export default function Home() {
     obtenerAlojamientos();
   }, []);
 
-  // 🔎 FILTROS EN TIEMPO REAL
+  // 🔍 Filtros por buscador
+  const term = searchTerm.trim().toLowerCase();
+
   const rutasFiltradas = rutas.filter((ruta) => {
-    const text = busqueda.toLowerCase();
-    return (
-      ruta.puntoOrigen.toLowerCase().includes(text) ||
-      ruta.puntoDestino.toLowerCase().includes(text) ||
-      ruta.diasRuta?.toLowerCase().includes(text)
-    );
+    if (!term) return true;
+    const texto = `${ruta.puntoOrigen} ${ruta.puntoDestino} ${ruta.diasRuta}`
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    const t = term
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    return texto.includes(t);
   });
 
   const alojamientosFiltrados = alojamientos.filter((a) => {
-    const text = busqueda.toLowerCase();
-    return (
-      a.titulo?.toLowerCase().includes(text) ||
-      a.direccion?.toLowerCase().includes(text) ||
-      a.descripcion?.toLowerCase().includes(text) ||
-      a.nombreUsuario?.toLowerCase().includes(text)
-    );
+    if (!term) return true;
+    const texto = `${a.titulo} ${a.direccion} ${a.descripcion} ${a.nombreUsuario}`
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    const t = term
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    return texto.includes(t);
   });
 
   return (
-    <div className="page-home">
-      <HeaderUsuario />
-      <main className="home-wrap">
-        <h2 className="welcome">
-          Bienvenido,{" "}
-          <span id="welcomeName">{usuario?.nombre || "Usuario"}</span>
-        </h2>
+    <>
+      {/* Fuente Poppins por si acaso */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
 
-        {/* Botones de pestañas */}
-        <div className="segmented">
-          <button
-            className={`seg-btn ${tab === "ruta" ? "active" : ""}`}
-            onClick={() => setTab("ruta")}
-          >
-            Servicio de Ruta
-          </button>
-          <button
-            className={`seg-btn ${tab === "alojamiento" ? "active" : ""}`}
-            onClick={() => setTab("alojamiento")}
-          >
-            Servicio de Alojamiento
-          </button>
-        </div>
+      <div className="page-home">
+        <HeaderUsuario />
 
-        {/* 🔍 BUSCADOR */}
-        <div className="search-box">
-          <input
-            type="text"
-            className="input-search"
-            placeholder="Buscar..."
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-          />
-        </div>
+        <main className="home-wrap">
+          {/* Bienvenida */}
+          <h2 className="welcome">
+            <FaUserCircle className="welcome-icon" />
+            Bienvenido,{" "}
+            <span id="welcomeName">{usuario?.nombre || "Usuario"}</span>
+          </h2>
 
-        {/* Sección de Rutas */}
-        {tab === "ruta" && (
-          <section id="route" className="tab-pane active">
-            <div className="cards-2col">
-              {rutasFiltradas.map((ruta) => (
-                <article key={ruta.idRuta} className="service-card">
-                  <div className="head">
-                    🚗 <span className="title">Ruta - {ruta.puntoDestino}</span>
-                  </div>
-                  <ul className="list">
-                    <li>📍 <strong>Origen:</strong> {ruta.puntoOrigen}</li>
-                    <li>📍 <strong>Destino:</strong> {ruta.puntoDestino}</li>
-                    <li>👥 <strong>Cupos ida:</strong> {ruta.cuposIda}</li>
-                    <li>👥 <strong>Cupos vuelta:</strong> {ruta.cuposVuelta}</li>
-                    <li>
-                      🕒 <strong>Salida:</strong>{" "}
-                      {new Date(ruta.horaSalida).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}{" "}
-                      <strong>- Regreso:</strong>{" "}
-                      {ruta.horaRegreso
-                        ? new Date(ruta.horaRegreso).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit"
-                          })
-                        : "N/A"}
-                    </li>
-                    <li>📅 <strong>Días:</strong> {ruta.diasRuta || "No especificado"}</li>
-                  </ul>
-
-                  <div className="actions">
-                    <Link to={`/rutas/${ruta.idRuta}`} className="btn btn--dark">
-                      Ver detalles
-                    </Link>
-
-                    <Link to={`/chat/`} className="btn btn--dark">
-                      Contactar
-                    </Link>
-
-                    <button
-                      className="btn btn--light"
-                      onClick={async () => {
-                        try {
-                          await crearSolicitudRuta(ruta.idRuta);
-                          alert("Solicitud enviada correctamente ✅");
-                        } catch (err) {
-                          console.error(err);
-                          alert("Error al enviar la solicitud ❌");
-                        }
-                      }}
-                    >
-                      Aplicar
-                    </button>
-                  </div>
-                </article>
-              ))}
+          {/* Buscador bonito */}
+          <div className="home-search">
+            <div className="home-search-inner">
+              <FaSearch className="home-search-icon" />
+              <input
+                type="text"
+                placeholder={
+                  tab === "ruta"
+                    ? "Buscar por origen, destino o días de ruta..."
+                    : "Buscar por título, dirección o nombre del arrendador..."
+                }
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
-          </section>
-        )}
+          </div>
 
-        {/* Sección de Alojamientos */}
-        {tab === "alojamiento" && (
-          <section id="alojamientos" className="tab-pane active">
-            <div className="cards-2col">
-              {alojamientosFiltrados.length === 0 ? (
-                <p>No hay alojamientos registrados.</p>
+          {/* Pestañas */}
+          <div className="segmented">
+            <button
+              className={`seg-btn ${tab === "ruta" ? "active" : ""}`}
+              onClick={() => setTab("ruta")}
+            >
+              <FaRoute />
+              <span>Servicio de Ruta</span>
+            </button>
+            <button
+              className={`seg-btn ${tab === "alojamiento" ? "active" : ""}`}
+              onClick={() => setTab("alojamiento")}
+            >
+              <FaBed />
+              <span>Servicio de Alojamiento</span>
+            </button>
+          </div>
+
+          {/* ---------- Sección de Rutas ---------- */}
+          {tab === "ruta" && (
+            <section id="route" className="tab-pane active">
+              {rutasFiltradas.length === 0 ? (
+                <p className="empty-text">
+                  No se encontraron rutas con ese criterio.
+                </p>
               ) : (
-                alojamientosFiltrados.map((a) => {
-                  // Extraer coordenadas
-                  let lat = null;
-                  let lon = null;
-                  if (a.ubicacion && a.ubicacion.includes("lat:") && a.ubicacion.includes("lon:")) {
-                    try {
-                      const latMatch = a.ubicacion.match(/lat:([0-9,\.\-]+)/i);
-                      const lonMatch = a.ubicacion.match(/lon:([0-9,\.\-]+)/i);
-                      if (latMatch && lonMatch) {
-                        lat = parseFloat(latMatch[1].replace(",", "."));
-                        lon = parseFloat(lonMatch[1].replace(",", "."));
-                      }
-                    } catch (err) {
-                      console.error("Error procesando coordenadas:", err);
-                    }
-                  }
-
-                  return (
-                    <article key={a.idAlojamiento} className="service-card">
-                      <div className="head">
-                        🏡 <span className="title">
-                          {a.titulo || "Alojamiento sin título"}
-                        </span>
+                <div className="cards-2col">
+                  {rutasFiltradas.map((ruta) => (
+                    <article key={ruta.idRuta} className="service-card">
+                      <div className="card-head">
+                        <div className="card-icon bubble">
+                          <FaRoute />
+                        </div>
+                        <div className="card-head-text">
+                          <span className="card-tag">Ruta compartida</span>
+                          <h3 className="card-title">
+                            {ruta.puntoOrigen} → {ruta.puntoDestino}
+                          </h3>
+                        </div>
                       </div>
 
                       <ul className="list">
-                        <li>📍 <strong>Dirección:</strong> {a.direccion || "No registrada"}</li>
-                        <li>📝 <strong>Descripción:</strong> {a.descripcion || "Sin descripción"}</li>
-                        <li>👤 <strong>Publicado por:</strong> {a.nombreUsuario || "Desconocido"}</li>
+                        <li>
+                          <FaMapMarkerAlt className="list-icon" />
+                          <span>
+                            <strong>Origen:</strong> {ruta.puntoOrigen}
+                          </span>
+                        </li>
+                        <li>
+                          <FaMapMarkerAlt className="list-icon" />
+                          <span>
+                            <strong>Destino:</strong> {ruta.puntoDestino}
+                          </span>
+                        </li>
+                        <li>
+                          <FaUsers className="list-icon" />
+                          <span>
+                            <strong>Cupos ida:</strong> {ruta.cuposIda} |{" "}
+                            <strong>vuelta:</strong> {ruta.cuposVuelta}
+                          </span>
+                        </li>
+                        <li>
+                          <FaClock className="list-icon" />
+                          <span>
+                            <strong>Salida:</strong>{" "}
+                            {new Date(ruta.horaSalida).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}{" "}
+                            {ruta.horaRegreso && (
+                              <>
+                                {" "}
+                                · <strong>Regreso:</strong>{" "}
+                                {new Date(
+                                  ruta.horaRegreso
+                                ).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </>
+                            )}
+                          </span>
+                        </li>
+                        <li>
+                          <FaCalendarAlt className="list-icon" />
+                          <span>
+                            <strong>Días:</strong>{" "}
+                            {ruta.diasRuta || "No especificado"}
+                          </span>
+                        </li>
                       </ul>
 
-                      {/* MAPA */}
-                      {lat && lon ? (
-                        <div style={{ height: "250px", width: "100%", borderRadius: "10px", marginTop: "10px" }}>
-                          <MapContainer
-                            center={[lat, lon]}
-                            zoom={15}
-                            style={{ height: "100%", width: "100%" }}
-                            scrollWheelZoom={false}
-                            dragging={false}
-                            doubleClickZoom={false}
-                            zoomControl={false}
-                          >
-                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                            <Marker
-                              position={[lat, lon]}
-                              icon={
-                                new L.Icon({
-                                  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-                                  iconSize: [32, 32],
-                                  iconAnchor: [16, 32]
-                                })
-                              }
-                            />
-                          </MapContainer>
-                        </div>
-                      ) : (
-                        <p style={{ color: "#888" }}>📍 Mapa no disponible</p>
-                      )}
-
-                      <div className="actions" style={{ marginTop: "12px" }}>
+                      <div className="actions">
                         <Link
-                          to={`/alojamientos/${a.idAlojamiento}`}
+                          to={`/rutas/${ruta.idRuta}`}
                           className="btn btn--dark"
                         >
                           Ver detalles
                         </Link>
 
+                        <Link to={`/chat/`} className="btn btn--light">
+                          Contactar
+                        </Link>
+
                         <button
-                          className="btn btn--light"
+                          className="btn btn--apply"
                           onClick={async () => {
                             try {
-                              await crearSolicitudAlojamiento(a.idAlojamiento);
-                              alert("Solicitud de alojamiento enviada correctamente ✅");
+                              await crearSolicitudRuta(ruta.idRuta);
+                              alert("Solicitud enviada correctamente ✅");
                             } catch (err) {
                               console.error(err);
                               alert("Error al enviar la solicitud ❌");
@@ -251,13 +251,151 @@ export default function Home() {
                         </button>
                       </div>
                     </article>
-                  );
-                })
+                  ))}
+                </div>
               )}
-            </div>
-          </section>
-        )}
-      </main>
-    </div>
+            </section>
+          )}
+
+          {/* ---------- Sección de Alojamientos ---------- */}
+          {tab === "alojamiento" && (
+            <section id="alojamientos" className="tab-pane active">
+              {alojamientosFiltrados.length === 0 ? (
+                <p className="empty-text">
+                  No se encontraron alojamientos con ese criterio.
+                </p>
+              ) : (
+                <div className="cards-2col">
+                  {alojamientosFiltrados.map((a) => {
+                    let lat = null;
+                    let lon = null;
+
+                    if (
+                      a.ubicacion &&
+                      a.ubicacion.includes("lat:") &&
+                      a.ubicacion.includes("lon:")
+                    ) {
+                      try {
+                        const latMatch = a.ubicacion.match(
+                          /lat:([0-9,\.\-]+)/i
+                        );
+                        const lonMatch = a.ubicacion.match(
+                          /lon:([0-9,\.\-]+)/i
+                        );
+                        if (latMatch && lonMatch) {
+                          lat = parseFloat(latMatch[1].replace(",", "."));
+                          lon = parseFloat(lonMatch[1].replace(",", "."));
+                        }
+                      } catch (err) {
+                        console.error("Error procesando coordenadas:", err);
+                      }
+                    }
+
+                    return (
+                      <article
+                        key={a.idAlojamiento}
+                        className="service-card"
+                      >
+                        <div className="card-head">
+                          <div className="card-icon bubble">
+                            <FaHomeIcon />
+                          </div>
+                          <div className="card-head-text">
+                            <span className="card-tag">Alojamiento</span>
+                            <h3 className="card-title">
+                              {a.titulo || "Alojamiento sin título"}
+                            </h3>
+                          </div>
+                        </div>
+
+                        <ul className="list">
+                          <li>
+                            <FaMapMarkerAlt className="list-icon" />
+                            <span>
+                              <strong>Dirección:</strong>{" "}
+                              {a.direccion || "No registrada"}
+                            </span>
+                          </li>
+                          <li>
+                            <FaBed className="list-icon" />
+                            <span>
+                              <strong>Descripción:</strong>{" "}
+                              {a.descripcion || "Sin descripción"}
+                            </span>
+                          </li>
+                          <li>
+                            <FaUserCircle className="list-icon" />
+                            <span>
+                              <strong>Publicado por:</strong>{" "}
+                              {a.nombreUsuario || "Desconocido"}
+                            </span>
+                          </li>
+                        </ul>
+
+                        {lat && lon ? (
+                          <div className="home-map-wrapper">
+                            <MapContainer
+                              center={[lat, lon]}
+                              zoom={15}
+                              scrollWheelZoom={false}
+                              dragging={false}
+                              doubleClickZoom={false}
+                              zoomControl={false}
+                              className="home-map-card"
+                            >
+                              <TileLayer
+                                attribution="&copy; OpenStreetMap"
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                              />
+                              <Marker
+                                position={[lat, lon]}
+                                icon={markerIcon}
+                              />
+                            </MapContainer>
+                          </div>
+                        ) : (
+                          <p className="map-unavailable">
+                            📍 Mapa no disponible
+                          </p>
+                        )}
+
+                        <div className="actions">
+                          <Link
+                            to={`/alojamientos/${a.idAlojamiento}`}
+                            className="btn btn--dark"
+                          >
+                            Ver detalles
+                          </Link>
+                          <button
+                            className="btn btn--apply"
+                            onClick={async () => {
+                              try {
+                                await crearSolicitudAlojamiento(
+                                  a.idAlojamiento
+                                );
+                                alert(
+                                  "Solicitud de alojamiento enviada correctamente ✅"
+                                );
+                              } catch (err) {
+                                console.error(err);
+                                alert(
+                                  "Error al enviar la solicitud de alojamiento ❌"
+                                );
+                              }
+                            }}
+                          >
+                            Aplicar
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+          )}
+        </main>
+      </div>
+    </>
   );
 }
