@@ -34,6 +34,100 @@ const LocationPicker = ({ setNuevaUbicacion }) => {
   return null;
 };
 
+// ====== MODAL DE EDITAR ALOJAMIENTO (BONITO) ======
+const EditarAlojamientoModal = ({ alojamiento, isOpen, onClose, onGuardar }) => {
+  const [form, setForm] = useState({
+    titulo: alojamiento?.titulo || "",
+    direccion: alojamiento?.direccion || "",
+    descripcion: alojamiento?.descripcion || "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onGuardar(alojamiento.idAlojamiento, form);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4">
+        <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">
+          Editar Alojamiento
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Título del alojamiento
+            </label>
+            <input
+              type="text"
+              name="titulo"
+              value={form.titulo}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+              placeholder="Ej. Habitación cómoda cerca de la U"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Dirección completa
+            </label>
+            <input
+              type="text"
+              name="direccion"
+              value={form.direccion}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+              placeholder="Ej. Cra 5 #10-20, Facatativá"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Descripción
+            </label>
+            <textarea
+              name="descripcion"
+              value={form.descripcion}
+              onChange={handleChange}
+              rows="4"
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none resize-none"
+              placeholder="Amplia habitación con baño privado, WiFi, cerca del campus..."
+            />
+          </div>
+
+          <div className="flex gap-4 pt-4">
+            <button
+              type="submit"
+              className="flex-1 bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-lg"
+            >
+              Guardar Cambios
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 bg-red-600 text-white py-3 rounded-lg font-bold hover:bg-red-700 transition"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const AlojamientoList = () => {
   const [alojamientos, setAlojamientos] = useState([]);
   const [titulo, setTitulo] = useState("");
@@ -42,6 +136,8 @@ const AlojamientoList = () => {
   const [nuevaUbicacion, setNuevaUbicacion] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [imagenes, setImagenes] = useState([]);
+  const [modalEditarAlojamiento, setModalEditarAlojamiento] = useState(false);
+  const [alojamientoAEditar, setAlojamientoAEditar] = useState(null);
 
   // 🔹 Cargar alojamientos desde la API
   const obtenerAlojamientos = async () => {
@@ -138,50 +234,39 @@ const AlojamientoList = () => {
   };
 
   // 🔹 Editar alojamiento (simple con prompt)
-  const handleEditar = async (alojamiento) => {
-    const nuevoTitulo = prompt(
-      "Ingrese el nuevo título:",
-      alojamiento.titulo || ""
+  // Abrir modal
+const abrirModalEditarAlojamiento = (alojamiento) => {
+  setAlojamientoAEditar(alojamiento);
+  setModalEditarAlojamiento(true);
+};
+
+// Guardar cambios
+const handleGuardarEdicionAlojamiento = async (idAlojamiento, datos) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(
+      `https://unirumbobakend.onrender.com/api/Alojamiento/${idAlojamiento}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(datos),
+      }
     );
-    if (nuevoTitulo === null) return;
 
-    const nuevaDireccion = prompt(
-      "Ingrese la nueva dirección:",
-      alojamiento.direccion || ""
-    );
-    if (nuevaDireccion === null) return;
+    if (!res.ok) throw new Error("Error al actualizar");
 
-    const nuevaDescripcion = prompt(
-      "Ingrese la nueva descripción:",
-      alojamiento.descripcion || ""
-    );
-    if (nuevaDescripcion === null) return;
-
-    try {
-      const payload = {
-        titulo: nuevoTitulo,
-        direccion: nuevaDireccion,
-        descripcion: nuevaDescripcion,
-      };
-
-      const res = await fetch(
-        `https://unirumbobakend.onrender.com/api/Alojamiento/${alojamiento.idAlojamiento}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (!res.ok) throw new Error("Error al actualizar alojamiento");
-
-      alert("Alojamiento actualizado correctamente");
-      obtenerAlojamientos();
-    } catch (error) {
-      console.error(error);
-      alert("Error al actualizar alojamiento");
-    }
-  };
+    alert("Alojamiento actualizado correctamente");
+    obtenerAlojamientos(); // ← tu función para recargar
+    setModalEditarAlojamiento(false);
+    setAlojamientoAEditar(null);
+  } catch (error) {
+    console.error(error);
+    alert("Error al actualizar el alojamiento");
+  }
+};
 
   return (
     <>
@@ -388,13 +473,12 @@ const AlojamientoList = () => {
                     )}
 
                     <footer className="aloj-card-actions">
-                      <button
-                        onClick={() => handleEditar(a)}
-                        className="btn-outline"
-                      >
-                        <FaEdit />
-                        Editar
-                      </button>
+                    <button
+                      onClick={() => abrirModalEditarAlojamiento(alojamiento)}
+                      className="btn-editar"
+                    >
+                      Editar
+                    </button>
                       <button
                         onClick={() => handleEliminar(a.idAlojamiento)}
                         className="btn-danger"
@@ -409,6 +493,15 @@ const AlojamientoList = () => {
             )}
           </section>
         </main>
+        {/* MODAL EDITAR ALOJAMIENTO */}
+        {alojamientoAEditar && (
+          <EditarAlojamientoModal
+            alojamiento={alojamientoAEditar}
+            isOpen={modalEditarAlojamiento}
+            onClose={() => setModalEditarAlojamiento(false)}
+            onGuardar={handleGuardarEdicionAlojamiento}
+          />
+        )}
       </div>
     </>
   );
