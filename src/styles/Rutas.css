@@ -1,34 +1,93 @@
 /* Contenedor principal de la página */
 .rutas-page {
-  background: #fff;
   min-height: 100vh;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-.input-format{
-    margin-right: 110opx;
-    width: 380px;
+  padding: 1.5rem 2.5rem 2.5rem;
+  background-color: #f3f4f6;
 }
 
-/* Formulario de nueva ruta */
+/* Fuente global UniRumbo */
+.rutas-page,
+.rutas-page * {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+}
+
+/* Contenido centrado */
+.rutas-content {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header de la sección */
+.rutas-header {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Título principal */
+.rutas-title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.rutas-title-icon {
+  font-size: 1.8rem;
+  color: #00a99d;
+}
+
+/* Lista de rutas */
+.rutas-list {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* =========================
+   Input genérico (ya existía)
+   ========================= */
+.input-format {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  outline: none;
+  transition: 0.15s ease;
+}
+
+/* (corrección del typo anterior margin-right: 110opx) */
+.input-format:focus {
+  border-color: #00a99d;
+  box-shadow: 0 0 0 1px rgba(0, 169, 157, 0.18);
+}
+
+/* =========================
+   Formulario de nueva ruta (rutas-form original, lo dejamos)
+   ========================= */
 .rutas-form {
-  background: #ffffffcc;
+  background: #ffffff;
   padding: 20px;
   border-radius: 15px;
-  border: 1px solid #007bff;
+  border: 1px solid #00a99d;
   display: flex;
   flex-direction: column;
   gap: 10px;
   max-width: 600px;
   margin: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .rutas-form h3 {
-  color: #00482B;
+  color: #00482b;
   margin-bottom: 10px;
 }
 
@@ -36,7 +95,7 @@
 .rutas-form select {
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #d1d5db;
   width: 100%;
   font-size: 1rem;
 }
@@ -44,8 +103,8 @@
 .rutas-form input:focus,
 .rutas-form select:focus {
   outline: none;
-  border-color: #27ae60;
-  box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+  border-color: #00a99d;
+  box-shadow: 0 0 5px rgba(0, 169, 157, 0.4);
 }
 
 /* Checkboxes de días */
@@ -63,202 +122,322 @@
   font-size: 0.95rem;
 }
 
-/* Botón de crear ruta */
+/* Botón de crear ruta (en rutas-form) */
 .rutas-form button {
-  background: #007bff;
+  background: linear-gradient(135deg, #00a99d, #79c000);
   color: #fff;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.3s;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .rutas-form button:hover {
-  background: #0056b3;
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.24);
 }
 
-/* Botón alternar mostrar formulario */
+/* =========================
+   Botón alternar mostrar formulario (definición original)
+   ========================= */
 .btn-toggle-form {
-  background: #27ae60;
+  background-color: #00a99d;
   color: #fff;
-  padding: 10px 15px;
+  padding: 0.5rem 1.4rem;
   border: none;
-  width: 200px;
-  text-align: center;
-  border-radius: 8px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.3s;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
 }
 
 .btn-toggle-form:hover {
-  background: #1e8449;
+  background-color: #079489;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
 }
 
-/* Card de cada ruta */
+/* =========================
+   Card de cada ruta (original)
+   ========================= */
 .ruta-card {
-  background: #ffffffcc;
-  border-radius: 15px;
-  border: 1px solid #ccc;
-  padding: 15px;
-  max-width: 800px;
-  margin: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 1.1rem 1.3rem 1.2rem;
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
 }
 
 .ruta-card strong {
   color: #34495e;
 }
 
+/* Header dentro de la card */
+.ruta-card-head h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ruta-icon {
+  color: #00a99d;
+}
+
+/* Textos de detalle */
+.ruta-text {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-top: 0.15rem;
+}
+
+.ruta-inline-icon {
+  margin-right: 0.35rem;
+  color: #00a99d;
+}
+
+/* Mapa mini dentro de la ruta */
 .ruta-card .mapa-mini {
-  border: 2px solid #00482B;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
   margin-top: 10px;
   height: 240px;
+
+  border: 3px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #00a99d, #79c000) border-box;
 }
 
 /* Botones de acciones de cada ruta */
 .ruta-card .ruta-actions {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 10px;
 }
 
+/* Botón editar */
 .ruta-card .btn-editar {
-  background: #f39c12;
+  background: #00a99d;
   color: #fff;
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.3s;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 0.2s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .ruta-card .btn-editar:hover {
-  background: #d68910;
+  background: #079489;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
 }
 
+/* Botón eliminar */
 .ruta-card .btn-eliminar {
-  background: #e74c3c;
+  background: #e11d48;
   color: #fff;
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.3s;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 0.2s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .ruta-card .btn-eliminar:hover {
-  background: #c0392b;
+  background: #be123c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
 }
 
+/* Botón trazar */
 .ruta-card .btn-trazar {
-  background: #007bff;
+  background: #2563eb;
   color: #fff;
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.3s;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 0.2s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .ruta-card .btn-trazar:hover {
-  background: #0056b3;
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
 }
 
-/* Mensaje de no hay rutas */
+/* Mensaje de no hay rutas (ya existía) */
 .no-rutas {
   text-align: center;
-  font-size: 1rem;
-  color: #7f8c8d;
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-top: 1.2rem;
 }
 
-
-/* src/styles/Rutas.css */
+/* ========================================
+   Formulario form-ruta (definición original + adaptada)
+   ======================================== */
 
 /* Contenedor del formulario */
 .form-ruta {
-  background: #f5f8ff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
-  max-width: 400px;
+  background: #ffffff;
+  padding: 1.4rem 1.5rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.9rem;
   transition: all 0.3s ease;
 }
 
 /* Título del formulario */
 .form-ruta h3 {
-  margin-bottom: 12px;
-  color: #00482B;
-  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #111827;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 /* Inputs y select */
 .form-ruta input,
 .form-ruta select {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
   outline: none;
-  font-size: 14px;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
 }
 
 .form-ruta input:focus,
 .form-ruta select:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  border-color: #00a99d;
+  box-shadow: 0 0 0 1px rgba(0, 169, 157, 0.2);
 }
 
-/* Checkbox y labels */
+/* Label del formulario */
 .form-ruta label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 14px;
-  color: #333;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #374151;
 }
 
-/* Botón crear ruta */
+/* Ícono de label reutilizado */
+.label-icon {
+  color: #00a99d;
+  font-size: 0.95rem;
+}
+
+/* Días de la semana dentro de form-ruta */
+.form-ruta .dias-semana {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dias-semana-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.35rem;
+}
+
+/* Botón crear ruta de form-ruta */
+.btn-crear-ruta,
 .form-ruta button {
-  background-color: #00482B;
+  background: linear-gradient(135deg, #00a99d, #79c000);
   color: #fff;
-  padding: 10px 0;
+  padding: 0.6rem 1.4rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 999px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.9rem;
+  align-self: flex-end;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
+.btn-crear-ruta:hover,
 .form-ruta button:hover {
-  background-color: #00482B;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.24);
 }
 
-/* Botón Nueva Ruta / Cancelar */
-.btn-toggle-form {
-  background-color: #00482B;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
+/* Reutilizamos layout de filas y grupos como en otras vistas */
+.form-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
 }
 
-.btn-toggle-form:hover {
-  background-color: #117a8b;
-  box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+.form-group {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width: 768px) {
+  .rutas-page {
+    padding: 1rem 1rem 2rem;
+  }
+
+  .rutas-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rutas-title {
+    font-size: 1.4rem;
+  }
+
+  .ruta-card {
+    padding: 1rem 1rem 1.1rem;
+  }
+
+  .form-ruta {
+    padding: 1.1rem 1.1rem 1.3rem;
+  }
 }
