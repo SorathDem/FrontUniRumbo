@@ -13,31 +13,53 @@ export default function PasswordRecovery() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email.trim()) {
-      setError("Por favor ingresa tu correo");
-      return;
+  e.preventDefault();
+
+  if (!email.trim()) {
+    setError("Por favor ingresa tu correo");
+    return;
+  }
+
+  setLoading(true);
+  setMessage("");
+  setError("");
+
+  try {
+    const response = await axios.post(
+      "https://unirumbobakend.onrender.com/api/Auth/forgot-password",
+      { email: email.trim() }, // ← FORZAMOS EL FORMATO EXACTO
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    console.log("Respuesta del backend:", response.data); // ← para ver qué responde
+
+    setMessage("¡Listo! Revisa tu correo (incluida la carpeta de spam). Te enviamos el enlace.");
+    setEmail("");
+  } catch (err) {
+    console.error("Error completo:", err.response || err);
+
+    let msg = "Error desconocido";
+    if (err.response) {
+      if (err.response.status === 400) {
+        msg = err.response.data?.message || "El correo no está registrado o no es válido.";
+      } else if (err.response.status === 404) {
+        msg = "Usuario no encontrado.";
+      } else {
+        msg = "Error del servidor. Inténtalo más tarde.";
+      }
+    } else if (err.request) {
+      msg = "No se pudo conectar al servidor.";
     }
 
-    setLoading(true);
-    setMessage("");
-    setError("");
-
-    try {
-      await axios.post(
-        "https://unirumbobakend.onrender.com/api/Auth/forgot-password",
-        { email }
-      );
-
-      setMessage("¡Perfecto! Revisa tu bandeja de entrada (y spam). Te enviamos el enlace para recuperar tu contraseña.");
-      setEmail("");
-    } catch (err) {
-      const msg = err.response?.data?.message || "Ocurrió un error. Inténtalo más tarde.";
-      setError(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setError(msg);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="recovery-container">
