@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 import HeaderAdmin from "./HeaderAdmin";
 import "../styles/AdminUsuarios.css";
+import { FaFilePdf } from "react-icons/fa";
 
 const API_URL = "https://unirumbobakend.onrender.com/api/Usuarios";
 const API_ROLES = "https://unirumbobakend.onrender.com/api/Rol";
 const API_SEDES = "https://unirumbobakend.onrender.com/api/Sede";
+const API_REPORTE_USUARIOS =
+  "https://unirumbobakend.onrender.com/api/Reportes/usuarios-pdf";
 
 const Adm = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -22,6 +25,15 @@ const Adm = () => {
     idSede: "",
   });
   const [usuarioEditando, setUsuarioEditando] = useState(null);
+
+  // 👉 usuario logueado (lo usamos para usuarioGenerador)
+  const usuarioActual = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("usuario"));
+    } catch {
+      return null;
+    }
+  })();
 
   // Obtener datos iniciales
   const obtenerUsuarios = async () => {
@@ -133,6 +145,20 @@ const Adm = () => {
     }
   };
 
+  // 🔹 Generar reporte PDF con usuarioGenerador
+  const generarReporteUsuarios = () => {
+    // puedes ajustar qué dato mandas: nombre, correo, rol, etc.
+    const nombreGenerador =
+      usuarioActual?.nombre || usuarioActual?.correo || "Administrador";
+
+    const url = `${API_REPORTE_USUARIOS}?usuarioGenerador=${encodeURIComponent(
+      nombreGenerador
+    )}`;
+
+    // Abre el PDF ya con datos en nueva pestaña
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <>
       {/* Fuente Poppins */}
@@ -148,15 +174,28 @@ const Adm = () => {
           <div className="admin-usuarios-header">
             <h2 className="admin-usuarios-title">Administración de Usuarios</h2>
 
-            <button
-              className="btn-gradient"
-              onClick={() => {
-                setMostrarFormulario(!mostrarFormulario);
-                setUsuarioEditando(null);
-              }}
-            >
-              {mostrarFormulario ? "Cancelar" : "Crear Nuevo Usuario"}
-            </button>
+            {/* Botones de acciones */}
+            <div className="admin-usuarios-actions">
+              <button
+                className="btn-report"
+                type="button"
+                onClick={generarReporteUsuarios}
+              >
+                <FaFilePdf />
+                Generar Reporte
+              </button>
+
+              <button
+                className="btn-gradient"
+                type="button"
+                onClick={() => {
+                  setMostrarFormulario(!mostrarFormulario);
+                  setUsuarioEditando(null);
+                }}
+              >
+                {mostrarFormulario ? "Cancelar" : "Crear Nuevo Usuario"}
+              </button>
+            </div>
           </div>
 
           {/* Formulario crear usuario */}
