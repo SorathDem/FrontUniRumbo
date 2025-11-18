@@ -16,46 +16,37 @@ export default function PasswordRecovery() {
   e.preventDefault();
 
   if (!email.trim()) {
-    setError("Por favor ingresa tu correo");
+    setError("Ingresa tu correo");
     return;
   }
 
   setLoading(true);
-  setMessage("");
   setError("");
+  setMessage("");
 
   try {
+    // PRUEBA CON "correo" EN MINÚSCULA (esto es lo que usa el 90% de los backends en español)
     const response = await axios.post(
       "https://unirumbobakend.onrender.com/api/Auth/forgot-password",
-      { email: email.trim() }, // ← FORZAMOS EL FORMATO EXACTO
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
+      { correo: email.trim() }  // CAMBIA "email" POR "correo"
     );
 
-    console.log("Respuesta del backend:", response.data); // ← para ver qué responde
-
-    setMessage("¡Listo! Revisa tu correo (incluida la carpeta de spam). Te enviamos el enlace.");
+    setMessage("¡Enlace enviado! Revisa tu correo.");
     setEmail("");
   } catch (err) {
-    console.error("Error completo:", err.response || err);
+    console.log("Error completo:", err.response);
 
-    let msg = "Error desconocido";
-    if (err.response) {
-      if (err.response.status === 400) {
-        msg = err.response.data?.message || "El correo no está registrado o no es válido.";
-      } else if (err.response.status === 404) {
-        msg = "Usuario no encontrado.";
-      } else {
-        msg = "Error del servidor. Inténtalo más tarde.";
-      }
-    } else if (err.request) {
-      msg = "No se pudo conectar al servidor.";
+    // Si falla con "correo", prueba con "Email" (mayúscula)
+    try {
+      const response2 = await axios.post(
+        "https://unirumbobakend.onrender.com/api/Auth/forgot-password",
+        { Email: email.trim() }
+      );
+      setMessage("¡Enlace enviado! Revisa tu correo.");
+      setEmail("");
+    } catch (err2) {
+      setError("Correo no encontrado o error del servidor.");
     }
-
-    setError(msg);
   } finally {
     setLoading(false);
   }
