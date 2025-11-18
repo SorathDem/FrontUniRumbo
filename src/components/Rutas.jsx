@@ -1,10 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+} from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import HeaderConductor from "./HeaderConductor";
 import "../styles/Rutas.css";
+
+import {
+  FaRoute,
+  FaPlusCircle,
+  FaClock,
+  FaCarSide,
+  FaMotorcycle,
+  FaMapMarkerAlt,
+  FaUsers,
+  FaTrashAlt,
+  FaEdit,
+  FaDrawPolygon,
+} from "react-icons/fa";
 
 const API_URL = "https://unirumbobakend.onrender.com/api/Rutas";
 
@@ -23,8 +42,6 @@ const iconDestino = new L.Icon({
 export default function MapaRutas() {
   const [rutas, setRutas] = useState([]);
   const [trazadas, setTrazadas] = useState({});
-  const [modalEditarRuta, setModalEditarRuta] = useState(false);
-  const [rutaActualEditar, setRutaActualEditar] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [nuevaRuta, setNuevaRuta] = useState({
     puntoOrigen: "",
@@ -39,7 +56,16 @@ export default function MapaRutas() {
     diasRuta: "",
   });
   const [diasSeleccionados, setDiasSeleccionados] = useState([]);
-  const diasSemana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+
+  const diasSemana = [
+    "lunes",
+    "martes",
+    "miércoles",
+    "jueves",
+    "viernes",
+    "sábado",
+    "domingo",
+  ];
 
   const idUsuarioLogueado = Number(localStorage.getItem("idUsuario") || 0);
   const centerDefault = [4.60971, -74.08175]; // Bogotá
@@ -54,15 +80,29 @@ export default function MapaRutas() {
       setRutas(
         data.map((r) => ({
           idRuta: r.idRuta ?? r.IdRuta ?? r.id ?? r.Id,
-          puntoOrigen: r.puntoOrigen ?? r.PuntoOrigen ?? r.origen ?? r.Origen ?? r.punto_origen,
-          puntoDestino: r.puntoDestino ?? r.PuntoDestino ?? r.destino ?? r.Destino ?? r.punto_destino,
-          horaSalida: r.horaSalida ?? r.HoraSalida ?? r.hora_salida ?? r.HoraSalida,
-          horaRegreso: r.horaRegreso ?? r.HoraRegreso ?? r.hora_regreso ?? r.HoraRegreso,
-          desVehiculo: r.desVehiculo ?? r.desVehiculo ?? r.desVehiculo ?? r.desVehiculo,
+          puntoOrigen:
+            r.puntoOrigen ??
+            r.PuntoOrigen ??
+            r.origen ??
+            r.Origen ??
+            r.punto_origen,
+          puntoDestino:
+            r.puntoDestino ??
+            r.PuntoDestino ??
+            r.destino ??
+            r.Destino ??
+            r.punto_destino,
+          horaSalida:
+            r.horaSalida ?? r.HoraSalida ?? r.hora_salida ?? r.HoraSalida,
+          horaRegreso:
+            r.horaRegreso ?? r.HoraRegreso ?? r.hora_regreso ?? r.HoraRegreso,
+          desVehiculo: r.desVehiculo ?? r.DesVehiculo ?? "",
           cuposIda: r.cuposIda ?? r.CuposIda ?? r.cupos_ida ?? r.CuposIda,
-          cuposVuelta: r.cuposVuelta ?? r.CuposVuelta ?? r.cupos_vuelta ?? r.CuposVuelta,
+          cuposVuelta:
+            r.cuposVuelta ?? r.CuposVuelta ?? r.cupos_vuelta ?? r.CuposVuelta,
           idUsuario: r.idUsuario ?? r.IdUsuario ?? r.id_usuario ?? r.IdUsuario,
-          idVehiculo: r.idVehiculo ?? r.IdVehiculo ?? r.id_vehiculo ?? r.IdVehiculo,
+          idVehiculo:
+            r.idVehiculo ?? r.IdVehiculo ?? r.id_vehiculo ?? r.IdVehiculo,
           diasRuta: r.diasRuta ?? r.DiasRuta ?? r.dias_ruta ?? r.DiasRuta,
         }))
       );
@@ -82,7 +122,9 @@ export default function MapaRutas() {
   const geocodificar = async (direccion) => {
     try {
       const res = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          direccion
+        )}`
       );
       if (res.data && res.data.length > 0) {
         return [parseFloat(res.data[0].lat), parseFloat(res.data[0].lon)];
@@ -103,7 +145,10 @@ export default function MapaRutas() {
         `https://router.project-osrm.org/route/v1/driving/${origen[1]},${origen[0]};${destino[1]},${destino[0]}?overview=full&geometries=geojson`
       );
       if (res.data?.routes && res.data.routes.length > 0) {
-        return res.data.routes[0].geometry.coordinates.map((c) => [c[1], c[0]]);
+        return res.data.routes[0].geometry.coordinates.map((c) => [
+          c[1],
+          c[0],
+        ]);
       }
       return null;
     } catch (error) {
@@ -140,7 +185,9 @@ export default function MapaRutas() {
   // Manejar días seleccionados
   // =========================
   const manejarDiaSeleccionado = (dia) => {
-    setDiasSeleccionados((prev) => (prev.includes(dia) ? prev.filter((d) => d !== dia) : [...prev, dia]));
+    setDiasSeleccionados((prev) =>
+      prev.includes(dia) ? prev.filter((d) => d !== dia) : [...prev, dia]
+    );
   };
 
   // =========================
@@ -152,8 +199,12 @@ export default function MapaRutas() {
 
     try {
       const hoy = new Date().toISOString().split("T")[0];
-      const horaSalidaCompleta = nuevaRuta.horaSalida ? `${hoy}T${nuevaRuta.horaSalida}` : null;
-      const horaRegresoCompleta = nuevaRuta.horaRegreso ? `${hoy}T${nuevaRuta.horaRegreso}` : null;
+      const horaSalidaCompleta = nuevaRuta.horaSalida
+        ? `${hoy}T${nuevaRuta.horaSalida}`
+        : null;
+      const horaRegresoCompleta = nuevaRuta.horaRegreso
+        ? `${hoy}T${nuevaRuta.horaRegreso}`
+        : null;
 
       const payload = {
         puntoOrigen: nuevaRuta.puntoOrigen,
@@ -196,7 +247,7 @@ export default function MapaRutas() {
   };
 
   // =========================
-  // Editar ruta
+  // Editar ruta (simple con prompt)
   // =========================
   const handleEditarRuta = async (ruta) => {
     const nuevaHoraSalida = prompt(
@@ -217,10 +268,16 @@ export default function MapaRutas() {
     const nuevosCuposVuelta = prompt("Cupos vuelta:", ruta.cuposVuelta ?? "");
     if (nuevosCuposVuelta === null) return;
 
-    const nuevoIdVehiculo = prompt("Tipo de vehículo (1=Carro, 0=Moto):", ruta.idVehiculo ?? "");
+    const nuevoIdVehiculo = prompt(
+      "Tipo de vehículo (1=Carro, 0=Moto):",
+      ruta.idVehiculo ?? ""
+    );
     if (nuevoIdVehiculo === null) return;
 
-    const nuevosDiasRuta = prompt("Días de ruta (coma separados):", ruta.diasRuta ?? "");
+    const nuevosDiasRuta = prompt(
+      "Días de ruta (coma separados):",
+      ruta.diasRuta ?? ""
+    );
     if (nuevosDiasRuta === null) return;
 
     try {
@@ -272,135 +329,340 @@ export default function MapaRutas() {
   // =========================
   // Filtrar rutas del usuario logueado
   // =========================
-  const misRutas = rutas.filter((ruta) => Number(ruta.idUsuario) === idUsuarioLogueado);
+  const misRutas = rutas.filter(
+    (ruta) => Number(ruta.idUsuario) === idUsuarioLogueado
+  );
 
-  // =========================
-  // Render
-  // =========================
   return (
-   <div className="rutas-page">
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <HeaderConductor />
+    <>
+      {/* Fuente Poppins global para esta vista */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
 
-      {/* Formulario Crear Ruta */}
-{mostrarFormulario && (
-  <form onSubmit={crearRuta} className="form-ruta">
-    <h3>Crear nueva ruta</h3>
-    <input 
-      className="input-format"
-      placeholder="Origen"
-      value={nuevaRuta.puntoOrigen}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, puntoOrigen: e.target.value })}
-      required
-    />
-    <input
-      className="input-format"
-      placeholder="Destino"
-      value={nuevaRuta.puntoDestino}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, puntoDestino: e.target.value })}
-      required
-    />
-    <input
-    className="input-format"
-      type="time"
-      placeholder="Hora salida"
-      value={nuevaRuta.horaSalida}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, horaSalida: e.target.value })}
-    />
-    <input
-    className="input-format"
-      type="time"
-      placeholder="Hora regreso"
-      value={nuevaRuta.horaRegreso}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, horaRegreso: e.target.value })}
-    />
-    <input
-    className="input-format"
-      placeholder="Descripción vehículo"
-      value={nuevaRuta.desVehiculo}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, desVehiculo: e.target.value })}
-    />
-    <input
-    className="input-format"
-      type="number"
-      placeholder="Cupos ida"
-      value={nuevaRuta.cuposIda}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, cuposIda: e.target.value })}
-    />
-    <input
-    className="input-format"
-      type="number"
-      placeholder="Cupos vuelta"
-      value={nuevaRuta.cuposVuelta}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, cuposVuelta: e.target.value })}
-    />
-    <select
-    className="input-format"
-      value={nuevaRuta.idVehiculo}
-      onChange={(e) => setNuevaRuta({ ...nuevaRuta, idVehiculo: e.target.value })}
-    >
-      <option value="">Seleccionar vehículo</option>
-      <option value="1">Carro</option>
-      <option value="0">Moto</option>
-    </select>
-    <div>
-      {diasSemana.map((dia) => (
-        <label key={dia}>
-          <input
-            type="checkbox"
-            checked={diasSeleccionados.includes(dia)}
-            onChange={() => manejarDiaSeleccionado(dia)}
-          />
-          {dia}
-        </label>
-      ))}
-    </div>
-    <button type="submit">Crear Ruta</button>
-  </form>
-)}
+      <div className="rutas-page">
+        <HeaderConductor />
 
-<button className="btn-toggle-form" onClick={() => setMostrarFormulario((prev) => !prev)} style={{ marginTop: 10 }}>
-  {mostrarFormulario ? "Cancelar" : "Nueva Ruta"}
-</button>
+        <div className="rutas-content">
+          {/* Header de sección */}
+          <header className="rutas-header">
+            <h2 className="rutas-title">
+              <FaRoute className="rutas-title-icon" />
+              Mis rutas
+            </h2>
 
+            <button
+              className="btn-toggle-form"
+              onClick={() => setMostrarFormulario((prev) => !prev)}
+            >
+              <FaPlusCircle />
+              {mostrarFormulario ? "Cancelar" : "Nueva ruta"}
+            </button>
+          </header>
 
-      {/* Listado de rutas */}
-      {misRutas.length === 0 && <p>No tienes rutas registradas.</p>}
+          {/* Formulario Crear Ruta */}
+          {mostrarFormulario && (
+            <form onSubmit={crearRuta} className="form-ruta">
+              <h3>Crear nueva ruta</h3>
 
-      {misRutas.map((r) => {
-        const id = r.idRuta;
-        return (
-          <div key={id} style={{ padding: 10, border: "1px solid #ccc", borderRadius: 5, backgroundColor: "#fff" }}>
-            <strong>Origen:</strong> {r.puntoOrigen}<br />
-            <strong>Destino:</strong> {r.puntoDestino}<br />
-            <strong>Hora salida:</strong> {r.horaSalida ? new Date(r.horaSalida).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "N/A"}<br />
-            <strong>Hora regreso:</strong> {r.horaRegreso ? new Date(r.horaRegreso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "N/A"}<br />
-            <strong>Descripción vehículo:</strong> {r.desVehiculo}<br />
-            <strong>Cupos ida:</strong> {r.cuposIda}<br />
-            <strong>Cupos vuelta:</strong> {r.cuposVuelta}<br />
-            <strong>Tipo Vehículo:</strong> {r.idVehiculo === 1 ? "Carro 🚗" : "Moto 🏍️"}<br />
-            <strong>Días Ruta:</strong> {r.diasRuta ?? "No especificado"}<br />
+              <div className="form-row">
+                <input
+                  className="input-format"
+                  placeholder="Origen (ej. Funza, Mosquera)"
+                  value={nuevaRuta.puntoOrigen}
+                  onChange={(e) =>
+                    setNuevaRuta({
+                      ...nuevaRuta,
+                      puntoOrigen: e.target.value,
+                    })
+                  }
+                  required
+                />
 
-            {/* Mini mapa */}
-            <div style={{ border: "1px solid #007bff", borderRadius: 5, overflow: "hidden", marginTop: 10 }}>
-              <MapContainer center={trazadas[id]?.origen || centerDefault} zoom={8} style={{ height: "240px", width: "100%" }}>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
-                {trazadas[id]?.camino && <Polyline positions={trazadas[id].camino} weight={4} />}
-                {trazadas[id]?.origen && <Marker position={trazadas[id].origen} icon={iconOrigen}><Popup>Origen: {r.puntoOrigen}</Popup></Marker>}
-                {trazadas[id]?.destino && <Marker position={trazadas[id].destino} icon={iconDestino}><Popup>Destino: {r.puntoDestino}</Popup></Marker>}
-              </MapContainer>
+                <input
+                  className="input-format"
+                  placeholder="Destino (ej. UdeC Facatativá)"
+                  value={nuevaRuta.puntoDestino}
+                  onChange={(e) =>
+                    setNuevaRuta({
+                      ...nuevaRuta,
+                      puntoDestino: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    <FaClock className="label-icon" />
+                    Hora salida
+                  </label>
+                  <input
+                    className="input-format"
+                    type="time"
+                    value={nuevaRuta.horaSalida}
+                    onChange={(e) =>
+                      setNuevaRuta({
+                        ...nuevaRuta,
+                        horaSalida: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <FaClock className="label-icon" />
+                    Hora regreso
+                  </label>
+                  <input
+                    className="input-format"
+                    type="time"
+                    value={nuevaRuta.horaRegreso}
+                    onChange={(e) =>
+                      setNuevaRuta({
+                        ...nuevaRuta,
+                        horaRegreso: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    <FaCarSide className="label-icon" />
+                    Descripción vehículo
+                  </label>
+                  <input
+                    className="input-format"
+                    placeholder="Ej. Mazda 3 blanco"
+                    value={nuevaRuta.desVehiculo}
+                    onChange={(e) =>
+                      setNuevaRuta({
+                        ...nuevaRuta,
+                        desVehiculo: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <FaUsers className="label-icon" />
+                    Cupos ida
+                  </label>
+                  <input
+                    className="input-format"
+                    type="number"
+                    min="0"
+                    value={nuevaRuta.cuposIda}
+                    onChange={(e) =>
+                      setNuevaRuta({
+                        ...nuevaRuta,
+                        cuposIda: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <FaUsers className="label-icon" />
+                    Cupos vuelta
+                  </label>
+                  <input
+                    className="input-format"
+                    type="number"
+                    min="0"
+                    value={nuevaRuta.cuposVuelta}
+                    onChange={(e) =>
+                      setNuevaRuta({
+                        ...nuevaRuta,
+                        cuposVuelta: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    <FaMotorcycle className="label-icon" />
+                    Tipo de vehículo
+                  </label>
+                  <select
+                    className="input-format"
+                    value={nuevaRuta.idVehiculo}
+                    onChange={(e) =>
+                      setNuevaRuta({
+                        ...nuevaRuta,
+                        idVehiculo: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">Seleccionar vehículo</option>
+                    <option value="1">Carro</option>
+                    <option value="0">Moto</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group dias-semana">
+                  <label>
+                    <FaMapMarkerAlt className="label-icon" />
+                    Días de la ruta
+                  </label>
+                  <div className="dias-semana-checkboxes">
+                    {diasSemana.map((dia) => (
+                      <label key={dia}>
+                        <input
+                          type="checkbox"
+                          checked={diasSeleccionados.includes(dia)}
+                          onChange={() => manejarDiaSeleccionado(dia)}
+                        />
+                        {dia}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" className="btn-crear-ruta">
+                Crear ruta
+              </button>
+            </form>
+          )}
+
+          {/* Listado de rutas */}
+          {misRutas.length === 0 ? (
+            <p className="no-rutas">No tienes rutas registradas.</p>
+          ) : (
+            <div className="rutas-list">
+              {misRutas.map((r) => {
+                const id = r.idRuta;
+                const infoTrazada = trazadas[id];
+
+                return (
+                  <article key={id} className="ruta-card">
+                    <div className="ruta-card-head">
+                      <div>
+                        <h3>
+                          <FaRoute className="ruta-icon" />
+                          {r.puntoOrigen} → {r.puntoDestino}
+                        </h3>
+                        <p className="ruta-text">
+                          <FaClock className="ruta-inline-icon" />
+                          Salida:{" "}
+                          {r.horaSalida
+                            ? new Date(r.horaSalida).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
+                            : "N/A"}{" "}
+                          | Regreso:{" "}
+                          {r.horaRegreso
+                            ? new Date(r.horaRegreso).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
+                            : "N/A"}
+                        </p>
+                        <p className="ruta-text">
+                          <FaCarSide className="ruta-inline-icon" />
+                          Vehículo: {r.desVehiculo || "Sin descripción"} (
+                          {r.idVehiculo === 1 ? "Carro 🚗" : "Moto 🏍️"})
+                        </p>
+                        <p className="ruta-text">
+                          <FaUsers className="ruta-inline-icon" />
+                          Cupos ida: {r.cuposIda ?? 0} | Cupos vuelta:{" "}
+                          {r.cuposVuelta ?? 0}
+                        </p>
+                        <p className="ruta-text">
+                          <FaMapMarkerAlt className="ruta-inline-icon" />
+                          Días: {r.diasRuta ?? "No especificado"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Mini mapa */}
+                    <div className="mapa-mini">
+                      <MapContainer
+                        center={infoTrazada?.origen || centerDefault}
+                        zoom={10}
+                        scrollWheelZoom={false}
+                        dragging={true}
+                        style={{ height: "100%", width: "100%" }}
+                      >
+                        <TileLayer
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                          attribution="&copy; OpenStreetMap contributors"
+                        />
+                        {infoTrazada?.camino && (
+                          <Polyline
+                            positions={infoTrazada.camino}
+                            weight={4}
+                          />
+                        )}
+                        {infoTrazada?.origen && (
+                          <Marker
+                            position={infoTrazada.origen}
+                            icon={iconOrigen}
+                          >
+                            <Popup>Origen: {r.puntoOrigen}</Popup>
+                          </Marker>
+                        )}
+                        {infoTrazada?.destino && (
+                          <Marker
+                            position={infoTrazada.destino}
+                            icon={iconDestino}
+                          >
+                            <Popup>Destino: {r.puntoDestino}</Popup>
+                          </Marker>
+                        )}
+                      </MapContainer>
+                    </div>
+
+                    {/* Botones */}
+                    <div className="ruta-actions">
+                      <button
+                        onClick={() => handleEditarRuta(r)}
+                        className="btn-editar"
+                        type="button"
+                      >
+                        <FaEdit />
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleEliminarRuta(r.idRuta)}
+                        className="btn-eliminar"
+                        type="button"
+                      >
+                        <FaTrashAlt />
+                        Eliminar
+                      </button>
+                      <button
+                        onClick={() => trazarRuta(r)}
+                        className="btn-trazar"
+                        type="button"
+                      >
+                        <FaDrawPolygon />
+                        Trazar ruta
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
-
-            {/* Botones */}
-            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              <button onClick={() => handleEditarRuta(r)} className="btn-editar">Editar</button>
-              <button onClick={() => handleEliminarRuta(r.idRuta)} className="btn-editar">Eliminar</button>
-              <button onClick={() => trazarRuta(r)} className="btn-editar">Trazar Ruta</button>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-    </div> 
+          )}
+        </div>
+      </div>
+    </>
   );
 }
