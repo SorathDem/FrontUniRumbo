@@ -29,3 +29,8 @@ export const login = async (userData) => {
 
   return { token, user: usuarioLimpio };
 };
+
+export const register = async (userData) => {
+  const response = await axios.post(`${API_URL}/register`, userData);
+  return response.data;
+};
