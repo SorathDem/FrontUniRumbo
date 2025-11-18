@@ -1,22 +1,31 @@
+// src/services/authService.js
 import axios from "axios";
 
-const API_URL = "https://unirumbobakend.onrender.com/api/Auth"; // o http://localhost:5163/api/Auth
+const API_URL = "https://unirumbobakend.onrender.com/api/Auth";
 
 export const login = async (userData) => {
-  console.log("Datos enviados al backend:", userData); // 👀 Para verificar
-  const response = await axios.post(`${API_URL}/login`, userData);
-  const user = response.data;
   console.log("Datos enviados al backend:", userData);
-  console.log("Respuesta del backend:", user);
+  const response = await axios.post(`${API_URL}/login`, userData);
+  
+  const { token, user } = response.data;  // ← DESGLOSAR CORRECTAMENTE
+  console.log("Respuesta del backend:", response.data);
 
+  // Guardar token
+  localStorage.setItem("token", token);
 
-  // Guardar usuario logueado en localStorage
+  // Guardar solo el objeto user (el que tiene los datos reales)
   localStorage.setItem("user", JSON.stringify(user));
 
-  return user;
-};
+  // También guarda el usuario limpio para tu lógica
+  const usuarioLimpio = {
+    idUsuario: user.idUsuario,
+    nombre: user.nombre,
+    apellido: user.apellido,
+    correo: user.correo,
+    idRol: user.id_rol,
+    idSede: user.idSede
+  };
+  localStorage.setItem("usuario", JSON.stringify(usuarioLimpio));
 
-export const register = async (userData) => {
-  const response = await axios.post(`${API_URL}/register`, userData);
-  return response.data;
+  return { token, user: usuarioLimpio };
 };

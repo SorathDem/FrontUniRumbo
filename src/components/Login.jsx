@@ -14,46 +14,36 @@ function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
 
-    try {
-      const user = await login(form);
+  try {
+    const resultado = await login(form);  // ← ahora devuelve { token, user }
 
-      const usuarioData = {
-        idUsuario: user.idUsuario ?? user.IdUsuario,
-        nombre: user.nombre ?? user.Nombre,
-        apellido: user.apellido ?? user.Apellido,
-        correo: user.correo ?? user.Correo,
-        idRol: user.id_rol ?? user.idRol ?? user.IdRol,
-      };
+    console.log("Usuario guardado en localStorage:", resultado.user);
 
-      localStorage.setItem("usuario", JSON.stringify(usuarioData));
-      console.log("✅ Usuario guardado en localStorage:", usuarioData);
-
-      // 🧭 Redirección según el rol
-      switch (usuarioData.idRol) {
-        case 1: // Estudiante
-          navigate("/home");
-          break;
-        case 2: // Conductor
-          navigate("/rutas");
-          break;
-        case 3: // Arrendatario
-          navigate("/alojamientos");
-          break;
-        case 4: // Administrador
-          navigate("/adm");
-          break;
-        default:
-          navigate("/home");
-      }
-    } catch (error) {
-      console.error("❌ Error al iniciar sesión:", error);
-      setError("Credenciales incorrectas o error en el servidor. Intenta de nuevo.");
+    // Redirección según rol
+    switch (resultado.user.idRol) {
+      case 1:
+        navigate("/home");
+        break;
+      case 2:
+        navigate("/rutas");
+        break;
+      case 3:
+        navigate("/alojamientos");
+        break;
+      case 4:
+        navigate("/adm");
+        break;
+      default:
+        navigate("/home");
     }
-  };
-
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    setError("Credenciales incorrectas o error en el servidor.");
+  }
+};
   const handleForgotPassword = () => {
     // 👇 Cambia esta ruta por la que uses para recuperar contraseña
     navigate("/recuperar-contrasena");
