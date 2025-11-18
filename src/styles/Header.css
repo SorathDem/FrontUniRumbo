@@ -1,48 +1,42 @@
-/* ========= FIX para Leaflet superpuesto ========= */
-.leaflet-container {
-  z-index: 1 !important;
-}
+/* ===========================
+   HEADER GENERAL UNIRUMBO
+   =========================== */
 
-.leaflet-pane,
-.leaflet-control {
-  z-index: 1 !important;
-}
-
-/* ========= RESET BÁSICO ========= */
-body {
-  margin: 0;
-}
-
-/* ========= HEADER GENERAL ========= */
-
+/* El header ocupa todo el ancho de la ventana, pero el contenido
+   interno se centra con max-width */
 .main-header {
-  position: sticky;     /* se queda pegado arriba al hacer scroll */
+  position: sticky; /* se queda pegado arriba al hacer scroll */
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 9999;
 
-  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+/* Contenedor interno alineado y centrado */
+.main-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1.8rem;
   box-sizing: border-box;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-
-  padding: 0.9rem 2.5rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
 }
 
-/* Fuente global del header */
+/* Fuente para todo el header */
 .main-header,
 .main-header * {
   font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
     sans-serif;
 }
 
-/* IZQUIERDA: logo + título */
+/* ----- LADO IZQUIERDO: logo + título ----- */
+
 .header-left {
   display: flex;
   align-items: center;
@@ -52,7 +46,7 @@ body {
 .logo-block {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.55rem;
 }
 
 .logo-udec {
@@ -61,19 +55,20 @@ body {
 }
 
 .header-title {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #111827;
   white-space: nowrap;
 }
 
-/* CENTRO: navegación */
+/* ----- CENTRO: navegación ----- */
+
 .header-center {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.8rem;
-  flex: 1;               /* ocupa el espacio central */
+  flex: 1; /* para que el centro se expanda y quede realmente centrado */
 }
 
 .nav-item {
@@ -84,7 +79,7 @@ body {
   font-weight: 500;
   color: #111827;
   text-decoration: none;
-  padding: 0.25rem 0.65rem;
+  padding: 0.25rem 0.55rem;
   border-radius: 999px;
   transition: background-color 0.15s ease, color 0.15s ease,
     transform 0.15s ease;
@@ -96,11 +91,17 @@ body {
   transform: translateY(-1px);
 }
 
+.nav-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .nav-icon {
   font-size: 0.9rem;
 }
 
-/* DERECHA: nombre + botón */
+/* ----- DERECHA: nombre + botón ----- */
+
 .header-right {
   display: flex;
   align-items: center;
@@ -109,66 +110,63 @@ body {
 }
 
 .user-name {
+  margin-right: 4px;
   font-size: 0.95rem;
   font-weight: 500;
   color: #111827;
 }
 
-/* Botón Cerrar Sesión estilo UniRumbo */
+/* Botón Cerrar sesión estilo UniRumbo */
 .logout-button {
   background: linear-gradient(135deg, #00a99d, #79c000);
   color: white;
   border: none;
   padding: 8px 18px;
-  border-radius: 999px;
+  border-radius: 30px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.22);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .logout-button:hover {
   filter: brightness(1.05);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.3);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.32);
 }
 
 .logout-icon {
   font-size: 0.95rem;
 }
 
-/* ========= RESPONSIVE ========= */
+/* ---------- Z-INDEX DEL MAPA (para no tapar el header) ---------- */
 
-@media (max-width: 1024px) {
-  .main-header {
-    padding: 0.8rem 1.2rem;
-  }
-
-  .header-center {
-    gap: 1.2rem;
-  }
+.leaflet-container {
+  z-index: 1 !important;
 }
 
-@media (max-width: 768px) {
-  .main-header {
+.leaflet-pane,
+.leaflet-control {
+  z-index: 1 !important;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+  .main-header-inner {
+    padding: 0.75rem 1rem;
     flex-wrap: wrap;
     row-gap: 0.4rem;
-    justify-content: center;
-  }
-
-  .header-left {
-    width: 100%;
-    justify-content: center;
   }
 
   .header-center {
     order: 3;
     flex-wrap: wrap;
-    justify-content: center;
+    row-gap: 0.3rem;
   }
 
   .header-right {
@@ -178,9 +176,4 @@ body {
   .header-title {
     font-size: 1rem;
   }
-}
-
-.alojamiento-container {
-  max-width: 900px;
-  margin: 20px auto;
 }
