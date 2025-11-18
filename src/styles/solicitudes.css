@@ -1,43 +1,45 @@
-/* Página Servicios / Solicitudes aceptadas */
+/* =============================
+   PÁGINA DE SERVICIOS / SOLICITUDES
+   ============================= */
 
 .page-solicitudes {
   min-height: 100vh;
   padding: 1.5rem 2.5rem 2.5rem;
-  background-color: #f3f4f6; /* fondo claro, no rojo */
+  background-color: #f3f4f6;
 }
 
-/* Fuente global para esta vista */
+/* Fuente global */
 .page-solicitudes,
 .page-solicitudes * {
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
-    sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-/* Contenedor principal */
+/* Contenedor */
 .solicitudes-wrap {
   max-width: 1000px;
   margin: 0 auto;
 }
 
-/* Título principal */
+/* Título */
 .solicitudes-title {
   margin-top: 1.8rem;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #064e3b;
   text-align: center;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: 0.6rem;
 }
 
 .solicitudes-title-icon {
-  font-size: 1.6rem;
   color: #00a99d;
+  font-size: 1.8rem;
 }
 
-/* Estados: loading / vacío */
+/* Loading / vacío */
 .solicitudes-loading,
 .solicitudes-empty {
   margin-top: 2rem;
@@ -45,7 +47,7 @@
   color: #4b5563;
 }
 
-/* Grid de tarjetas */
+/* GRID */
 .cards-2col {
   margin-top: 1.6rem;
   display: grid;
@@ -53,34 +55,35 @@
   gap: 1.4rem;
 }
 
-/* Tarjeta base */
-.solicitud-card.servicio-card {
+/* TARJETA */
+.servicio-card {
   background-color: #ffffff;
   border-radius: 18px;
-  padding: 1.3rem 1.5rem 1.4rem;
-  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.18);
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0px 10px 25px rgba(15, 23, 42, 0.16);
   border-left: 6px solid #00a99d;
 }
 
-/* Cabecera de la tarjeta */
+/* HEAD */
 .servicio-head {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  margin-bottom: 0.8rem;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
 }
 
 .servicio-icon {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 999px;
-  display: inline-flex;
+
+  display: flex;
   align-items: center;
   justify-content: center;
+
   background: linear-gradient(135deg, #00a99d, #79c000);
-  color: #ffffff;
-  font-size: 1.2rem;
-  flex-shrink: 0;
+  color: white;
+  font-size: 1.3rem;
 }
 
 .servicio-head-text {
@@ -93,66 +96,106 @@
   font-weight: 500;
   color: #047857;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 .servicio-descripcion {
   font-size: 1rem;
   font-weight: 600;
   color: #111827;
-  margin-top: 2px;
 }
 
-/* Lista de datos */
+/* Lista */
 .servicio-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.55rem;
   color: #374151;
   font-size: 0.93rem;
 }
 
 .servicio-list li {
   display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
+  gap: 0.55rem;
 }
 
 .servicio-list-icon {
-  margin-top: 2px;
   color: #00a99d;
+  margin-top: 2px;
 }
 
-/* Estado pill */
+/* ESTADOS */
 .estado-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.22rem 0.8rem;
+  padding: 0.25rem 0.9rem;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
 .estado-aceptada {
   background-color: #79c000;
-  color: #ffffff;
+  color: white;
 }
 
-/* Responsive */
+.estado-rechazada {
+  background-color: #e11d48;
+  color: white;
+}
+
+.estado-pendiente {
+  background-color: #f59e0b;
+  color: white;
+}
+
+/* BOTONES */
+.acciones {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-aceptar,
+.btn-rechazar {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  gap: 0.45rem;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.btn-aceptar {
+  background-color: #00a99d;
+  color: white;
+}
+
+.btn-aceptar:hover {
+  filter: brightness(1.1);
+}
+
+.btn-rechazar {
+  background-color: #e11d48;
+  color: white;
+}
+
+.btn-rechazar:hover {
+  filter: brightness(1.1);
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .page-solicitudes {
-    padding: 1rem 1rem 2rem;
-  }
-
   .solicitudes-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
-  .solicitud-card.servicio-card {
-    padding: 1.1rem 1.2rem 1.3rem;
+  .servicio-card {
+    padding: 1.2rem 1.2rem;
   }
 }
