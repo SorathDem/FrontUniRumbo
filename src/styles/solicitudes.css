@@ -199,3 +199,25 @@
     padding: 1.2rem 1.2rem;
   }
 }
+
+
+/* ===== Extras para Mis Solicitudes (usuario) ===== */
+
+/* Ajuste extra para tarjeta de solicitudes del usuario */
+.solicitud-card {
+  /* reutiliza .servicio-card, aquí puedes ajustar algo si quieres */
+}
+
+/* Acciones en tarjetas de solicitudes del usuario */
+.acciones-solicitud {
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.btn-cancelar-soli {
+  width: 100%;
+  max-width: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
