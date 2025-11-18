@@ -26,6 +26,15 @@ const Adm = () => {
   });
   const [usuarioEditando, setUsuarioEditando] = useState(null);
 
+  // 👉 usuario logueado (lo usamos para usuarioGenerador)
+  const usuarioActual = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("usuario"));
+    } catch {
+      return null;
+    }
+  })();
+
   // Obtener datos iniciales
   const obtenerUsuarios = async () => {
     try {
@@ -136,9 +145,18 @@ const Adm = () => {
     }
   };
 
-  // 🔹 Generar reporte PDF (abre el PDF en una nueva pestaña)
+  // 🔹 Generar reporte PDF con usuarioGenerador
   const generarReporteUsuarios = () => {
-    window.open(API_REPORTE_USUARIOS, "_blank", "noopener,noreferrer");
+    // puedes ajustar qué dato mandas: nombre, correo, rol, etc.
+    const nombreGenerador =
+      usuarioActual?.nombre || usuarioActual?.correo || "Administrador";
+
+    const url = `${API_REPORTE_USUARIOS}?usuarioGenerador=${encodeURIComponent(
+      nombreGenerador
+    )}`;
+
+    // Abre el PDF ya con datos en nueva pestaña
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -156,7 +174,7 @@ const Adm = () => {
           <div className="admin-usuarios-header">
             <h2 className="admin-usuarios-title">Administración de Usuarios</h2>
 
-            {/* 🔹 Botones de acciones (crear y reporte) */}
+            {/* Botones de acciones */}
             <div className="admin-usuarios-actions">
               <button
                 className="btn-report"
