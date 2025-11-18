@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 
 // Ajusta la ruta a tu logo real
-import logoUdec from "../assets/logo-udec.png";
+import logoUdec from "../assets/logo.jpg";
 
 const HeaderArrendatario = () => {
   const user = JSON.parse(localStorage.getItem("usuario"));
