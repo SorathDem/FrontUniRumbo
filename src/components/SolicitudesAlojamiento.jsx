@@ -5,71 +5,68 @@ import axios from "axios";
 import "../styles/solicitudes.css";
 import HeaderArrendatario from "./HeaderArrendatario";
 
+// Iconos bonitos
+import {
+  FaHome,
+  FaUser,
+  FaMapMarkerAlt,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
+
 export default function SolicitudesAlojamiento() {
   const { idUsuario } = useParams();
   const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 🧩 Cargar solicitudes de alojamiento desde el backend
+  // 🧩 Cargar solicitudes de alojamiento
   useEffect(() => {
-  if (!idUsuario) return;
-  const cargar = async () => {
-    setLoading(true);
-    try {
-      const url = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamientos/${idUsuario}`;
-      console.log("🧩 Cargando solicitudes de alojamiento para:", idUsuario);
+    if (!idUsuario) return;
 
-      const { data } = await axios.get(url);
-      console.log("✅ Datos recibidos del backend:", data);
+    const cargar = async () => {
+      setLoading(true);
+      try {
+        const url = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamientos/${idUsuario}`;
+        const { data } = await axios.get(url);
 
-      // 🔧 Aquí va la normalización de claves
-      const normalizadas = (Array.isArray(data) ? data : []).map((s) => ({
-        idSolicitudAlojamiento:
-          s.idSoliAlojamiento ?? // 👈 nombre que viene desde tu backend
-          s.IdSoliAlojamiento ??
-          s.idSolicitudAlojamiento ??
-          s.IdSolicitudAlojamiento ??
-          s.id, // fallback
+        const normalizadas = (Array.isArray(data) ? data : []).map((s) => ({
+          idSolicitudAlojamiento:
+            s.idSoliAlojamiento ??
+            s.IdSoliAlojamiento ??
+            s.idSolicitudAlojamiento ??
+            s.IdSolicitudAlojamiento ??
+            s.id,
 
-        estado: s.estado ?? s.Estado ?? "Pendiente",
-        alojamiento: s.alojamiento ?? s.Alojamiento ?? {},
-        usuarioSolicitante: s.usuarioSolicitante ?? s.UsuarioSolicitante ?? {},
-      }));
+          estado: s.estado ?? s.Estado ?? "Pendiente",
+          alojamiento: s.alojamiento ?? s.Alojamiento ?? {},
+          usuarioSolicitante: s.usuarioSolicitante ?? s.UsuarioSolicitante ?? {},
+        }));
 
-      setSolicitudes(normalizadas);
-    } catch (e) {
-      console.error("❌ Error al cargar solicitudes de alojamiento:", e);
-      setSolicitudes([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-  cargar();
-}, [idUsuario]);
+        setSolicitudes(normalizadas);
+      } catch (e) {
+        console.error("❌ Error al cargar solicitudes:", e);
+        setSolicitudes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    cargar();
+  }, [idUsuario]);
 
-  // 🧩 Cambiar estado (2 = aceptada, 3 = rechazada)
+  // 🧩 Cambiar estado
   const cambiarEstado = async (idSolicitudAlojamiento, nuevoEstado) => {
     try {
-      if (!idSolicitudAlojamiento) {
-        console.error("⚠️ idSolicitudAlojamiento no definido:", idSolicitudAlojamiento);
-        alert("No se pudo cambiar el estado: idSolicitudAlojamiento no definido.");
-        return;
-      }
-
       const url = `https://unirumbobakend.onrender.com/api/Solicitudes/alojamiento/${idSolicitudAlojamiento}/estado/${nuevoEstado}`;
-      console.log("🧩 Cambiando estado:", { idSolicitudAlojamiento, nuevoEstado });
 
-      const response = await axios.put(url);
-      console.log("📤 Respuesta del backend:", response.data);
+      await axios.put(url);
 
       alert(
         nuevoEstado === 2
-          ? "✅ Solicitud aceptada correctamente."
-          : "❌ Solicitud rechazada correctamente."
+          ? "✅ Solicitud aceptada."
+          : "❌ Solicitud rechazada."
       );
 
-      // 🔁 Actualizamos el estado local sin recargar la página
       setSolicitudes((prev) =>
         prev.map((s) =>
           s.idSolicitudAlojamiento === idSolicitudAlojamiento
@@ -82,47 +79,67 @@ export default function SolicitudesAlojamiento() {
       );
     } catch (error) {
       console.error("⚠️ Error al actualizar estado:", error);
-      alert("Error al actualizar el estado de la solicitud.");
+      alert("Error al cambiar estado.");
     }
   };
 
   return (
     <div className="page-solicitudes">
       <HeaderArrendatario />
+
       <main className="solicitudes-wrap">
-        <h2 className="title">Mis Solicitudes de Alojamiento</h2>
+        <h2 className="solicitudes-title">
+          <FaHome className="solicitudes-title-icon" /> Mis Solicitudes de
+          Alojamiento
+        </h2>
 
         {loading ? (
-          <p className="loading">Cargando solicitudes...</p>
+          <p className="solicitudes-loading">Cargando solicitudes...</p>
         ) : solicitudes.length === 0 ? (
-          <p className="empty">No tienes solicitudes de alojamiento.</p>
+          <p className="solicitudes-empty">
+            No tienes solicitudes de alojamiento.
+          </p>
         ) : (
           <div className="cards-2col">
             {solicitudes.map((s) => (
-              <article key={s.idSolicitudAlojamiento} className="solicitud-card">
-                <div className="head">
-                  🏡 Alojamiento:{" "}
-                  <strong>{s.alojamiento?.descripcion || "Sin descripción"}</strong>
+              <article key={s.idSolicitudAlojamiento} className="solicitud-card servicio-card">
+                {/* Encabezado */}
+                <div className="servicio-head">
+                  <div className="servicio-icon">
+                    <FaHome />
+                  </div>
+
+                  <div className="servicio-head-text">
+                    <span className="servicio-tipo">Alojamiento</span>
+                    <span className="servicio-descripcion">
+                      {s.alojamiento?.descripcion || "Sin descripción"}
+                    </span>
+                  </div>
                 </div>
 
-                <ul className="list">
+                <ul className="servicio-list">
                   <li>
+                    <FaMapMarkerAlt className="servicio-list-icon" />
                     <strong>Ubicación:</strong>{" "}
                     {s.alojamiento?.ubicacion || "No especificada"}
                   </li>
+
                   <li>
+                    <FaUser className="servicio-list-icon" />
                     <strong>Solicitante:</strong>{" "}
                     {s.usuarioSolicitante?.nombre || "Desconocido"}
                   </li>
+
                   <li>
+                    <FaCheckCircle className="servicio-list-icon" />
                     <strong>Estado:</strong>{" "}
                     <span
-                      className={`estado ${
+                      className={`estado-pill ${
                         s.estado === "Aceptada"
-                          ? "aceptada"
+                          ? "estado-aceptada"
                           : s.estado === "Rechazada"
-                          ? "rechazada"
-                          : "pendiente"
+                          ? "estado-rechazada"
+                          : "estado-pendiente"
                       }`}
                     >
                       {s.estado}
@@ -130,13 +147,14 @@ export default function SolicitudesAlojamiento() {
                   </li>
                 </ul>
 
-                {/* Solo mostrar botones si el estado está pendiente */}
+                {/* Botones */}
                 {(s.estado === "Pendiente" || !s.estado) && (
                   <div className="acciones">
                     <button
                       className="btn-aceptar"
                       onClick={() => cambiarEstado(s.idSolicitudAlojamiento, 2)}
                     >
+                      <FaCheckCircle />
                       Aceptar
                     </button>
 
@@ -144,6 +162,7 @@ export default function SolicitudesAlojamiento() {
                       className="btn-rechazar"
                       onClick={() => cambiarEstado(s.idSolicitudAlojamiento, 3)}
                     >
+                      <FaTimesCircle />
                       Rechazar
                     </button>
                   </div>
