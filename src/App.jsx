@@ -24,6 +24,7 @@ import RutaAdmin from "./components/RutaAdmin";
 import AlojamientoAdmin from "./components/AlojamientoAdmin";
 import Servicios from "./components/Servicios";
 import ServiciosRuta from "./components/ServiciosRuta";
+import ResetPassword from "./components/ResetPassword";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/adm/alojamientos" element={<AlojamientoAdmin />} />
           <Route path="/usuarioConductor" element={<UsuarioConductor />} />
           <Route path="/usuarioArrendatario" element={<UsuarioArredatario />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/home" element={<Home />} />
           <Route path="/rutas" element={<Rutas />} />
           <Route path="/rutas/:idRuta" element={<RutaDetalle />} />
@@ -50,6 +52,7 @@ function App() {
           <Route path="/solicitudes-ruta/:idUsuario" element={<SolicitudesRuta />} />
           <Route path="/solicitudes-alojamiento/:idUsuario" element={<SolicitudesAlojamiento />} />
           <Route path="/alojamientos/:idAlojamiento" element={<AlojamientoDetalle />}
+          
           
           
           />
