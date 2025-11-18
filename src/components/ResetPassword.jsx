@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/Auth.css'; // reutiliza tus estilos del login
+import '../styles/Auth.css';
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
