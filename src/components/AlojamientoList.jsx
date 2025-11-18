@@ -72,7 +72,7 @@ const AlojamientoList = () => {
       const user = JSON.parse(localStorage.getItem("usuario"));
       idUsuario = user?.idUsuario || localStorage.getItem("idUsuario");
     } catch (e) {
-      console.warn("⚠️ Error al leer usuario del localStorage:", e);
+      console.warn("⚠ Error al leer usuario del localStorage:", e);
       idUsuario = localStorage.getItem("idUsuario");
     }
 
@@ -184,10 +184,6 @@ const AlojamientoList = () => {
   };
 
   return (
-<<<<<<< HEAD
-    
-    <div className="alojamiento-container">
-=======
     <>
       {/* Fuente Poppins para toda la vista */}
       <link
@@ -195,7 +191,6 @@ const AlojamientoList = () => {
         rel="stylesheet"
       />
 
->>>>>>> 57e2824f3f057fc79f1c7a6bd008a1defc6c0544
       <HeaderArrendatario />
 
       {/* 🔹 Caja principal grande que define el ancho visual de la página */}
