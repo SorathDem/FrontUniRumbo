@@ -39,8 +39,10 @@ html, body {
   background: rgba(255, 255, 255, 0.92);
   padding: 2.2rem 2.5rem;
   border-radius: 18px;
-  width: 100%;
-  max-width: 420px;
+  width: 90%;         
+  max-width: 420px;     
+  box-sizing: border-box;
+
 
   display: flex;
   flex-direction: column;
