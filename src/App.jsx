@@ -25,7 +25,7 @@ import AlojamientoAdmin from "./components/AlojamientoAdmin";
 import Servicios from "./components/Servicios";
 import ServiciosRuta from "./components/ServiciosRuta";
 import ResetPassword from "./components/ResetPassword";
-
+import PasswordRecovery from "./components/PasswordRecovery";
 
 function App() {
   return (
@@ -44,6 +44,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/home" element={<Home />} />
           <Route path="/rutas" element={<Rutas />} />
+          <Route path="/recuperar-contrasena" element={<PasswordRecovery />} />
           <Route path="/rutas/:idRuta" element={<RutaDetalle />} />
           <Route path="/servicios/:idUsuario" element={<Servicios />} />
           <Route path="/serviciosRuta/:idUsuario" element={<ServiciosRuta />} />

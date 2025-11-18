@@ -8,7 +8,7 @@ function Login() {
   const [form, setForm] = useState({ Correo: "", Contrasena: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -87,10 +87,12 @@ function Login() {
           />
         </div>
 
+
+
         <button
           type="button"
           className="link-button"
-          onClick={handleForgotPassword}
+          onClick={() => navigate("/recuperar-contrasena")}
         >
           <FiKey className="btn-icon" />
           ¿Olvidaste tu contraseña?
