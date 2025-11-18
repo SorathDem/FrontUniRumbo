@@ -161,6 +161,7 @@ const handleEliminar = async (id) => {
 };
 
   return (
+    
     <div className="alojamiento-container">
       <HeaderArrendatario />
       <h2 className="titulo">🏡 Lista de Alojamientos</h2>
