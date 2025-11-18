@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HeaderConductor from "./HeaderConductor";
 import "../styles/solicitudes.css";
+import { FiMapPin, FiHome, FiCheckCircle, FiTag } from "react-icons/fi";
 
 export default function ServiciosConductor() {
   const [servicios, setServicios] = useState([]);
@@ -75,9 +76,9 @@ export default function ServiciosConductor() {
             estado: s.estado ?? s.Estado ?? "Aceptada",
             descripcion: "Servicio de ruta",
             ubicacion:
-              (s.ruta?.puntoOrigen && s.ruta?.puntoDestino)
+              s.ruta?.puntoOrigen && s.ruta?.puntoDestino
                 ? `${s.ruta.puntoOrigen} → ${s.ruta.puntoDestino}`
-                : (s.Ruta?.PuntoOrigen && s.Ruta?.PuntoDestino)
+                : s.Ruta?.PuntoOrigen && s.Ruta?.PuntoDestino
                 ? `${s.Ruta.PuntoOrigen} → ${s.Ruta.PuntoDestino}`
                 : "Origen/Destino no especificado",
           }));
@@ -100,30 +101,57 @@ export default function ServiciosConductor() {
     <div className="page-solicitudes">
       <HeaderConductor />
       <main className="solicitudes-wrap">
-        <h2 className="title">Servicios Aceptados</h2>
+        <h2 className="title">
+          <FiCheckCircle style={{ marginRight: "0.5rem" }} />
+          Servicios aceptados
+        </h2>
 
         {loading ? (
           <p className="loading">Cargando servicios...</p>
         ) : servicios.length === 0 ? (
-          <p className="empty">No tienes servicios aceptados.</p>
+          <p className="empty">
+            Aún no tienes servicios aceptados. Cuando se confirmen tus
+            alojamientos o rutas aparecerán aquí. ✨
+          </p>
         ) : (
           <div className="cards-2col">
             {servicios.map((s) => (
               <article key={`${s.tipo}-${s.id}`} className="solicitud-card">
                 <div className="head">
-                  {s.tipo === "Alojamiento" ? "🏠 Alojamiento" : "🚌 Ruta"}:{" "}
+                  {s.tipo === "Alojamiento" ? (
+                    <>
+                      <FiHome style={{ marginRight: "0.4rem" }} />
+                      Alojamiento confirmado:
+                    </>
+                  ) : (
+                    <>
+                      <FiMapPin style={{ marginRight: "0.4rem" }} />
+                      Ruta confirmada:
+                    </>
+                  )}{" "}
                   <strong>{s.descripcion}</strong>
                 </div>
 
                 <ul className="list">
                   <li>
-                    <strong>Ubicación:</strong> {s.ubicacion}
+                    <strong>
+                      <FiMapPin style={{ marginRight: "0.25rem" }} />
+                      Ubicación:
+                    </strong>{" "}
+                    {s.ubicacion}
                   </li>
                   <li>
-                    <strong>Tipo:</strong> {s.tipo}
+                    <strong>
+                      <FiTag style={{ marginRight: "0.25rem" }} />
+                      Tipo:
+                    </strong>{" "}
+                    {s.tipo}
                   </li>
                   <li>
-                    <strong>Estado:</strong>{" "}
+                    <strong>
+                      <FiCheckCircle style={{ marginRight: "0.25rem" }} />
+                      Estado:
+                    </strong>{" "}
                     <span className="estado aceptada">{s.estado}</span>
                   </li>
                 </ul>
