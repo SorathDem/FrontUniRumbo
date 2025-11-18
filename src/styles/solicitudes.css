@@ -2,10 +2,13 @@
    PÁGINA DE SERVICIOS / SOLICITUDES
    ============================= */
 
+/* Contenedor general de la página */
 .page-solicitudes {
   min-height: 100vh;
   padding: 1.5rem 2.5rem 2.5rem;
-  background-color: #f3f4f6;
+  background-color: #f3f4f6; /* FONDO CLARO */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Fuente global */
@@ -14,15 +17,18 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* Contenedor */
+/* Contenedor interno */
 .solicitudes-wrap {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 0;
 }
 
-/* Título */
+/* Títulos principales */
+.title,
 .solicitudes-title {
   margin-top: 1.8rem;
+  margin-bottom: 1.5rem;
   font-size: 1.8rem;
   font-weight: 700;
   color: #064e3b;
@@ -34,20 +40,24 @@
   gap: 0.6rem;
 }
 
+/* Icono en el título (si se usa) */
 .solicitudes-title-icon {
   color: #00a99d;
   font-size: 1.8rem;
 }
 
-/* Loading / vacío */
+/* Mensajes de carga / vacío */
 .solicitudes-loading,
-.solicitudes-empty {
+.solicitudes-empty,
+.loading,
+.empty {
   margin-top: 2rem;
   text-align: center;
   color: #4b5563;
+  font-size: 0.95rem;
 }
 
-/* GRID */
+/* GRID de tarjetas */
 .cards-2col {
   margin-top: 1.6rem;
   display: grid;
@@ -55,23 +65,42 @@
   gap: 1.4rem;
 }
 
-/* TARJETA */
-.servicio-card {
-  background-color: #ffffff;
+/* =============================
+   TARJETAS (SERVICIOS / SOLICITUDES)
+   ============================= */
+
+/* Tarjeta de servicio clásica */
+.servicio-card,
+.solicitud-card {
+  background-color: #ffffff;            /* CAJA BLANCA */
   border-radius: 18px;
   padding: 1.4rem 1.6rem;
-  box-shadow: 0px 10px 25px rgba(15, 23, 42, 0.16);
-  border-left: 6px solid #00a99d;
+  box-shadow: 0px 10px 25px rgba(15, 23, 42, 0.12);
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
+  transition: transform 0.16s ease, box-shadow 0.16s ease,
+    border-color 0.16s ease;
 }
 
-/* HEAD */
-.servicio-head {
+.servicio-card:hover,
+.solicitud-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
+  border-color: #00a99d;
+}
+
+/* Cabecera de la tarjeta */
+.servicio-head,
+.solicitud-card .head {
   display: flex;
   align-items: center;
   gap: 0.9rem;
   margin-bottom: 1rem;
+  color: #111827;
+  font-weight: 600;
 }
 
+/* Icono circular en cabecera */
 .servicio-icon {
   width: 45px;
   height: 45px;
@@ -86,6 +115,7 @@
   font-size: 1.3rem;
 }
 
+/* Bloque de texto de cabecera */
 .servicio-head-text {
   display: flex;
   flex-direction: column;
@@ -104,8 +134,9 @@
   color: #111827;
 }
 
-/* Lista */
-.servicio-list {
+/* Lista de detalles */
+.servicio-list,
+.solicitud-card .list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -116,7 +147,8 @@
   font-size: 0.93rem;
 }
 
-.servicio-list li {
+.servicio-list li,
+.solicitud-card .list li {
   display: flex;
   gap: 0.55rem;
 }
@@ -126,14 +158,28 @@
   margin-top: 2px;
 }
 
-/* ESTADOS */
-.estado-pill {
+.solicitud-card .list li strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* =============================
+   ESTADOS
+   ============================= */
+
+.estado-pill,
+.estado {
   padding: 0.25rem 0.9rem;
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
 }
 
+/* Estados antiguos (por si aún se usan estas clases) */
 .estado-aceptada {
   background-color: #79c000;
   color: white;
@@ -149,18 +195,43 @@
   color: white;
 }
 
-/* BOTONES */
-.acciones {
+/* Estados nuevos (.estado + modificador) */
+.estado.aceptada {
+  background-color: #79c000;
+  color: #ffffff;
+}
+
+.estado.rechazada {
+  background-color: #e11d48;
+  color: #ffffff;
+}
+
+.estado.pendiente {
+  background-color: #f59e0b;
+  color: #ffffff;
+}
+
+/* =============================
+   BOTONES (Aceptar / Rechazar / Cancelar)
+   ============================= */
+
+.acciones,
+.acciones-solicitud {
   margin-top: 1rem;
   display: flex;
   gap: 0.8rem;
 }
 
+.acciones-solicitud {
+  justify-content: flex-end;
+}
+
 .btn-aceptar,
-.btn-rechazar {
+.btn-rechazar,
+.btn-cancelar-soli {
   flex: 1;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -169,238 +240,57 @@
   justify-content: center;
   align-items: center;
   border: none;
-}
-
-.btn-aceptar {
-  background-color: #00a99d;
-  color: white;
-}
-
-.btn-aceptar:hover {
-  filter: brightness(1.1);
-}
-
-.btn-rechazar {
-  background-color: #e11d48;
-  color: white;
-}
-
-.btn-rechazar:hover {
-  filter: brightness(1.1);
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .solicitudes-title {
-    font-size: 1.5rem;
-  }
-
-  .servicio-card {
-    padding: 1.2rem 1.2rem;
-  }
-}
-
-
-/* ===== Extras para Mis Solicitudes (usuario) ===== */
-
-/* Acciones en tarjetas de solicitudes del usuario */
-.acciones-solicitud {
-  margin-top: 1rem;
-  justify-content: flex-end;
-}
-
-.btn-cancelar-soli {
-  width: 100%;
-  max-width: 260px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* ================================
-   Estilos extra para:
-   - SolicitudesRuta.jsx
-   - ServiciosConductor/ServiciosRuta.jsx
-   ================================ */
-
-/* Contenedor general de la página */
-.page-solicitudes {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #0b1020, #111827);
-}
-
-/* Wrapper del contenido debajo del header */
-.solicitudes-wrap {
-  max-width: 1100px;
-  margin: 1.5rem auto 2.5rem;
-  padding: 1.5rem;
-}
-
-/* Título principal con icono */
-.title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #f9fafb;
-  margin-bottom: 1.5rem;
-}
-
-/* Mensajes de carga y vacío */
-.loading,
-.empty {
-  text-align: center;
-  font-size: 0.95rem;
-  color: #cbd5f5;
-  margin-top: 1rem;
-}
-
-/* Grid de tarjetas (rutas / servicios) */
-.cards-2col {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
-}
-
-/* Tarjeta genérica de solicitud/servicio */
-.solicitud-card {
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 14px;
-  padding: 1rem 1.2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  backdrop-filter: blur(10px);
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
-    border-color 0.18s ease;
-}
-
-.solicitud-card:hover {
-  transform: translateY(-3px);
-  border-color: #4f46e5;
-  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.9);
-}
-
-/* Cabecera de la tarjeta (título + icono) */
-.solicitud-card .head {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #e5e7eb;
-  margin-bottom: 0.75rem;
-}
-
-/* Lista interna de detalles */
-.solicitud-card .list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.solicitud-card .list li {
-  font-size: 0.9rem;
-  color: #d1d5db;
-  margin-bottom: 0.35rem;
-}
-
-.solicitud-card .list li strong {
-  color: #e5e7eb;
-  font-weight: 600;
-}
-
-/* Píldoras de estado */
-.estado {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.15rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: capitalize;
-}
-
-/* Estados por color */
-.estado.aceptada {
-  background: rgba(22, 163, 74, 0.15);
-  color: #4ade80;
-  border: 1px solid rgba(34, 197, 94, 0.6);
-}
-
-.estado.rechazada {
-  background: rgba(220, 38, 38, 0.12);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.7);
-}
-
-.estado.pendiente {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.7);
-}
-
-/* Contenedor de botones Aceptar / Rechazar */
-.acciones {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.9rem;
-}
-
-/* Botones base */
-.acciones button {
-  flex: 1;
-  border-radius: 999px;
-  padding: 0.45rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  transition: background-color 0.16s ease, transform 0.12s ease,
-    box-shadow 0.16s ease, opacity 0.16s ease;
+  transition: filter 0.16s ease, transform 0.12s ease,
+    box-shadow 0.16s ease;
 }
 
 /* Botón Aceptar */
 .btn-aceptar {
   background: linear-gradient(135deg, #16a34a, #22c55e);
-  color: #ecfdf5;
-  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.45);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.35);
 }
 
 .btn-aceptar:hover {
+  filter: brightness(1.05);
   transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.55);
 }
 
 /* Botón Rechazar */
 .btn-rechazar {
-  background: rgba(239, 68, 68, 0.08);
-  color: #fecaca;
-  border: 1px solid rgba(248, 113, 113, 0.7);
+  background-color: #e11d48;
+  color: #ffffff;
   box-shadow: 0 8px 18px rgba(127, 29, 29, 0.35);
 }
 
 .btn-rechazar:hover {
-  background: rgba(239, 68, 68, 0.18);
+  filter: brightness(1.05);
   transform: translateY(-1px);
 }
 
-/* Responsivo */
+/* Botón cancelar solicitud (usuario) */
+.btn-cancelar-soli {
+  max-width: 260px;
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+/* =============================
+   RESPONSIVE
+   ============================= */
+
 @media (max-width: 768px) {
-  .solicitudes-wrap {
-    padding: 1rem;
-    margin-top: 1rem;
+  .page-solicitudes {
+    padding: 1.25rem 1rem 2rem;
   }
 
-  .title {
-    font-size: 1.3rem;
+  .title,
+  .solicitudes-title {
+    font-size: 1.5rem;
+  }
+
+  .servicio-card,
+  .solicitud-card {
+    padding: 1.2rem 1.2rem;
   }
 }
