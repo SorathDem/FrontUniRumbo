@@ -474,7 +474,7 @@ const handleGuardarEdicionAlojamiento = async (idAlojamiento, datos) => {
 
                     <footer className="aloj-card-actions">
                     <button
-                      onClick={() => abrirModalEditarAlojamiento(alojamiento)}
+                      onClick={() => abrirModalEditarAlojamiento(a)}
                       className="btn-editar"
                     >
                       Editar
