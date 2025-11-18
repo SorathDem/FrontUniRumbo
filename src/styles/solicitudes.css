@@ -203,11 +203,6 @@
 
 /* ===== Extras para Mis Solicitudes (usuario) ===== */
 
-/* Ajuste extra para tarjeta de solicitudes del usuario */
-.solicitud-card {
-  /* reutiliza .servicio-card, aquí puedes ajustar algo si quieres */
-}
-
 /* Acciones en tarjetas de solicitudes del usuario */
 .acciones-solicitud {
   margin-top: 1rem;
