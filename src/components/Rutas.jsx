@@ -39,7 +39,108 @@ const iconDestino = new L.Icon({
   iconAnchor: [12, 25],
 });
 
+// ====== MODAL BONITO DE EDITAR RUTA (pégalo aquí) ======
+const EditarRutaModal = ({ ruta, isOpen, onClose, onGuardar }) => {
+  const [form, setForm] = useState({
+    horaSalida: ruta.horaSalida ? ruta.horaSalida.split("T")[1].slice(0, 5) : "",
+    horaRegreso: ruta.horaRegreso ? ruta.horaRegreso.split("T")[1].slice(0, 5) : "",
+    cuposIda: ruta.cuposIda || "",
+    cuposVuelta: ruta.cuposVuelta || "",
+    idVehiculo: ruta.idVehiculo?.toString() || "",
+    diasRuta: ruta.diasRuta || "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const hoy = new Date().toISOString().split("T")[0];
+    const payload = {
+      horaSalida: form.horaSalida ? `${hoy}T${form.horaSalida}` : null,
+      horaRegreso: form.horaRegreso ? `${hoy}T${form.horaRegreso}` : null,
+      cuposIda: parseInt(form.cuposIda, 10) || 0,
+      cuposVuelta: parseInt(form.cuposVuelta, 10) || 0,
+      idVehiculo: parseInt(form.idVehiculo, 10),
+      diasRuta: form.diasRuta,
+      desVehiculo: ruta.desVehiculo,
+      puntoOrigen: ruta.puntoOrigen,
+      puntoDestino: ruta.puntoDestino,
+      idUsuario: ruta.idUsuario,
+    };
+    onGuardar(ruta.idRuta, payload);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4">
+        <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">
+          Editar Ruta
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Hora Salida</label>
+              <input type="time" name="horaSalida" value={form.horaSalida} onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Hora Regreso</label>
+              <input type="time" name="horaRegreso" value={form.horaRegreso} onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Cupos Ida</label>
+              <input type="number" name="cuposIda" value={form.cuposIda} onChange={handleChange} min="0"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Cupos Vuelta</label>
+              <input type="number" name="cuposVuelta" value={form.cuposVuelta} onChange={handleChange} min="0"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Tipo de Vehículo</label>
+            <select name="idVehiculo" value={form.idVehiculo} onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+              <option value="">Selecciona...</option>
+              <option value="1">Carro</option>
+              <option value="0">Moto</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Días (separados por coma)</label>
+            <input type="text" name="diasRuta" value={form.diasRuta} onChange={handleChange}
+              placeholder="Lunes, Miércoles, Viernes"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
+          </div>
+
+          <div className="flex gap-4 pt-6">
+            <button type="submit" className="flex-1 bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700">
+              Guardar
+            </button>
+            <button type="button" onClick={onClose} className="flex-1 bg-red-600 text-white py-3 rounded-lg font-bold hover:bg-red-700">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 export default function MapaRutas() {
+  const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
+  const [rutaAEditar, setRutaAEditar] = useState(null);
   const [rutas, setRutas] = useState([]);
   const [trazadas, setTrazadas] = useState({});
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -249,66 +350,40 @@ export default function MapaRutas() {
   // =========================
   // Editar ruta (simple con prompt)
   // =========================
-  const handleEditarRuta = async (ruta) => {
-    const nuevaHoraSalida = prompt(
-      "Nueva hora de salida (HH:MM):",
-      ruta.horaSalida ? ruta.horaSalida.split("T")[1] : ""
-    );
-    if (nuevaHoraSalida === null) return;
+  const abrirModalEditar = (ruta) => {
+  setRutaAEditar(ruta);
+  setModalEditarAbierto(true);
+};
 
-    const nuevaHoraRegreso = prompt(
-      "Nueva hora de regreso (HH:MM):",
-      ruta.horaRegreso ? ruta.horaRegreso.split("T")[1] : ""
-    );
-    if (nuevaHoraRegreso === null) return;
+// =========================
+// GUARDAR EDICIÓN DE RUTA
+// =========================
+const handleGuardarEdicion = async (idRuta, payload) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${API_URL}/${idRuta}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
 
-    const nuevosCuposIda = prompt("Cupos ida:", ruta.cuposIda ?? "");
-    if (nuevosCuposIda === null) return;
-
-    const nuevosCuposVuelta = prompt("Cupos vuelta:", ruta.cuposVuelta ?? "");
-    if (nuevosCuposVuelta === null) return;
-
-    const nuevoIdVehiculo = prompt(
-      "Tipo de vehículo (1=Carro, 0=Moto):",
-      ruta.idVehiculo ?? ""
-    );
-    if (nuevoIdVehiculo === null) return;
-
-    const nuevosDiasRuta = prompt(
-      "Días de ruta (coma separados):",
-      ruta.diasRuta ?? ""
-    );
-    if (nuevosDiasRuta === null) return;
-
-    try {
-      const hoy = new Date().toISOString().split("T")[0];
-      const payload = {
-        horaSalida: nuevaHoraSalida ? `${hoy}T${nuevaHoraSalida}` : null,
-        horaRegreso: nuevaHoraRegreso ? `${hoy}T${nuevaHoraRegreso}` : null,
-        cuposIda: parseInt(nuevosCuposIda, 10) || 0,
-        cuposVuelta: parseInt(nuevosCuposVuelta, 10) || 0,
-        idVehiculo: parseInt(nuevoIdVehiculo, 10),
-        diasRuta: nuevosDiasRuta,
-        desVehiculo: ruta.desVehiculo,
-        puntoOrigen: ruta.puntoOrigen,
-        puntoDestino: ruta.puntoDestino,
-        idUsuario: ruta.idUsuario,
-      };
-
-      const res = await fetch(`${API_URL}/${ruta.idRuta}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error("Error al actualizar la ruta");
-      alert("Ruta actualizada ✅");
-      obtenerRutas();
-    } catch (error) {
-      console.error(error);
-      alert("Error al actualizar la ruta ❌");
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText || "Error al actualizar ruta");
     }
-  };
+
+    alert("Ruta actualizada con éxito");
+    obtenerRutas();
+    setModalEditarAbierto(false);
+    setRutaAEditar(null);
+  } catch (error) {
+    console.error("Error actualizando ruta:", error);
+    alert("Error al actualizar la ruta");
+  }
+};
 
   // =========================
   // Eliminar ruta
@@ -631,14 +706,13 @@ export default function MapaRutas() {
 
                     {/* Botones */}
                     <div className="ruta-actions">
-                      <button
-                        onClick={() => handleEditarRuta(r)}
-                        className="btn-editar"
-                        type="button"
-                      >
-                        <FaEdit />
-                        Editar
-                      </button>
+                    <button
+                      onClick={() => abrirModalEditar(r)}  // ← CAMBIA ESTO
+                      className="btn-editar"
+                      type="button"
+                    >
+                      <FaEdit /> Editar
+                    </button>
                       <button
                         onClick={() => handleEliminarRuta(r.idRuta)}
                         className="btn-eliminar"
@@ -662,6 +736,15 @@ export default function MapaRutas() {
             </div>
           )}
         </div>
+        {/* MODAL DE EDITAR RUTA */}
+        {rutaAEditar && (
+          <EditarRutaModal
+            ruta={rutaAEditar}
+            isOpen={modalEditarAbierto}
+            onClose={() => setModalEditarAbierto(false)}
+            onGuardar={handleGuardarEdicion}
+          />
+        )}
       </div>
     </>
   );
