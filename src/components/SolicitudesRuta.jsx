@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/solicitudes.css";
 import HeaderConductor from "./HeaderConductor";
+import { FiMapPin, FiUser, FiFlag, FiCheck, FiX } from "react-icons/fi";
 
 export default function SolicitudesRuta() {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -37,7 +38,8 @@ export default function SolicitudesRuta() {
             s.id,
           estado: s.estado ?? s.Estado ?? "Pendiente",
           ruta: s.ruta ?? s.Ruta ?? {},
-          usuarioSolicitante: s.usuarioSolicitante ?? s.UsuarioSolicitante ?? {},
+          usuarioSolicitante:
+            s.usuarioSolicitante ?? s.UsuarioSolicitante ?? {},
         }));
 
         setSolicitudes(normalizadas);
@@ -85,29 +87,49 @@ export default function SolicitudesRuta() {
     <div className="page-solicitudes">
       <HeaderConductor />
       <main className="solicitudes-wrap">
-        <h2 className="title">Mis Solicitudes de Ruta</h2>
+        <h2 className="title">
+          <FiMapPin style={{ marginRight: "0.5rem" }} />
+          Mis Solicitudes de Ruta
+        </h2>
 
         {loading ? (
           <p className="loading">Cargando solicitudes...</p>
         ) : solicitudes.length === 0 ? (
-          <p className="empty">No tienes solicitudes de ruta.</p>
+          <p className="empty">
+            No tienes solicitudes de ruta por el momento. Cuando alguien pida
+            un cupo en alguna de tus rutas, aparecerá aquí. 🚗
+          </p>
         ) : (
           <div className="cards-2col">
             {solicitudes.map((s) => (
               <article key={s.idSoliRuta} className="solicitud-card">
                 <div className="head">
-                  🚗 Ruta: <strong>{s.ruta?.puntoDestino || "Sin destino"}</strong>
+                  <FiMapPin style={{ marginRight: "0.4rem" }} />
+                  Ruta hacia{" "}
+                  <strong>{s.ruta?.puntoDestino || "Sin destino"}</strong>
                 </div>
 
                 <ul className="list">
                   <li>
-                    <strong>Origen:</strong> {s.ruta?.puntoOrigen || "Sin origen"}
+                    <strong>
+                      <FiFlag style={{ marginRight: "0.25rem" }} />
+                      Origen:
+                    </strong>{" "}
+                    {s.ruta?.puntoOrigen || "Sin origen"}
                   </li>
                   <li>
-                    <strong>Destino:</strong> {s.ruta?.puntoDestino || "Sin destino"}
+                    <strong>
+                      <FiMapPin style={{ marginRight: "0.25rem" }} />
+                      Destino:
+                    </strong>{" "}
+                    {s.ruta?.puntoDestino || "Sin destino"}
                   </li>
                   <li>
-                    <strong>Solicitante:</strong> {s.usuarioSolicitante?.nombre || "Desconocido"}
+                    <strong>
+                      <FiUser style={{ marginRight: "0.25rem" }} />
+                      Solicitante:
+                    </strong>{" "}
+                    {s.usuarioSolicitante?.nombre || "Desconocido"}
                   </li>
                   <li>
                     <strong>Estado:</strong>{" "}
@@ -131,12 +153,14 @@ export default function SolicitudesRuta() {
                       className="btn-aceptar"
                       onClick={() => cambiarEstado(s.idSoliRuta, 2)}
                     >
+                      <FiCheck style={{ marginRight: "0.25rem" }} />
                       Aceptar
                     </button>
                     <button
                       className="btn-rechazar"
                       onClick={() => cambiarEstado(s.idSoliRuta, 3)}
                     >
+                      <FiX style={{ marginRight: "0.25rem" }} />
                       Rechazar
                     </button>
                   </div>
