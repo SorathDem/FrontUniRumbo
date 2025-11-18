@@ -79,3 +79,13 @@
   background: url("../img/unirumbo.jpg") no-repeat center center/cover;
   position: relative;
 }
+
+/* Para que los selects también respeten el espacio del icono */
+.input-group select {
+  padding-left: 2.4rem;
+}
+
+/* Opcional: que el texto del placeholder/option por defecto tenga el mismo tono */
+.auth-form select {
+  color: #00482B;
+}
